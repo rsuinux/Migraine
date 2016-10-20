@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Point_Entree"
+    style="@style/titre">
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fond_general"
+    android:layout_alignParentStart="true"
+    android:weightSum="1"
+    android:id="@+id/Nb_Evenements">
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/New"
+        android:id="@+id/B_new_event"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/Historique"
+        android:id="@+id/B_Historique"
+        android:layout_below="@+id/B_new_event"
+        android:layout_alignEnd="@+id/B_new_event" />
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/Graphique"
+        android:id="@+id/B_graphique"
+        />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="335dp"
+        android:layout_below="@+id/B_Historique"
+        android:layout_alignParentStart="true"
+        android:orientation="horizontal"
+        android:layout_above="@+id/B_Config"
+        android:weightSum="2"
+        android:background="#bffbe3"
+        android:baselineAligned="false"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/T_Info_1"
+                android:layout_gravity="left|center_vertical"
+                android:inputType="none"
+                android:text="@string/info_1"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:layout_column="0" />
+
+            <EditText
+                android:id="@+id/T_nombre_evnt"
+                android:layout_gravity="center_vertical"
+                android:text="@string/info_3"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:layout_column="1" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/T_Info_2"
+                android:layout_gravity="left|center_vertical"
+                android:text="@string/info_2"
+                android:gravity="bottom"
+                android:layout_below="@+id/T_Info_1"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:layout_alignParentStart="true"
+                android:layout_column="0"
+                android:autoLink="none" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/Last_Evenement">
+
+            <EditText
+                android:inputType="date"
+                android:ems="10"
+                android:id="@+id/t_date"
+                android:layout_below="@+id/T_Info_2"
+                android:layout_alignStart="@+id/B_Config"
+                android:text="@string/info_4"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:layout_column="0" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="time"
+                android:ems="10"
+                android:id="@+id/T_heure"
+                android:text="@string/info_5"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:layout_column="1" />
+        </TableRow>
+    </TableLayout>
+</LinearLayout>
+
+
+</RelativeLayout>

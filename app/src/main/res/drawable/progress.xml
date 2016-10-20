@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+        <item android:id="@android:id/background">
+            <shape android:shape="rectangle" >
+                <corners android:radius="5dp" />
+                <gradient
+                    android:angle="0"
+                    android:startColor="@color/min_douleur"
+                    android:centerX="0.5"
+                    android:endColor="@color/max_douleur"/>
+            </shape>
+        </item>
+        <item>
+            <clip>
+                <shape android:shape="rectangle" >
+                    <corners android:radius="5dp" />
+                    <gradient
+
+                        android:startColor="@color/min_douleur"
+                        android:centerY="0.5"
+                        android:endColor="@color/max_douleur"/>
+                </shape>
+            </clip>
+        </item>
+        <item android:state_pressed="true">
+            <shape android:shape="rectangle" >
+                <corners android:radius="5dp"/>
+                <gradient
+
+                    android:startColor="@color/min_douleur"
+                    android:centerY="0.5"
+                    android:endColor="@color/max_douleur"/>
+            </shape>
+        </item>
+</selector>
