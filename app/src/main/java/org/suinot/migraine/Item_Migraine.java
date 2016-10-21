@@ -7,23 +7,24 @@ import java.util.Set;
 
 /**
  * Created by remi on 16/10/16.
+Description de mes données dans la base Migraine
  */
 
 public class Item_Migraine {
-    public String NM_Nom;
-    public String NM_Date;
-    public String NM_Heure;
-    public String NM_Douleur;
-    public String NM_Medic;
+    private String NM_Nom;
+    private String NM_Date;
+    private String NM_Heure;
+    private String NM_Douleur;
+    private String NM_Medic;
 
     // main constructor
     public Item_Migraine(String NM_Nom, String NM_Date, String NM_Heure, String NM_Douleur, String NM_Medic) {
         super ();
-        this.NM_Nom=NM_Nom;
-        this.NM_Date=NM_Date;
-        this.NM_Heure=NM_Heure;
-        this.NM_Douleur=NM_Douleur;
-        this.NM_Medic=NM_Medic;
+        this.NM_Nom = NM_Nom;
+        this.NM_Date = NM_Date;
+        this.NM_Heure = NM_Heure;
+        this.NM_Douleur = NM_Douleur;
+        this.NM_Medic = NM_Medic;
     }
 
     // String representation
@@ -39,11 +40,11 @@ public class Item_Migraine {
 
     // set the values of the object to null
     public void clear() {
-        this.NM_Nom=null;
-        this.NM_Date=null;
-        this.NM_Heure=null;
-        this.NM_Douleur=null;
-        this.NM_Medic=null;
+        this.NM_Nom = "";
+        this.NM_Date = "";
+        this.NM_Heure = "";
+        this.NM_Douleur = "";
+        this.NM_Medic = "";
     }
 
     // return all of the values as a collection
@@ -61,9 +62,26 @@ public class Item_Migraine {
 
     // if the values of the members are null, return true
     public boolean isEmpty() {
-        if ( (this.NM_Nom == null) && (this.NM_Date == null) && (this.NM_Heure == null) && (this.NM_Douleur == null) && (this.NM_Medic == null) ) {
-            return true;
-        } else {
+        if (this.NM_Medic.equals (""))
+            if (this.NM_Douleur.equals (""))
+                if (this.NM_Heure.equals (""))
+                    if (this.NM_Date.equals ("")) {
+                        if (this.NM_Nom.equals ("")) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                    else {
+                        return false;
+                    }
+                else {
+                    return false;
+                }
+            else {
+                return false;
+            }
+        else {
             return false;
         }
     }
@@ -140,23 +158,23 @@ public class Item_Migraine {
         String value = null;
         if (key.equals ("nom")) {
             value = this.NM_Nom;
-            this.NM_Nom = null;
+            this.NM_Nom = "";
         }
         if (key.equals ("date")) {
             value = this.NM_Date;
-            this.NM_Date = null;
+            this.NM_Date = "";
         }
         if (key.equals ("heure")) {
             value = this.NM_Heure;
-            this.NM_Heure = null;
+            this.NM_Heure = "";
         }
         if (key.equals ("douleur")) {
             value = this.NM_Douleur;
-            this.NM_Douleur = null;
+            this.NM_Douleur = "";
         }
         if (key.equals ("medicament")) {
             value = this.NM_Medic;
-            this.NM_Medic = null;
+            this.NM_Medic = "";
         }
         return value;
     }
@@ -165,17 +183,13 @@ public class Item_Migraine {
     public boolean containsKey(Object key) {
         if (key.equals ("nom")) {
             return true;
-        }
-        if (key.equals ("date")) {
+        }else if (key.equals ("date")) {
             return true;
-        }
-        if (key.equals ("heure")) {
+        }else if (key.equals ("heure")) {
             return true;
-        }
-        if (key.equals ("douleur")) {
+        } else if (key.equals ("douleur")) {
             return true;
-        }
-        if (key.equals ("medicament")) {
+        }else if (key.equals ("medicament")) {
             return true;
         }
         return false;
@@ -185,24 +199,20 @@ public class Item_Migraine {
     public boolean containsValue(Object value) {
         if (value.equals (this.NM_Nom)) {
             return true;
-        }
-        if (value.equals (this.NM_Date)) {
+        } else if (value.equals (this.NM_Date)) {
             return true;
-        }
-        if (value.equals (this.NM_Heure)) {
+        } else if (value.equals (this.NM_Heure)) {
             return true;
-        }
-        if (value.equals (this.NM_Douleur)) {
+        } else if (value.equals (this.NM_Douleur)) {
             return true;
-        }
-        if (value.equals (this.NM_Medic)) {
+        } else if (value.equals (this.NM_Medic)) {
             return true;
         }
         return false;
     }
 
     // set the values of this map to that of another
-    public void putAll(Map<? extends String, ? extends String  > arg0) {
+    public void putAll(Map<? extends String, ? extends String> arg0) {
         // we only need the stub.
     }
 

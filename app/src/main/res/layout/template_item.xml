@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/coins_arrondis">
+    android:background="@drawable/coins_arrondis"
+    android:orientation="horizontal">
 
     <ImageView
+        android:contentDescription="@string/attribut_comprime"
         android:id="@+id/Template_Img"
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -15,11 +16,11 @@
         android:src="@mipmap/comprime"/>
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:clickable="false">
+        android:clickable="false"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/Template_Medic"
@@ -31,8 +32,8 @@
         <TextView
             android:id="@+id/Template_Dose"
             android:layout_width="wrap_content"
-            android:clickable="false"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:clickable="false"/>
 
     </LinearLayout>
 </LinearLayout>

@@ -21,34 +21,21 @@ import java.io.OutputStream;
 
 class MabaseMedicament extends SQLiteOpenHelper {
 
-    private String DATABASE_PATH; // chemin défini dans le constructeur
+    private static final int VERSION_BDD = 1;
     private static final String NOM_BDD = "Antalgiques.db";
-
-
-    static final int VERSION_BDD = 1;
-    public static MabaseMedicament sInstance;
-    private final Context mycontext;
-
     private static final String TABLE_MEDIC = "table_medicaments";
     private static final String COL_ID = "ID";
     private static final String COL_NOM = "NOM";
     private static final String COL_DOSE = "DOSE";
-
     private static final String CREATE_BDD = "CREATE TABLE " + TABLE_MEDIC + " ("
             + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_NOM + " TEXT NOT NULL, "
             + COL_DOSE + " TEXT NOT NULL);";
-
-    public static synchronized MabaseMedicament getInstance(Context context) {
-        Log.d ("getInstance", "création de la base");
-
-        if (sInstance == null) {
-            sInstance = new MabaseMedicament (context);
-        }
-        return sInstance;
-    }
+    private MabaseMedicament sInstance;
+    private final Context mycontext;
+    private String DATABASE_PATH; // chemin défini dans le constructeur
 
     // Constructeur
-    MabaseMedicament(Context context) {
+    private MabaseMedicament(Context context) {
         super (context, NOM_BDD, null, VERSION_BDD);
         this.mycontext = context;
         String filesDir = context.getFilesDir ().getPath (); // /data/data/com.package.nom/files/
@@ -60,6 +47,15 @@ class MabaseMedicament extends SQLiteOpenHelper {
             // copy db de 'assets' vers DATABASE_PATH
             copydatabase ();
         }
+    }
+
+    static synchronized MabaseMedicament getInstance(Context context) {
+        Log.d ("getInstance", "création de la base");
+
+        if (sInstance == null) {
+            sInstance = new MabaseMedicament (context);
+        }
+        return sInstance;
     }
 
     private boolean checkdatabase() {

@@ -14,45 +14,41 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="@color/fond_general"
         android:orientation="vertical"
-        android:weightSum="0"
-        android:layout_alignParentStart="true">
+        android:weightSum="0">
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        <Button
-            android:id="@+id/Ajout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ajout"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"/>
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
             <Button
-                android:text=""
+                android:id="@+id/Ajout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/button"
+                android:text="@string/ajout"/>
+
+            <Button
+                android:id="@+id/button_caché_pour_gagner_deèlesapce_entre_les_deux_autres"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/mdtp_material_button_background"
                 android:clickable="false"
                 android:focusable="false"
-                android:backgroundTint="@color/fond_general"
-                android:textCursorDrawable="@color/fond_general"
-                android:textColorLink="@color/fond_general"
+                android:text=""
+                android:textColorHighlight="@color/fond_general"
                 android:textColorHint="@color/fond_general"
-                android:textColorHighlight="@color/fond_general"/>
+                android:textColorLink="@color/fond_general"
+                android:textCursorDrawable="@color/fond_general"/>
             <Button
                 android:id="@+id/Annuler"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Annuler" android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"/>
+                android:text="@string/annuler"/>
 
         </LinearLayout>
 
@@ -60,20 +56,19 @@
             android:id="@+id/affiche_bdd"
             android:layout_width="match_parent"
             android:layout_height="389dp"
-            android:scrollbars="vertical" android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true" android:layout_below="@+id/zero"/>
+            android:scrollbars="vertical"/>
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/SAuver"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:text="Sauver"/>
+
+                android:text="@string/enregistrer"/>
 
         </LinearLayout>
     </LinearLayout>

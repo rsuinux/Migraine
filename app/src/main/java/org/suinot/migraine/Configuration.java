@@ -22,16 +22,16 @@ import static org.suinot.migraine.R.layout.configuration;
 
 /**
  * Created by remi on 27/08/16.
+  Activity pour la configuration de la base de données du médicament (visu, ajout, suppression)
  */
 
 public class Configuration extends Activity {
 
     GestionBaseMedicament medicBdd;
+    CustomAdapter monAdapter = null;
     private ListView listViewMedicaments;
     private ArrayList<Item_Medicament> data;
     private long derniere_donnees_initiale;
-
-    CustomAdapter monAdapter = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,10 +41,10 @@ public class Configuration extends Activity {
 
         setContentView (configuration);
 
-Log.d ("configuration", "avant new gestionbase");
+        Log.d ("configuration", "avant new gestionbase");
         medicBdd = new GestionBaseMedicament (this);
         // On ouvre la base de données pour écrire dedans
-Log.d ("configuration", "avant openbdd");
+        Log.d ("configuration", "avant openbdd");
         medicBdd.open ();
 
         // copieBase = medicBdd;

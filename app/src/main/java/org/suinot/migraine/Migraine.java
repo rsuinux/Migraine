@@ -2,18 +2,17 @@ package org.suinot.migraine;
 
 /**
  * Created by remi on 15/10/16.
-
- base de données Migraine
-    id
-    nom -> unique ou non, si pas de nom, alors app le donne?
-    date
-    heure
-    duree
-    commentaire(s)
-
+ * <p>
+ * base de données Migraine
+ * id
+ * nom -> unique ou non, si pas de nom, alors app le donne?
+ * date
+ * heure
+ * duree
+ * commentaire(s)
  */
 
-public class Migraine {
+class Migraine {
 
     private int id;
     private String nom;
@@ -22,7 +21,7 @@ public class Migraine {
     private String duree;
     private String commentaire;
 
-    public Migraine() {
+    Migraine( String nom, String date, String heure, String duree, String commentaire) {
         super ();
         this.nom = nom;
         this.date = date;
@@ -30,63 +29,64 @@ public class Migraine {
         this.duree = duree;
         this.commentaire = commentaire;
     }
-/*
----------- Demande de données ----------
- */
+
+    /*
+    ---------- Demande de données ----------
+     */
     public int getId() {
         return id;
     }
-
-    public String getnom() {
-        return nom;
-    }
-
-    public String getdate() {
-        return date;
-    }
-
-    public String getheure() {
-        return heure;
-    }
-
-    public String getduree() {
-        return duree ;
-    }
-
-    public String getcommentaire() {
-        return commentaire;
-    }
-/*
----------- Mise à jour de données ----------
- */
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public void setnom(String nom) {
+    String getnom() {
+        return nom;
+    }
+
+    String getdate() {
+        return date;
+    }
+
+    String getheure() {
+        return heure;
+    }
+
+    String getduree() {
+        return duree;
+    }
+/*
+---------- Mise à jour de données ----------
+ */
+
+    String getcommentaire() {
+        return commentaire;
+    }
+
+    void setnom(String nom) {
         this.nom = nom;
     }
 
-    public void setdate(String date) {
+    void setdate(String date) {
         this.date = date;
     }
 
-    public void setheure(String heure) {
+    void setheure(String heure) {
         this.heure = heure;
     }
 
-    public void setduree(String duree) {
+    void setduree(String duree) {
         this.duree = duree;
     }
 
-    public void setcommentaire(String com) {
+    void setcommentaire(String com) {
         this.commentaire = com;
     }
 
-/*
------------ Méthode globale ----------------
-*/
+    /*
+    ----------- Méthode globale ----------------
+    */
     @Override
     public String toString() {
         return "[Migraine] id: " + id

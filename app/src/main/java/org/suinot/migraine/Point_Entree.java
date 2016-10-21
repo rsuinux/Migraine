@@ -1,15 +1,17 @@
 package org.suinot.migraine;
 
-        import android.app.Activity;
-        import android.content.Intent;
-        import android.os.Bundle;
-        import android.view.Menu;
-        import android.view.MenuItem;
-        import android.widget.Button;
-        import android.view.View;
-        import android.view.View.OnClickListener;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+
 /**
  * Created by remi on 18/08/16.
+  Activity principale de l'application
  */
 public class Point_Entree extends Activity {
 
@@ -52,8 +54,6 @@ public class Point_Entree extends Activity {
                 Intent Nouvelle_migraine = new Intent (getApplicationContext (), Nouvelle_Migraine.class);
                 startActivity (Nouvelle_migraine);
             }
-
-            ;
         }));
     }
 
@@ -61,24 +61,22 @@ public class Point_Entree extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater ().inflate (R.menu.menu, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        super.onOptionsItemSelected(item);
-        switch(item.getItemId())
-        {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected (item);
+        switch (item.getItemId ()) {
             case R.id.M_Config:
-                startActivity( new Intent (getApplicationContext (), Configuration.class) );
+                startActivity (new Intent (getApplicationContext (), Configuration.class));
                 return true;
             case R.id.M_Quit:
                 finish ();
                 return true;
             default:
-                return super.onOptionsItemSelected(item);
+                return super.onOptionsItemSelected (item);
         }
     }
 }

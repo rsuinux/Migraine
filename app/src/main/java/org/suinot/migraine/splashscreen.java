@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 
 /**
  * Created by remi on 07/10/16.
+  Première activity: animation (splashscreen)
  */
 
 public class splashscreen extends Activity {
@@ -24,29 +25,29 @@ public class splashscreen extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.splashscreen);
-        Animation anim1 = AnimationUtils.loadAnimation(this,R.anim.anim_down);
-        ImageView img =(ImageView)findViewById(R.id.imageView);
-        img.setAnimation(anim1);
+        super.onCreate (savedInstanceState);
+        setContentView (R.layout.splashscreen);
+        Animation anim1 = AnimationUtils.loadAnimation (this, R.anim.anim_down);
+        ImageView img = (ImageView) findViewById (R.id.imageView);
+        img.setAnimation (anim1);
 
-        mprogressBar = (ProgressBar) findViewById(R.id.progressBar);
-        ObjectAnimator anim = ObjectAnimator.ofInt(mprogressBar, "progress", 0, 100);
-        anim.setDuration(4000);
-        anim.setInterpolator(new DecelerateInterpolator ());
-        anim.start();
+        mprogressBar = (ProgressBar) findViewById (R.id.progressBar);
+        ObjectAnimator anim = ObjectAnimator.ofInt (mprogressBar, "progress", 0, 100);
+        anim.setDuration (4000);
+        anim.setInterpolator (new DecelerateInterpolator ());
+        anim.start ();
 
         Handler handler = new Handler ();
 
-        handler.postDelayed(new Runnable() {
+        handler.postDelayed (new Runnable () {
             @Override
             public void run() {
 
-                startActivity(new Intent (splashscreen.this,Point_Entree.class));
-                finish();
+                startActivity (new Intent (splashscreen.this, Point_Entree.class));
+                finish ();
 
             }
-        },4000);
+        }, 4000);
     }
 }
 

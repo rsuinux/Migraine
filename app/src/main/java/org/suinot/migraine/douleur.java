@@ -2,14 +2,14 @@ package org.suinot.migraine;
 
 /**
  * Created by remi on 16/10/16.
- base de données douleur de la migraine
-    id
-    id_ref  = id de la migraine de référence (permet de noter plusieurs douleurs pour une migraine de ref)
-    nom_ref   -> nom de la migraine
-    id_medicament -> id de la base du médicament
-    intensité
-    date
-    heure
+ * base de données douleur de la migraine
+ * id
+ * id_ref  = id de la migraine de référence (permet de noter plusieurs douleurs pour une migraine de ref)
+ * nom_ref   -> nom de la migraine
+ * id_medicament -> id de la base du médicament
+ * intensité
+ * date
+ * heure
  */
 
 public class douleur {
@@ -21,20 +21,25 @@ public class douleur {
     private String date;
     private String heure;
 
-    public douleur(int id_ref, int nom_ref,int id_medicament, int intensite, String date, String heure) {
+    public douleur(int id_ref, int nom_ref, int id_medicament, int intensite, String date, String heure) {
         super ();
-        this.id_ref=id_ref;
-        this.nom_ref=nom_ref;
-        this.id_medicament=id_medicament;
+        this.id_ref = id_ref;
+        this.nom_ref = nom_ref;
+        this.id_medicament = id_medicament;
         this.intensite = intensite;
         this.date = date;
         this.heure = heure;
     }
+
     /*
     ---------- Demande de données ----------
      */
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getid_ref() {
@@ -57,16 +62,12 @@ public class douleur {
         return date;
     }
 
-    public String getheure() {
-        return heure;
-    }
-
 /*
 ---------- Mise à jour de données ----------
  */
 
-    public void setId(int id) {
-        this.id = id;
+    public String getheure() {
+        return heure;
     }
 
     public void setid_ref(int id_ref) {

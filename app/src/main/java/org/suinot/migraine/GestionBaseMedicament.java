@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * Created by remi on 01/09/16.
+   Gestion de la base de données des médicaments géré par l'utilisateur
  */
 
 class GestionBaseMedicament {
@@ -26,7 +27,7 @@ class GestionBaseMedicament {
     private MabaseMedicament MaBase;
     private SQLiteDatabase bdd;
 
-    public GestionBaseMedicament(Context context) {
+    GestionBaseMedicament(Context context) {
         //On crée la BDD et sa table
         Log.d ("GestionBaseMedicament()", "création de la base");
         MaBase = MabaseMedicament.getInstance (context);
@@ -39,7 +40,7 @@ class GestionBaseMedicament {
     }
 
 
-    public void close() {
+    void close() {
         //on ferme l'accès à la BDD
         Log.d ("GestionBaseMedicament()", "close base");
         bdd.close ();
@@ -56,7 +57,7 @@ class GestionBaseMedicament {
      * @param medic le médic à insérer
      * @return l'identifiant de la ligne insérée
      */
-    public long insertMedicament(Medicament medic) {
+    long insertMedicament(Medicament medic) {
         long i;
         Log.d ("insertMedic", "nom= " + medic.getMedicament ());
         Log.d ("insertMedic", "dose= " + medic.getDose ());
@@ -95,7 +96,7 @@ class GestionBaseMedicament {
      * @param id l'identifiant du medic
      * @return le nombre de medic supprimés
      */
-    public long removeMedicamentWithID(long id) {
+    long removeMedicamentWithID(long id) {
         //Suppression d'un médicament de la BDD grâce à l'ID avec un appui long
         long i;
         i = bdd.delete (TABLE_MEDIC, COL_ID + " = " + id, null);
@@ -114,7 +115,7 @@ class GestionBaseMedicament {
         String[] clauseSelect = new String[]{" * "};
         String clauseOu = COL_ID + " = ? ";
         String argsOu = Integer.toString (id);
-        String orderBy = null;
+        String orderBy = "";
 
         Cursor c = bdd.query (TABLE_MEDIC, clauseSelect, clauseOu, new String[]{argsOu}, null, null, orderBy);
         // Cursor c=bdd.query(TABLE_MEDIC, new String[]{COL_ID, COL_NOM, COL_DOSE }, null, null, COL_ID + " = " + id, null, null);
@@ -136,7 +137,7 @@ class GestionBaseMedicament {
         String[] clauseSelect = new String[]{" * "};
         String clauseOu = COL_NOM + " = ? AND " + COL_DOSE + " = ? ";
         String[] argsOu = new String[]{nom, dose};
-        String orderBy = null;
+        String orderBy = "";
 
         Cursor c = bdd.query (TABLE_MEDIC, clauseSelect, clauseOu, argsOu, null, null, orderBy);
 
@@ -197,7 +198,7 @@ class GestionBaseMedicament {
     }
 
     //retourne tous les médicaments de la bdd dans un arraylist pour afficher le listview
-    public ArrayList<Item_Medicament> getAllMedicaments() {
+    ArrayList<Item_Medicament> getAllMedicaments() {
         long i;
         Log.d ("ici getAll", "lecture base de donnée");
         ArrayList<Item_Medicament> medicList = new ArrayList<> ();
@@ -222,8 +223,8 @@ class GestionBaseMedicament {
     }
 
     // retoure en "list" tous les médicaments de la base de données
-    public List<String> getAllLabels() {
-        List<String> labels = new ArrayList<String>();
+    List<String> getAllLabels() {
+        List<String> labels = new ArrayList<String> ();
 
         String[] clauseSelect = new String[]{" * "};
         //String clauseOu = null;
@@ -234,10 +235,10 @@ class GestionBaseMedicament {
         Cursor c = bdd.query (TABLE_MEDIC, clauseSelect, null, null, null, null, null);
         if (c.moveToFirst ()) {
             do {
-                labels.add(c.getString(1)+ " - " + c.getString (2));
-            } while (c.moveToNext());
+                labels.add (c.getString (1) + " - " + c.getString (2));
+            } while (c.moveToNext ());
         }
-        c.close();
+        c.close ();
         return labels;
     }
 

@@ -31,18 +31,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
             android:gravity="bottom"
-            android:orientation="horizontal" android:layout_gravity="center_vertical|center_horizontal">
+            android:orientation="horizontal">
             <EditText
                 android:id="@+id/nouveau_nom"
                 android:layout_width="293dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/nouveau_nom"/>
             <Button
-                android:text="Ok"
+                android:id="@+id/nom_ok"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/nom_ok"
+                android:text="@string/ok"
             />
         </LinearLayout>
 
@@ -60,18 +61,18 @@
                     android:layout_height="wrap_content"
                     android:layout_column="0"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:text="@string/info_date"/>
-                <TextView
+                <EditText
                     android:id="@+id/Actuelle_Date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="1"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:clickable="false"
                     android:enabled="true"
-                    android:hint="dd/mm/yyyy"
+                    android:hint="@string/dmy"
                     android:inputType="date"
                     android:maxLength="10"
                     android:text="@string/actuelle_date"/>
@@ -82,24 +83,26 @@
                     android:layout_height="wrap_content"
                     android:layout_column="3"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:text="@string/info_heure"/>
-                <TextView
+                <EditText
                     android:id="@+id/Actuelle_Heure"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="4"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dp"
-                    android:clickable="false"
+                    android:layout_marginStart="10dp"
                     android:inputType="time"
-                    android:text="@string/actuelle_heure"/>
+                    android:text="@string/actuelle_heure"
+                    android:clickable="false"
+                    android:cursorVisible="false" />
                 <ImageButton
+                    android:contentDescription="@string/recycle"
                     android:id="@+id/New_Date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginRight="30dp"
+                    android:layout_marginEnd="30dp"
                     android:cropToPadding="true"
                     android:src="@drawable/recycle"/>
 
@@ -112,151 +115,151 @@
             android:layout_weight="0.08"/>
 
 
-            <RadioGroup
-                android:id="@+id/Radio_Douleur"
+        <RadioGroup
+            android:id="@+id/Radio_Douleur"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:orientation="horizontal"
+            android:weightSum="0">
+
+            <RadioButton
+                android:id="@+id/defaultSelection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="false"
-                android:minHeight="0dp"
-                android:minWidth="0dp"
-                android:orientation="horizontal"
-                android:weightSum="0">
+                android:layout_weight="1"
+                android:background="@drawable/custom_radio_button"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/_0"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+            />
 
-                <RadioButton
-                    android:id="@+id/defaultSelection"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/custom_radio_button"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="0"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                />
-
-                <RadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/custom_radio_button"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="1"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                />
-
-                <RadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/custom_radio_button"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="2"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                />
-
-                <RadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/custom_radio_button"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="3"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                />
-
-                <RadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/custom_radio_button"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="4"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                />
-
-                <RadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/custom_radio_button"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="5"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                />
-
-                <RadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/custom_radio_button"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="6"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                />
-
-                <RadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/custom_radio_button"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="7"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                />
-
-                <RadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/custom_radio_button"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="8"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                />
-
-                <RadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/custom_radio_button"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="9"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                />
-
-                <RadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/custom_radio_button"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="10"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                />
-            </RadioGroup>
-
-
-            <SeekBar
-                android:id="@+id/Seek_Douleur"
-                android:layout_width="fill_parent"
+            <RadioButton
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:max="10"
-                android:paddingEnd="6dip"
-                android:paddingStart="6dip"
-                android:progress="0"
-                android:progressDrawable="@drawable/progress"
-                android:thumb="@drawable/curseur"
-                android:thumbOffset="10dp"/>
+                android:layout_weight="1"
+                android:background="@drawable/custom_radio_button"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/_1"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+            />
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/custom_radio_button"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/_2"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+            />
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/custom_radio_button"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/_3"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+            />
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/custom_radio_button"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/_4"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+            />
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/custom_radio_button"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/_5"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+            />
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/custom_radio_button"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/_6"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+            />
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/custom_radio_button"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/_7"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+            />
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/custom_radio_button"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/_8"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+            />
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/custom_radio_button"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/_9"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+            />
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/custom_radio_button"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/_10"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+            />
+        </RadioGroup>
+
+
+        <SeekBar
+            android:id="@+id/Seek_Douleur"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:max="10"
+            android:paddingEnd="6dip"
+            android:paddingStart="6dip"
+            android:progress="0"
+            android:progressDrawable="@drawable/progress"
+            android:thumb="@drawable/curseur"
+            android:thumbOffset="10dp"/>
 
         <Space
             android:layout_width="match_parent"
@@ -271,7 +274,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:layout_weight="0.67"
             android:gravity="bottom"
             android:orientation="horizontal" tools:layout_weight="0.8">
@@ -296,7 +299,7 @@
                 android:id="@+id/B_Enregistrer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
                 android:longClickable="false"
                 android:text="@string/enregistrer"/>
 

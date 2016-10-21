@@ -29,8 +29,10 @@ import java.util.List;
 import java.util.Locale;
 
 /* import pour date et time picker */
+
 /**
  * Created by remi on 18/08/16.
+  Class pour la gestion d'une nouvelle migraine (ou d'une en cours?)
  */
 public class Nouvelle_Migraine extends AppCompatActivity implements
         SeekBar.OnSeekBarChangeListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, View.OnClickListener {
@@ -39,15 +41,15 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
     RadioGroup rg;
     RadioButton selectedRadioButton;
     Spinner liste_deroulante;
-    private TextView dateTextView;
-    private TextView timeTextView;
-    private int liste_en_cours = 0;
     Migraine nouvelle_migraine;
     EditText nouveaunom;
     Button resultat;
     StringBuffer[] itemsText = new StringBuffer[3];
     ArrayAdapter<StringBuffer> adapter;
     Context context;
+    private TextView dateTextView;
+    private TextView timeTextView;
+    private int liste_en_cours = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +59,7 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
         GestionBaseMedicament baseMedicament;
         baseMedicament = new GestionBaseMedicament (this);
         baseMedicament.open ();
-        context=(this);
+        context = (this);
         setContentView (R.layout.nouvelle_migraine);
 
 
@@ -78,7 +80,7 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
         // on met le premier bouton à "true"
         ((RadioButton) rg.getChildAt (0)).setChecked (true);
         // On pose notre listener sur le radio group
-        setRadioButton();
+        setRadioButton ();
 
         seekBar = (SeekBar) findViewById (R.id.Seek_Douleur);
         // gestion de la seekbarr de la douleur
@@ -136,7 +138,7 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
 
         liste_deroulante = (Spinner) findViewById (R.id.Medicaments);
         liste_deroulante.setAdapter (adapter_spinner);
-        set_liste_deroulante();
+        set_liste_deroulante ();
 
         /* ------------------------------------------------------------------------------------------
          on demande à modifier la date et/ou heure de la nouvelle migraine:
@@ -187,6 +189,7 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
                 /* ici, ajouter à la listview mListView litem sélectionnée */
                 ajout_de_medicament (item);
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -219,7 +222,8 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         // a partir d'ici, je doit gérer le retour des valeurs, puis lancer timepicker
         Log.d ("DatePicker", "ok");
-        String date = dayOfMonth + "/" + (++monthOfYear) + "/" + year;
+        ++monthOfYear;
+        String date = dayOfMonth + "/" + monthOfYear + "/" + year;
         dateTextView.setText (date);
         Calendar now = Calendar.getInstance ();
         TimePickerDialog tpd = TimePickerDialog.newInstance (
@@ -264,20 +268,19 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
     }
 
     // gestion des radio boutons
-    public void setRadioButton()
-    {
+    public void setRadioButton() {
         //Récupérer le Radio Button qui est sélectionné
-        int selectedId = rg.getCheckedRadioButtonId();
-        selectedRadioButton = (RadioButton) findViewById(selectedId);
+        int selectedId = rg.getCheckedRadioButtonId ();
+        selectedRadioButton = (RadioButton) findViewById (selectedId);
 
         //Listener
-        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        rg.setOnCheckedChangeListener (new RadioGroup.OnCheckedChangeListener () {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                selectedRadioButton = (RadioButton) findViewById(checkedId);
-                seekBar.setProgress(checkedId);
+                selectedRadioButton = (RadioButton) findViewById (checkedId);
+                seekBar.setProgress (checkedId);
                 Log.d ("radiobouton", "id= " + checkedId);
-                Toast.makeText(context, String.valueOf(selectedRadioButton.getText().toString()), Toast.LENGTH_SHORT).show();
+                Toast.makeText (context, String.valueOf (selectedRadioButton.getText ().toString ()), Toast.LENGTH_SHORT).show ();
             }
         });
     }

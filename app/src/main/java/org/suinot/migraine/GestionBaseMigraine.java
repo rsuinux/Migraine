@@ -6,20 +6,19 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import java.util.ArrayList;
-
 /**
  * Created by remi on 15/10/16.
+ * Méthodes pour toute ma gestion de la base de données Migraine
  */
 
 public class GestionBaseMigraine {
     private static final String COL_ID = "ID";
     private static final int MIGRAINE_COL_ID = 0;
     private static final String COL_NOM = "NOM";
-    private static final int MIGRAINE_COL_NOM= 1;
-    private static final String COL_DATE= "DATE";
+    private static final int MIGRAINE_COL_NOM = 1;
+    private static final String COL_DATE = "DATE";
     private static final int MIGRAINE_COL_DATE = 2;
-    private static final String COL_HEURE= "HEURE";
+    private static final String COL_HEURE = "HEURE";
     private static final int MIGRAINE_COL_HEURE = 3;
     private static final String COL_DUREE = "DUREE";
     private static final int MIGRAINE_COL_DUREE = 4;
@@ -27,9 +26,8 @@ public class GestionBaseMigraine {
     private static final int MIGRAINE_COL_COMMENTAIRE = 5;
 
     private static final String TABLE_MIGRAINES = "table_migraines";
-    private String DB_PATH; // chemin défini dans le constructeur
     private static final String NOM_DB = "Migraines.db";
-
+    private String DB_PATH; // chemin défini dans le constructeur
     private MabaseMigraine mabaseMigraine;
     private SQLiteDatabase dbMigraine;
 
@@ -72,14 +70,14 @@ public class GestionBaseMigraine {
         values.put (COL_COMMENTAIRE, m.getcommentaire ());
 
         i = dbMigraine.insert (TABLE_MIGRAINES, null, values);
-Log.d ("insertMigraine", "Retour de la base: " + i);
+        Log.d ("insertMigraine", "Retour de la base: " + i);
         return i;
     }
 
     /**
      * Met à jour le médicament en base de données
      *
-     * @param id    l'identifiant du médicament à modifier
+     * @param id l'identifiant du médicament à modifier
      * @param m: la nouvelle migraine à associer à l'identifiant
      * @return le nombre de lignes modifiées
      */
@@ -122,7 +120,7 @@ Log.d ("insertMigraine", "Retour de la base: " + i);
         String[] clauseSelect = new String[]{" * "};
         String clauseOu = COL_ID + " = ? ";
         String argsOu = Integer.toString (id);
-        String orderBy = null;
+        String orderBy = "";
 
         Cursor c = dbMigraine.query (TABLE_MIGRAINES, clauseSelect, clauseOu, new String[]{argsOu}, null, null, orderBy);
         // Cursor c=bdd.query(TABLE_MEDIC, new String[]{COL_ID, COL_NOM, COL_DOSE }, null, null, COL_ID + " = " + id, null, null);
@@ -145,7 +143,7 @@ Log.d ("insertMigraine", "Retour de la base: " + i);
         String[] clauseSelect = new String[]{" * "};
         String clauseOu = COL_NOM + " = ? ";
         String[] argsOu = new String[]{nom};
-        String orderBy = null;
+        String orderBy = "";
 
         Cursor c = dbMigraine.query (TABLE_MIGRAINES, clauseSelect, clauseOu, argsOu, null, null, orderBy);
 

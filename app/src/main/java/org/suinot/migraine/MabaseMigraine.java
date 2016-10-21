@@ -13,8 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import static org.suinot.migraine.MabaseMedicament.VERSION_BDD;
-
 /**
  * Created by remi on 15/10/16.
  * Gestion de la bdd Migraine
@@ -22,14 +20,8 @@ import static org.suinot.migraine.MabaseMedicament.VERSION_BDD;
 
 class MabaseMigraine extends SQLiteOpenHelper {
 
-    private String DB_PATH; // chemin défini dans le constructeur
+    private static final int VERSION_DB = 1;
     private static final String NOM_DB = "Migraines.db";
-
-
-    static final int VERSION_DB = 1;
-    public static MabaseMigraine sInstance;
-    private final Context context;
-
     private static final String TABLE_MIGRAINES = "table_migraines";
     private static final String COL_ID = "ID";
     private static final String COL_NOM = "NOM";
@@ -37,26 +29,18 @@ class MabaseMigraine extends SQLiteOpenHelper {
     private static final String COL_HEURE = "HEURE";
     private static final String COL_DUREE = "DUREE";
     private static final String COL_COMMENTAIRE = "COMMENTAIRE";
-
-
     private static final String CREATE_DBMIGRAINE = "CREATE TABLE " + TABLE_MIGRAINES + " ("
             + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + COL_DATE + " TEXT NOT NULL, "
             + COL_DUREE + " TEXT NOT NULL, "
             + COL_DUREE + " TEXT, "
             + COL_COMMENTAIRE + " TEXT NOT NULL);";
-
-    public static synchronized MabaseMigraine getInstance(Context context) {
-        Log.d ("getInstance", "création de la base");
-
-        if (sInstance == null) {
-            sInstance = new MabaseMigraine (context);
-        }
-        return sInstance;
-    }
+    private MabaseMigraine sInstance;
+    private final Context context;
+    private String DB_PATH; // chemin défini dans le constructeur
 
     // Constructeur
-    MabaseMigraine(Context context) {
+    private MabaseMigraine(Context context) {
         super (context, NOM_DB, null, VERSION_DB);
         this.context = context;
         String filesDir = context.getFilesDir ().getPath (); // /data/data/com.package.nom/files/
@@ -68,6 +52,15 @@ class MabaseMigraine extends SQLiteOpenHelper {
             // copy db de 'assets' vers DATABASE_PATH
             copydbmigraine ();
         }
+    }
+
+    synchronized MabaseMigraine getInstance(Context context) {
+        Log.d ("getInstance", "création de la base");
+
+        if (sInstance == null) {
+            sInstance = new MabaseMigraine (context);
+        }
+        return sInstance;
     }
 
     private boolean checkdbmigraine() {
