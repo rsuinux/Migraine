@@ -10,16 +10,17 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /**
- * Created by remi on 03/10/16.
+ * Created by remi on 18/10/16.
+ * Adapter custom pour gerer les listView avec plusieurs elements dedans
  */
 
-class CustomAdapter extends BaseAdapter {
+class CustomAdapter_migraine extends BaseAdapter {
     // store the context (as an inflated layout)
     private LayoutInflater inflater;
     // store the resource (typically list_item.xml)
     private int resource;
     // store (a reference to) the data
-    private ArrayList<Item_Medicament> data;
+    private ArrayList<Item_Migraine> data;
 
     /**
      * Default constructor. Creates the new Adaptor object to
@@ -29,7 +30,7 @@ class CustomAdapter extends BaseAdapter {
      * @param resource
      * @param data
      */
-    CustomAdapter(Context context, int resource, ArrayList<Item_Medicament> data) {
+    CustomAdapter_migraine(Context context, int resource, ArrayList<Item_Migraine> data) {
         this.inflater = (LayoutInflater) context.getSystemService (Context.LAYOUT_INFLATER_SERVICE);
         this.resource = resource;
         this.data = data;
@@ -76,18 +77,34 @@ class CustomAdapter extends BaseAdapter {
         }
 
         // pull out the object
-        Item_Medicament item = this.data.get (position);
+        Item_Migraine item = this.data.get (position);
 
         // extract the view object
-        View viewElement = view.findViewById (R.id.Template_Medic);
+        View viewElement = view.findViewById (R.id.NM_Nom);
         // cast to the correct type
         TextView tv = (TextView) viewElement;
         // set the value
-        tv.setText (item.medicament);
+        tv.setText (item.NM_Nom);
 
-        viewElement = view.findViewById (R.id.Template_Dose);
+        viewElement = view.findViewById (R.id.NM_Date);
         tv = (TextView) viewElement;
-        tv.setText (item.dosage);
+        tv.setText (item.NM_Date);
+
+        viewElement = view.findViewById (R.id.NM_Heure);
+        tv = (TextView) viewElement;
+        tv.setText (item.NM_Heure);
+
+        viewElement = view.findViewById (R.id.NM_Douleur);
+        tv = (TextView) viewElement;
+        tv.setText (item.NM_Douleur);
+
+        viewElement = view.findViewById (R.id.NM_Medic);
+        tv = (TextView) viewElement;
+        tv.setText (item.NM_Medic);
+
+        viewElement = view.findViewById (R.id.NM_Dose);
+        tv = (TextView) viewElement;
+        tv.setText (item.NM_Dose);
 
         // return the final view object
         return view;

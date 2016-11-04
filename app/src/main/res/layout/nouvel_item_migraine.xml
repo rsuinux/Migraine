@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/ligne_1"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/NM_Nom"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:inputType="none"/>
+
+    <TextView
+        android:id="@+id/NM_Date"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:inputType="none"/>
+
+    <TextView
+        android:id="@+id/NM_Heure"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:inputType="none"/>
+</LinearLayout>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/ligne_2"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/NM_Douleur"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:inputType="none"/>
+
+    <TextView
+        android:id="@+id/NM_Medic"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:inputType="none"/>
+
+    <TextView
+        android:id="@+id/NM_Dose"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:inputType="none"/>
+</LinearLayout>
+
+</LinearLayout>

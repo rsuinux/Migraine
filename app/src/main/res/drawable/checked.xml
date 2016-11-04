@@ -4,8 +4,8 @@
        android:visible="true">
 
     <corners android:radius="20dp"/>
-    <solid android:color="#00000000"/>
+    <solid android:color="@color/min_douleur"/>
     <stroke
         android:width="3dp"
-        android:color="@color/colorPrimaryDark"/>
+        android:color="@color/max_douleur"/>
 </shape>

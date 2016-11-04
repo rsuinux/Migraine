@@ -28,7 +28,7 @@ import static org.suinot.migraine.R.layout.configuration;
 public class Configuration extends Activity {
 
     GestionBaseMedicament medicBdd;
-    CustomAdapter monAdapter = null;
+    CustomAdapter_medic monAdapter = null;
     private ListView listViewMedicaments;
     private ArrayList<Item_Medicament> data;
     private long derniere_donnees_initiale;
@@ -56,7 +56,7 @@ public class Configuration extends Activity {
         data = medicBdd.getAllMedicaments ();
 
         listViewMedicaments = (ListView) findViewById (R.id.affiche_bdd);
-        monAdapter = new CustomAdapter (this, R.layout.template_item, this.data);  //instantiation de l'adapter une seule fois
+        monAdapter = new CustomAdapter_medic (this, R.layout.template_item, this.data);  //instantiation de l'adapter une seule fois
 
         listViewMedicaments.setAdapter (monAdapter);
         final LayoutInflater inflater = LayoutInflater.from (this);

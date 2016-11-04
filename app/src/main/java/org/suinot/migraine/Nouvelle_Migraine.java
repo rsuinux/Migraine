@@ -4,25 +4,27 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.orhanobut.simplelistview.SimpleListView;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -32,20 +34,29 @@ import java.util.Locale;
 
 /**
  * Created by remi on 18/08/16.
-  Class pour la gestion d'une nouvelle migraine (ou d'une en cours?)
+ * Class pour la gestion d'une nouvelle migraine (ou d'une en cours?)
  */
 public class Nouvelle_Migraine extends AppCompatActivity implements
-        SeekBar.OnSeekBarChangeListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, View.OnClickListener {
+        SeekBar.OnSeekBarChangeListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, View.OnClickListener, View.OnKeyListener {
 
     SeekBar seekBar;
     RadioGroup rg;
-    RadioButton selectedRadioButton;
+
     Spinner liste_deroulante;
-    Migraine nouvelle_migraine;
     EditText nouveaunom;
+    private String nom_actuel;
+    private String date_actuel;
+    private String heure_actuel;
+    private String douleur_actuel;
+    private String medicament_actuel;
+    private String dose_actuel;
+
     Button resultat;
-    StringBuffer[] itemsText = new StringBuffer[3];
-    ArrayAdapter<StringBuffer> adapter;
+
+    private ArrayList<Item_Migraine> migraine;
+    private ListView listeMigraine;
+    // CustomAdapter_migraine adapter;
+
     Context context;
     private TextView dateTextView;
     private TextView timeTextView;
@@ -64,16 +75,12 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
 
 
         /* ------------------------------------------------------------------------------------------
-        Gestion des boutons et du chaamp texte
+        Gestion des boutons et des champs texte
         Récupération et gestion de l'event par onclick en fin de class
         ------------------------------------------------------------------------------------------ */
-        nouveaunom = (EditText) findViewById (R.id.nouveau_nom);
-        resultat = (Button) findViewById (R.id.nom_ok);
-        resultat.setOnClickListener ((View.OnClickListener) this);
+        findViewById (R.id.nouveau_nom).setOnKeyListener (this);
 
-        Button enregistrer;
-        enregistrer = (Button) findViewById (R.id.B_Enregistrer);
-
+        findViewById (R.id.B_Enregistrer).setOnClickListener (this);
 
         // Rechercher l'instance du radio Group, nous en aurons besoin pour poser un listener
         rg = (RadioGroup) findViewById (R.id.Radio_Douleur);
@@ -87,46 +94,14 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
         seekBar.setOnSeekBarChangeListener (this);
 
     /* ------------------------------------------------------------------------------------------------------
-            Gestion de la liste view:
-                Dès que le spinner est utilisé, on ajoute la donnée dedans
+            Gestion de la listView migraine
+             affichage des donnees en cours:
+             ligne 1: noms date heure
+             ligne 2: médicament dose
      ------------------------------------------------------------------------------------------------------ */
-        SimpleListView listView = (SimpleListView) findViewById (R.id.Elements_selectionnes);
-
-        itemsText[0] = new StringBuffer (20);
-        itemsText[0].append ("111111111111111111111");
-
-        itemsText[1] = new StringBuffer (20);
-        itemsText[1].append ("222222222222222222222");
-
-        itemsText[2] = new StringBuffer (20);
-        itemsText[2].append ("33333333333333333333");
-
-        adapter = new ArrayAdapter<StringBuffer> (
-                this,
-                android.R.layout.simple_list_item_1,
-                itemsText
-        );
-
-        listView.setHeaderView (R.layout.header);
-        listView.setFooterView (R.layout.footer);
-        listView.setDividerView (R.layout.divider);
-        listView.setOnItemClickListener (new SimpleListView.OnItemClickListener ()
-
-                                         {
-                                             @Override
-                                             public void onItemClick(Object item, View view, int position) {
-                                                 Log.d ("log: SimpleView ", " Selection " + position);
-                                             }
-                                         }
-
-        );
-        listView.setAdapter (adapter);
-
-        //It will refresh the listview
-        adapter.notifyDataSetChanged ();
 
     /* ------------------------------------------------------------------------------------------------------
-           // création du tableau dynamique  et affichage de type spinner
+           // création du tableau dynamique et affichage de type spinner de la base des médicaments
      ------------------------------------------------------------------------------------------------------ */
         // Mise à jour de la liste des médicaments à partir de la base de données du médicament
         // et gestion de la liste déroulante
@@ -134,7 +109,6 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
         ArrayAdapter adapter_spinner = new ArrayAdapter (this, android.R.layout.simple_spinner_item, list_medicaments);
         /* On definit une présentation du spinner quand il est déroulé (android.R.layout.simple_spinner_dropdown_item) */
         adapter_spinner.setDropDownViewResource (android.R.layout.simple_spinner_dropdown_item);
-        //Enfin on passe l'adapter au Spinner et c'est tout
 
         liste_deroulante = (Spinner) findViewById (R.id.Medicaments);
         liste_deroulante.setAdapter (adapter_spinner);
@@ -185,7 +159,7 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
             public void onItemSelected(AdapterView<?> a, View v, int position, long id) {
                 // String item= liste_deroulente.getItemAtPosition(position);
                 String item = liste_deroulante.getSelectedItem ().toString ();
-                Log.d ("Log: Spinner ", item);
+                Log.d ("Log: Spinner ", item + "a=" + a + "id=" + id);
                 /* ici, ajouter à la listview mListView litem sélectionnée */
                 ajout_de_medicament (item);
             }
@@ -199,18 +173,11 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
     }
 
     private void ajout_de_medicament(String item) {
-        int i = adapter.getCount ();
+//        int i = adapter.getCount ();
 
-        Log.d ("Log: ", "item=" + item + "i= " + i + "liste_en_cours= " + liste_en_cours);
+        Log.d ("ajout de medicament ", "item=" + item);
         if (!item.isEmpty ()) {
-            if (i == liste_en_cours) {
-                Toast.makeText (getApplicationContext (), "Attention, vous atteingnez la dose maxi", Toast.LENGTH_LONG).show ();
-            } else {
-                liste_en_cours++;
-//                        StringBuffer sbReplaced = sb.toString().replaceAll("le mot a remplacer", "un autre mot");
-                itemsText[liste_en_cours].replace (0, 19, item);
-                adapter.notifyDataSetChanged ();
-            }
+            medicament_actuel = item;
         }
     }
 
@@ -225,6 +192,7 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
         ++monthOfYear;
         String date = dayOfMonth + "/" + monthOfYear + "/" + year;
         dateTextView.setText (date);
+        date_actuel = date;
         Calendar now = Calendar.getInstance ();
         TimePickerDialog tpd = TimePickerDialog.newInstance (
                 Nouvelle_Migraine.this,
@@ -244,6 +212,7 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
         String minuteString = minute < 10 ? "0" + minute : "" + minute;
         String time = hourString + "h" + minuteString;
         timeTextView.setText (time);
+        heure_actuel = time;
     }
     /* ------------------------------------------------------------------------------------------------------
       Fin de  Fonction de geston du datapicker et timepicker ensuite
@@ -254,7 +223,9 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         // à partir de la on change l'état des radio bouton quand la seekbar change
         Log.d ("seekbar", "id= " + progress);
+
         ((RadioButton) rg.getChildAt (progress)).setChecked (true);
+
     }
 
     @Override
@@ -271,16 +242,21 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
     public void setRadioButton() {
         //Récupérer le Radio Button qui est sélectionné
         int selectedId = rg.getCheckedRadioButtonId ();
-        selectedRadioButton = (RadioButton) findViewById (selectedId);
+        final String selectedRadioButton;
+        // selectedRadioButton = (RadioButton) findViewById (selectedId);
 
         //Listener
         rg.setOnCheckedChangeListener (new RadioGroup.OnCheckedChangeListener () {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                selectedRadioButton = (RadioButton) findViewById (checkedId);
-                seekBar.setProgress (checkedId);
-                Log.d ("radiobouton", "id= " + checkedId);
-                Toast.makeText (context, String.valueOf (selectedRadioButton.getText ().toString ()), Toast.LENGTH_SHORT).show ();
+                final RadioButton rb = (RadioButton) findViewById (checkedId);
+                String r1 = (String) rb.getText ();
+
+                Log.d ("radiobouton", "rb=" + r1 + ".");
+                douleur_actuel = r1;
+                Log.d ("radiobouton", "douleur_actuel=" + douleur_actuel + ".");
+                seekBar.setProgress (Integer.decode (r1));
+//                Toast.makeText (context, String.valueOf (selectedRadioButton[0].getText ().toString ()), Toast.LENGTH_SHORT).show ();
             }
         });
     }
@@ -289,20 +265,36 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
     public void onClick(View v) {
         // que déclanche ton quand on clique?
         switch (v.getId ()) {
-            case R.id.nom_ok:
-                String chaine = nouveaunom.getText ().toString ();
-                Log.v ("Essai", chaine);
-                nouveaunom.clearFocus ();
-                break;
 
             case R.id.B_Enregistrer:
                 //Ce que tu veux faire lorsque tu cliques sur le bouton 2
+                /*
+                ToDo: Enregistrer en base de donnée la nouvelle migraine
+                 */
+                Log.d ("onClick", "bouton enregistrer");
                 finish ();
                 break;
         }
     }
 
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+        Log.d ("setOnKey", "entree");
+
+            if (keyCode == EditorInfo.IME_ACTION_SEARCH ||
+                    keyCode == EditorInfo.IME_ACTION_DONE ||
+                    event.getAction () == KeyEvent.ACTION_DOWN &&
+                            event.getKeyCode () == KeyEvent.KEYCODE_ENTER) {
+
+                if (!event.isShiftPressed ()) {
+                    Log.v ("AndroidEnterKeyActivity", "Enter Key Pressed!");
+                    return true;
+                }
+            }
+
+        return false; // pass on to other listeners.
+    }
 }
+
 
 
 /* fin d'import */

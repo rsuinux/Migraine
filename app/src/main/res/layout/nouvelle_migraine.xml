@@ -36,15 +36,12 @@
             android:orientation="horizontal">
             <EditText
                 android:id="@+id/nouveau_nom"
-                android:layout_width="293dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/nouveau_nom"/>
-            <Button
-                android:id="@+id/nom_ok"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ok"
-            />
+                android:hint="@string/nouveau_nom"
+                android:imeOptions="actionGo"
+                android:maxLines="1"/>
+
         </LinearLayout>
 
         <TableLayout
@@ -126,7 +123,7 @@
             android:weightSum="0">
 
             <RadioButton
-                android:id="@+id/defaultSelection"
+                android:id="@+id/_0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -134,10 +131,10 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/_0"
-                android:textAppearance="?android:attr/textAppearanceSmall"
             />
 
             <RadioButton
+                android:id="@+id/_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -145,10 +142,10 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/_1"
-                android:textAppearance="?android:attr/textAppearanceSmall"
             />
 
             <RadioButton
+                android:id="@+id/_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -156,10 +153,10 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/_2"
-                android:textAppearance="?android:attr/textAppearanceSmall"
             />
 
             <RadioButton
+                android:id="@+id/_3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -167,10 +164,10 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/_3"
-                android:textAppearance="?android:attr/textAppearanceSmall"
             />
 
             <RadioButton
+                android:id="@+id/_4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -178,10 +175,10 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/_4"
-                android:textAppearance="?android:attr/textAppearanceSmall"
             />
 
             <RadioButton
+                android:id="@+id/_5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -189,10 +186,10 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/_5"
-                android:textAppearance="?android:attr/textAppearanceSmall"
             />
 
             <RadioButton
+                android:id="@+id/_6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -200,10 +197,10 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/_6"
-                android:textAppearance="?android:attr/textAppearanceSmall"
             />
 
             <RadioButton
+                android:id="@+id/_7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -211,10 +208,10 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/_7"
-                android:textAppearance="?android:attr/textAppearanceSmall"
             />
 
             <RadioButton
+                android:id="@+id/_8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -222,10 +219,10 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/_8"
-                android:textAppearance="?android:attr/textAppearanceSmall"
             />
 
             <RadioButton
+                android:id="@+id/_9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -233,10 +230,10 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/_9"
-                android:textAppearance="?android:attr/textAppearanceSmall"
             />
 
             <RadioButton
+                android:id="@+id/_10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -244,7 +241,6 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/_10"
-                android:textAppearance="?android:attr/textAppearanceSmall"
             />
         </RadioGroup>
 
@@ -268,32 +264,14 @@
 
         <Spinner
             android:id="@+id/Medicaments"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_weight="0.67"
             android:gravity="bottom"
-            android:orientation="horizontal" tools:layout_weight="0.8">
-
-            <com.orhanobut.simplelistview.SimpleListView
-                android:id="@+id/Elements_selectionnes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView android:id="@android:id/empty"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:text="@string/empty"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="bottom"
-            android:orientation="horizontal">
+            android:orientation="vertical" android:layout_weight="0.80">
 
             <Button
                 android:id="@+id/B_Enregistrer"

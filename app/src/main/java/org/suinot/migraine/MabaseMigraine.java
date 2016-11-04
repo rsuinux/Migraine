@@ -35,7 +35,7 @@ class MabaseMigraine extends SQLiteOpenHelper {
             + COL_DUREE + " TEXT NOT NULL, "
             + COL_DUREE + " TEXT, "
             + COL_COMMENTAIRE + " TEXT NOT NULL);";
-    private MabaseMigraine sInstance;
+    private static MabaseMigraine sInstance;
     private final Context context;
     private String DB_PATH; // chemin défini dans le constructeur
 
@@ -54,7 +54,7 @@ class MabaseMigraine extends SQLiteOpenHelper {
         }
     }
 
-    synchronized MabaseMigraine getInstance(Context context) {
+    static synchronized MabaseMigraine getInstance(Context context) {
         Log.d ("getInstance", "création de la base");
 
         if (sInstance == null) {

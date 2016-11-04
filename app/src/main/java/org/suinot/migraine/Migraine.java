@@ -21,7 +21,7 @@ class Migraine {
     private String duree;
     private String commentaire;
 
-    Migraine( String nom, String date, String heure, String duree, String commentaire) {
+    Migraine() {
         super ();
         this.nom = nom;
         this.date = date;

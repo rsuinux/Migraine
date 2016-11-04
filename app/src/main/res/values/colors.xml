@@ -4,11 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="fond_general">#fbf1b1</color>
-    <color name="default_screen_bg">#f0f9f9f9</color>
-    <color name="rounded_container_bg">#323232</color>
-    <color name="rounded_container_border">#3e58ac</color>
-    <color name="light_gray_header_color">#646663</color>
     <color name="max_douleur">#ffec051d</color>
-    <color name="min_douleur">#2bd0ed</color>
+    <color name="min_douleur">#38d2ed</color>
     <color name="blanc">#FFF5F1F3</color>
 </resources>

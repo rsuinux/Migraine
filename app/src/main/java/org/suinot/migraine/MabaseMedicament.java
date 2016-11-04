@@ -30,7 +30,7 @@ class MabaseMedicament extends SQLiteOpenHelper {
     private static final String CREATE_BDD = "CREATE TABLE " + TABLE_MEDIC + " ("
             + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_NOM + " TEXT NOT NULL, "
             + COL_DOSE + " TEXT NOT NULL);";
-    private MabaseMedicament sInstance;
+    private static MabaseMedicament sInstance;
     private final Context mycontext;
     private String DATABASE_PATH; // chemin défini dans le constructeur
 

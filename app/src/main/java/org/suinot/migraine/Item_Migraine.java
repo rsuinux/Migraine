@@ -7,35 +7,40 @@ import java.util.Set;
 
 /**
  * Created by remi on 16/10/16.
-Description de mes données dans la base Migraine
+ * Description de mes données pour la gestion de la listView migraine
+ * Rappel: 2 lignes ->
+ *   ligne1 = Nom - date - heure
+ *   ligne2 = douleur - médicament - dose
  */
 
-public class Item_Migraine {
-    private String NM_Nom;
-    private String NM_Date;
-    private String NM_Heure;
-    private String NM_Douleur;
-    private String NM_Medic;
+class Item_Migraine {
+    public String NM_Nom;
+    public String NM_Date;
+    public String NM_Heure;
+    public String NM_Douleur;
+    public String NM_Medic;
+    public String NM_Dose;
 
     // main constructor
-    public Item_Migraine(String NM_Nom, String NM_Date, String NM_Heure, String NM_Douleur, String NM_Medic) {
+    public Item_Migraine(String NM_Nom, String NM_Date, String NM_Heure, String NM_Douleur, String NM_Medic, String NM_Dose) {
         super ();
         this.NM_Nom = NM_Nom;
         this.NM_Date = NM_Date;
         this.NM_Heure = NM_Heure;
         this.NM_Douleur = NM_Douleur;
         this.NM_Medic = NM_Medic;
+        this.NM_Dose = NM_Dose;
     }
 
     // String representation
     public String toString() {
-        return this.NM_Nom + " : " + this.NM_Date + " : " + this.NM_Heure + " : " + this.NM_Douleur + " : " + this.NM_Medic;
+        return this.NM_Nom + " : " + this.NM_Date + " : " + this.NM_Heure + " : " + this.NM_Douleur + " : " + this.NM_Medic + " : " + this.NM_Dose;
     }
     // Map interface classes
 
     // return a count of our members
     public int size() {
-        return 5;
+        return 6;
     }
 
     // set the values of the object to null
@@ -45,6 +50,7 @@ public class Item_Migraine {
         this.NM_Heure = "";
         this.NM_Douleur = "";
         this.NM_Medic = "";
+        this.NM_Dose = "";
     }
 
     // return all of the values as a collection
@@ -56,34 +62,27 @@ public class Item_Migraine {
         list.add (NM_Heure);
         list.add (NM_Douleur);
         list.add (NM_Medic);
+        list.add (NM_Dose);
 
         return list;
     }
 
     // if the values of the members are null, return true
     public boolean isEmpty() {
-        if (this.NM_Medic.equals (""))
-            if (this.NM_Douleur.equals (""))
-                if (this.NM_Heure.equals (""))
-                    if (this.NM_Date.equals ("")) {
-                        if (this.NM_Nom.equals ("")) {
-                            return true;
-                        } else {
-                            return false;
+        if (this.NM_Nom.equals ("")) {
+            if (this.NM_Date.equals ("")) {
+                if (this.NM_Heure.equals ("")) {
+                    if (this.NM_Douleur.equals ("")) {
+                        if (this.NM_Medic.equals ("")) {
+                            if (this.NM_Dose.equals ("")) {
+                                return true;
+                            }
                         }
                     }
-                    else {
-                        return false;
-                    }
-                else {
-                    return false;
                 }
-            else {
-                return false;
             }
-        else {
-            return false;
         }
+        return false;
     }
 
     // return a set of the members
@@ -95,11 +94,13 @@ public class Item_Migraine {
         s.add ("heure");
         s.add ("douleur");
         s.add ("medicament");
+        s.add ("dose");
 
         return s;
     }
 
     // return a set of the member values
+
     public Set entrySet() {
         Set<String> s = new HashSet<String> ();
 
@@ -108,6 +109,7 @@ public class Item_Migraine {
         s.add (this.NM_Heure);
         s.add (this.NM_Douleur);
         s.add (this.NM_Medic);
+        s.add (this.NM_Dose);
 
         return s;
     }
@@ -128,6 +130,9 @@ public class Item_Migraine {
         }
         if (key.equals ("medicament")) {
             return this.NM_Medic;
+        }
+        if (key.equals ("dose")) {
+            return this.NM_Dose;
         }
         // if we can't return a value, throw the exception
         throw new ClassCastException ();
@@ -150,7 +155,10 @@ public class Item_Migraine {
         if (key.equals ("medicament")) {
             this.NM_Medic = value;
         }
-        return value;
+         if (key.equals ("dose")) {
+            this.NM_Dose = value;
+        }
+       return value;
     }
 
     // remove a key (nullify)
@@ -176,6 +184,10 @@ public class Item_Migraine {
             value = this.NM_Medic;
             this.NM_Medic = "";
         }
+        if (key.equals ("dose")) {
+            value = this.NM_Dose;
+            this.NM_Dose = "";
+        }
         return value;
     }
 
@@ -183,13 +195,15 @@ public class Item_Migraine {
     public boolean containsKey(Object key) {
         if (key.equals ("nom")) {
             return true;
-        }else if (key.equals ("date")) {
+        } else if (key.equals ("date")) {
             return true;
-        }else if (key.equals ("heure")) {
+        } else if (key.equals ("heure")) {
             return true;
         } else if (key.equals ("douleur")) {
             return true;
-        }else if (key.equals ("medicament")) {
+        } else if (key.equals ("medicament")) {
+            return true;
+        } else if (key.equals ("dose")) {
             return true;
         }
         return false;
@@ -207,6 +221,8 @@ public class Item_Migraine {
             return true;
         } else if (value.equals (this.NM_Medic)) {
             return true;
+        } else if (value.equals (this.NM_Dose)) {
+            return true;
         }
         return false;
     }
@@ -215,6 +231,5 @@ public class Item_Migraine {
     public void putAll(Map<? extends String, ? extends String> arg0) {
         // we only need the stub.
     }
-
 
 }

@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import static org.suinot.migraine.MabaseMigraine.*;
+
 /**
  * Created by remi on 15/10/16.
  * Méthodes pour toute ma gestion de la base de données Migraine
