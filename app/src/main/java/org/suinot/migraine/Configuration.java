@@ -41,10 +41,8 @@ public class Configuration extends Activity {
 
         setContentView (configuration);
 
-        Log.d ("configuration", "avant new gestionbase");
         medicBdd = new GestionBaseMedicament (this);
         // On ouvre la base de données pour écrire dedans
-        Log.d ("configuration", "avant openbdd");
         medicBdd.open ();
 
         // copieBase = medicBdd;

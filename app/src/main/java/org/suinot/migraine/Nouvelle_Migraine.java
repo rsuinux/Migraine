@@ -9,10 +9,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
@@ -24,11 +21,11 @@ import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 /* import pour date et time picker */
 
@@ -43,29 +40,33 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
     RadioGroup rg;
 
     Spinner liste_deroulante;
-    EditText nouveaunom;
-    private String nom_actuel;
+    // EditText nouveaunom;
+    String nom_actuel="";
     private String date_actuel;
     private String heure_actuel;
     private String douleur_actuel;
     private String medicament_actuel;
-    private String dose_actuel;
+//    private String dose_actuel;
 
-    Button resultat;
-
-    private ArrayList<Item_Migraine> migraine;
-    private ListView listeMigraine;
-    // CustomAdapter_migraine adapter;
+//    Button resultat;
 
     Context context;
     private TextView dateTextView;
     private TextView timeTextView;
-    private int liste_en_cours = 0;
+//    private int liste_en_cours = 0;
+//    private Bundle parametre_intent;
+
+    GestionBaseMigraine baseMigraine;
+//    private static final String TABLE_DOULEURS = "douleurs";
+//    private static final String TABLE_MIGRAINES = "table_migraines";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate (savedInstanceState);
+
+        baseMigraine = new GestionBaseMigraine (this);
+        baseMigraine.open ();
 
         GestionBaseMedicament baseMedicament;
         baseMedicament = new GestionBaseMedicament (this);
@@ -73,6 +74,8 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
         context = (this);
         setContentView (R.layout.nouvelle_migraine);
 
+        //On récupère l'objet Bundle envoyé par l'autre Activity pour les données de retour
+//        parametre_intent = this.getIntent().getExtras();
 
         /* ------------------------------------------------------------------------------------------
         Gestion des boutons et des champs texte
@@ -188,8 +191,8 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         // a partir d'ici, je doit gérer le retour des valeurs, puis lancer timepicker
-        Log.d ("DatePicker", "ok");
-        ++monthOfYear;
+        // Log.d ("DatePicker", "ok");
+        monthOfYear += 1 ;
         String date = dayOfMonth + "/" + monthOfYear + "/" + year;
         dateTextView.setText (date);
         date_actuel = date;
@@ -207,7 +210,7 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
     // gestion de l'ecran de choix de l'heure
     @Override
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
-        Log.d ("TimePicker", "ok");
+        // Log.d ("TimePicker", "ok");
         String hourString = hourOfDay < 10 ? "0" + hourOfDay : "" + hourOfDay;
         String minuteString = minute < 10 ? "0" + minute : "" + minute;
         String time = hourString + "h" + minuteString;
@@ -223,7 +226,7 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         // à partir de la on change l'état des radio bouton quand la seekbar change
         Log.d ("seekbar", "id= " + progress);
-
+        douleur_actuel =  Integer.toString(progress);
         ((RadioButton) rg.getChildAt (progress)).setChecked (true);
 
     }
@@ -241,8 +244,8 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
     // gestion des radio boutons
     public void setRadioButton() {
         //Récupérer le Radio Button qui est sélectionné
-        int selectedId = rg.getCheckedRadioButtonId ();
-        final String selectedRadioButton;
+        // int selectedId = rg.getCheckedRadioButtonId ();
+//        final String selectedRadioButton;
         // selectedRadioButton = (RadioButton) findViewById (selectedId);
 
         //Listener
@@ -264,27 +267,62 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
     // gestion des boutons
     public void onClick(View v) {
         // que déclanche ton quand on clique?
+        long i;
+        Migraine migraine = new Migraine ();
+        Douleur douleur = new Douleur ();
         switch (v.getId ()) {
 
             case R.id.B_Enregistrer:
                 //Ce que tu veux faire lorsque tu cliques sur le bouton 2
-                /*
-                ToDo: Enregistrer en base de donnée la nouvelle migraine
-                 */
+                if (  nom_actuel.contentEquals ("") ) {
+                    //Random rnd = new Random();
+                    //rnd.setSeed(65535);
+                    nom_actuel= "123458";  //String.valueOf (rnd) ;
+                }
                 Log.d ("onClick", "bouton enregistrer");
+                Log.d("OnClick" , " nom " +nom_actuel);
+                Log.d("OnClick", "date " + date_actuel);
+                Log.d("OnClick", "heure " + heure_actuel);
+                Log.d("OnClick", "douleur " + douleur_actuel);
+                Log.d("OnClick", "medicament " + medicament_actuel);
+
+                douleur.setnomref (nom_actuel);
+                douleur.setmedic (medicament_actuel);
+                i = Long.parseLong (douleur_actuel);
+                douleur.setintensite_douleur ((int) i);
+                douleur.setdate_douleur (date_actuel);
+                douleur.setheure_douleur (heure_actuel);
+                // Ecriture dans la base de données -> table douleurs
+                i=baseMigraine.insertDouleur (douleur);
+                // récupération du numéro de l'entrée dans la table
+                // pour le placer dans table_migraine -> douleur_migraine
+                migraine.setnom_migraine (nom_actuel);
+                migraine.setdouleur_migraine ((int) i);
+                migraine.setdate_migraine (date_actuel);
+                migraine.setheure_migraine (heure_actuel);
+                migraine.setcommentaire ("");
+                migraine.setduree_migraine ("");
+
+                // Ecriture dans la base de données -> table migraines
+                baseMigraine.insertMigraine (migraine);
+                baseMigraine.close ();
+
+                setResult(1);
                 finish ();
                 break;
         }
     }
 
+    // on tente d'intercepter les touches du clavier virtuel
+    // (sans succes pour le moment)
     public boolean onKey(View v, int keyCode, KeyEvent event) {
-        Log.d ("setOnKey", "entree");
+        Log.d ("setOnKey", "entree " + keyCode + "Event: " + event);
 
             if (keyCode == EditorInfo.IME_ACTION_SEARCH ||
                     keyCode == EditorInfo.IME_ACTION_DONE ||
-                    event.getAction () == KeyEvent.ACTION_DOWN &&
+                    event.getAction () == KeyEvent.ACTION_DOWN ||
                             event.getKeyCode () == KeyEvent.KEYCODE_ENTER) {
-
+                Log.d ("setOnKey", "entree");
                 if (!event.isShiftPressed ()) {
                     Log.v ("AndroidEnterKeyActivity", "Enter Key Pressed!");
                     return true;

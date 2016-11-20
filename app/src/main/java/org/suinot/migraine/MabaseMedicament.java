@@ -22,17 +22,22 @@ import java.io.OutputStream;
 class MabaseMedicament extends SQLiteOpenHelper {
 
     private static final int VERSION_BDD = 1;
+
     private static final String NOM_BDD = "Antalgiques.db";
+    private String DATABASE_PATH; // chemin défini dans le constructeur
+
     private static final String TABLE_MEDIC = "table_medicaments";
     private static final String COL_ID = "ID";
     private static final String COL_NOM = "NOM";
     private static final String COL_DOSE = "DOSE";
-    private static final String CREATE_BDD = "CREATE TABLE " + TABLE_MEDIC + " ("
-            + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_NOM + " TEXT NOT NULL, "
+    private static final String CREATE_TABLE_MEDICAMENTS = "CREATE TABLE " + TABLE_MEDIC + " ("
+            + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COL_NOM + " TEXT NOT NULL, "
             + COL_DOSE + " TEXT NOT NULL);";
+
+
     private static MabaseMedicament sInstance;
     private final Context mycontext;
-    private String DATABASE_PATH; // chemin défini dans le constructeur
 
     // Constructeur
     private MabaseMedicament(Context context) {
@@ -123,7 +128,7 @@ class MabaseMedicament extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         //on crée la table à partir de la requête écrite dans la variable CREATE_BDD
         Log.d ("onCreate", "pas de bdd existante");
-        db.execSQL (CREATE_BDD);
+        db.execSQL (CREATE_TABLE_MEDICAMENTS);
     }
 
     @Override

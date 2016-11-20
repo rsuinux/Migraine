@@ -18,6 +18,10 @@ class Medicament {
         this.dosage = dose;
     }
 
+    /*
+    ---------- Demande de données ----------
+    */
+
     public int getId() {
         return id;
     }
@@ -30,17 +34,23 @@ class Medicament {
         return medicament;
     }
 
-    void setMedicament(String nom) {
-        this.medicament = nom;
-    }
-
     String getDose() {
         return dosage;
     }
 
-    void setDose(String dose) {
-        this.dosage = dose;
+    /*
+    ---------- Demande de données ----------
+    */
+
+    void setMedicament(String nom) {
+        this.medicament = nom;
     }
+
+    void setDose(String dose) { this.dosage = dose; }
+
+    /*
+    ---------- Demande de données ----------
+    */
 
     @Override
     public String toString() {

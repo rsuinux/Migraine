@@ -32,7 +32,7 @@
                 android:text="@string/ajout"/>
 
             <Button
-                android:id="@+id/button_caché_pour_gagner_deèlesapce_entre_les_deux_autres"
+                android:id="@+id/button_caché_pour_gagner_de_l_esapce_entre_les_deux_autres"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -67,7 +67,6 @@
                 android:id="@+id/SAuver"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:text="@string/enregistrer"/>
 
         </LinearLayout>

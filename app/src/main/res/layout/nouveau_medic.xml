@@ -8,6 +8,7 @@
     <EditText
         android:id="@+id/Nouveau_Medic"
         android:maxLines="1"
+        android:maxLength="20"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:inputType="none"/>
@@ -15,6 +16,7 @@
     <EditText
         android:id="@+id/Nouveau_Dose"
         android:maxLines="1"
+        android:maxLength="20"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:inputType="none"/>

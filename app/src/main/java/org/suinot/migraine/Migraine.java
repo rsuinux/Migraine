@@ -1,5 +1,7 @@
 package org.suinot.migraine;
 
+import android.util.Log;
+
 /**
  * Created by remi on 15/10/16.
  * <p>
@@ -16,23 +18,29 @@ class Migraine {
 
     private int id;
     private String nom;
+    private Integer id_douleur;
     private String date;
     private String heure;
     private String duree;
     private String commentaire;
 
     Migraine() {
+    }
+
+    public Migraine (String nom, Integer douleur, String date, String heure, String duree, String comm){
         super ();
         this.nom = nom;
+        this.id_douleur = douleur;
         this.date = date;
         this.heure = heure;
         this.duree = duree;
-        this.commentaire = commentaire;
+        this.commentaire = comm;
     }
 
     /*
     ---------- Demande de données ----------
      */
+
     public int getId() {
         return id;
     }
@@ -41,47 +49,50 @@ class Migraine {
         this.id = id;
     }
 
-    String getnom() {
+    String getnom_migraine() {
         return nom;
     }
 
-    String getdate() {
+    Integer getdouleur_migraine() {
+        return id_douleur;
+    }
+
+    String getdate_migraine() {
         return date;
     }
 
-    String getheure() {
+    String getheure_migraine() {
         return heure;
     }
 
-    String getduree() {
+    String getduree_migraine() {
         return duree;
     }
-/*
----------- Mise à jour de données ----------
- */
 
     String getcommentaire() {
         return commentaire;
     }
 
-    void setnom(String nom) {
-        this.nom = nom;
-    }
+    /*
+      ---------- Mise à jour de données ----------
+    */
 
-    void setdate(String date) {
+    void setnom_migraine(String nom) { this.nom = nom; }
+
+    void setdouleur_migraine(Integer douleur) { this.id_douleur = douleur; }
+
+    void setdate_migraine(String date) {
         this.date = date;
     }
 
-    void setheure(String heure) {
+    void setheure_migraine(String heure) {
         this.heure = heure;
     }
 
-    void setduree(String duree) {
-        this.duree = duree;
-    }
+    void setduree_migraine(String duree) { this.duree = duree; }
 
-    void setcommentaire(String com) {
-        this.commentaire = com;
+    void setcommentaire(String comm) {
+        this.commentaire = comm;
     }
 
     /*
@@ -91,10 +102,10 @@ class Migraine {
     public String toString() {
         return "[Migraine] id: " + id
                 + "\nNom: " + nom
+                + "\nId_douleur: " + id_douleur
                 + "\nDate: " + date
                 + "\nHeure: " + heure
                 + "\nDurée: " + duree
                 + "\nCommentaire" + commentaire;
     }
-
 }

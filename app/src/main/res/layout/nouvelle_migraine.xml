@@ -40,7 +40,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/nouveau_nom"
                 android:imeOptions="actionGo"
-                android:maxLines="1"/>
+                android:maxLines="1"
+                android:maxLength="20"/>
 
         </LinearLayout>
 
@@ -104,6 +105,9 @@
                     android:src="@drawable/recycle"/>
 
             </TableRow>
+        <TableRow>
+
+        </TableRow>
         </TableLayout>
 
         <Space

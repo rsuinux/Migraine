@@ -24,6 +24,7 @@ class GestionBaseMedicament {
     private static final String COL_DOSE = "DOSE";
     private static final int NUM_COL_DOSE = 2;
 
+
     private MabaseMedicament MaBase;
     private SQLiteDatabase bdd;
 
@@ -88,6 +89,7 @@ class GestionBaseMedicament {
         i = bdd.update (TABLE_MEDIC, values, COL_ID + " = " + id, null);
         return i;
     }
+
 
     /**
      * Supprime un médicament de la BDD (celui dont l'identifiant est passé en
@@ -173,7 +175,7 @@ class GestionBaseMedicament {
     }
 
     // doit renvoyer le dernier element de la base
-    long NombreMedicament() {
+    int NombreMedicament() {
         String[] clauseSelect = new String[]{" * "};
         //String clauseOu = null;
         //String[] argsOu = null;
