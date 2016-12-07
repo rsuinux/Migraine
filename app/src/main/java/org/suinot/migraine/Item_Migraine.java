@@ -8,9 +8,6 @@ import java.util.Set;
 /**
  * Created by remi on 16/10/16.
  * Description de mes données pour la gestion de la listView migraine
- * Rappel: 2 lignes ->
- *   ligne1 = Nom - date - heure
- *   ligne2 = douleur - médicament - dose
  */
 
 class Item_Migraine {

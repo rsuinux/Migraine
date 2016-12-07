@@ -12,17 +12,14 @@ import java.util.Set;
 class Item_Medicament {
     public String medicament;
     public String dosage;
-
-    //  !!! attention: si je ne place pas les trois lignes ci dessous, il faut initialiser les données dès le début
-    // public Item_Medicament() {
-    //    this("medicament", "dosage");
-    //}
+    public int invalide;
 
     // main constructor
-    public Item_Medicament(String medicament, String dosage) {
+    public Item_Medicament(String medicament, String dosage, int invalide) {
         super ();
         this.medicament = medicament;
         this.dosage = dosage;
+        this.invalide = invalide;
     }
 
     // String representation

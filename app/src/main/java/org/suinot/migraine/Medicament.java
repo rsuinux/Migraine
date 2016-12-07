@@ -8,14 +8,16 @@ class Medicament {
     private int id;
     private String medicament;
     private String dosage;
+    private int invalide;
 
     Medicament() {
     }
 
-    public Medicament(String nom, String dose) {
+    public Medicament(String nom, String dose, int invalide) {
         super ();
         this.medicament = nom;
         this.dosage = dose;
+        this.invalide = invalide;
     }
 
     /*
@@ -38,6 +40,10 @@ class Medicament {
         return dosage;
     }
 
+    int getInvalide() {
+        return invalide;
+    }
+
     /*
     ---------- Demande de données ----------
     */
@@ -48,12 +54,14 @@ class Medicament {
 
     void setDose(String dose) { this.dosage = dose; }
 
+    void setInvalide(int invalide) { this.invalide = invalide; }
+
     /*
     ---------- Demande de données ----------
     */
 
     @Override
     public String toString() {
-        return "[Medicament] id: " + id + "\nNom: " + medicament + "\ndose: " + dosage;
+        return "[Medicament] id: " + id + "\nNom: " + medicament + "\ndose: " + dosage + "\nInvalide: " + invalide;
     }
 }

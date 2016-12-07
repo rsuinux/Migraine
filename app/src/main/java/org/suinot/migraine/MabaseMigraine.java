@@ -18,7 +18,7 @@ import java.io.OutputStream;
  * Gestion de la bdd Migraine
  */
 
-class MabaseMigraine extends SQLiteOpenHelper {
+class MabaseMigraine extends SQLiteOpenHelper implements Constantes.constantes {
 
     private static final int VERSION_DB = 1;
     private static MabaseMigraine sInstance;
@@ -29,40 +29,35 @@ class MabaseMigraine extends SQLiteOpenHelper {
     private static final String NOM_DB = "Migraines.db";
 
     /*  Nom de la table des migraines et creation */
-    private static final String TABLE_MIGRAINES = "table_migraines";
-    private static final String COL_ID = "ID";
-    private static final String COL_NOM = "NOM";
-    private static final String COL_ID_DOULEUR = "DOULEUR";
-    private static final String COL_DATE = "DATE";
-    private static final String COL_HEURE = "HEURE";
-    private static final String COL_DUREE = "DUREE";
-    private static final String COL_COMMENTAIRE = "COMMENTAIRE";
+    /*  déclarations des variables dans Constantes.java*/
+
     private static final String CREATE_TABLE_MIGRAINES = "CREATE TABLE " + TABLE_MIGRAINES + " ("
             + COL_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "
             + COL_NOM + "TEXT NOT NUL"
-            + COL_ID_DOULEUR + "INTEGER,"
             + COL_DATE + " TEXT, "
             + COL_HEURE + " TEXT, "
             + COL_DUREE + " TEXT, "
-            + COL_COMMENTAIRE + " TEXT);";
+            + COL_COMMENTAIRE + " TEXT"
+            + COL_ETAT + " INTEGER );";
 
     /* Nom de la table des douleurs et creation */
-    private static final String TABLE_DOULEURS = "douleurs";
-    private static final String COL_DOULEUR_ID = "ID";
-    private static final String COL_DOULEUR_NOMREF = "NOM_REF";
-    private static final String COL_ID_MEDICAMENT = "MEDICAMENT";
-    private static final String COL_INTENSITE = "INTENSITE";
-    private static final String COL_DOULEUR_DUREE = "DUREE";
-    private static final String COL_DOULEUR_DATE = "DATE";
-    private static final String COL_DOULEUR_HEURE = "HEURE";
+    /*  déclarations des variables dans Constantes.java*/
+
     private static final String CREATE_TABLE_DOULEURS = "CREATE TABLE " + TABLE_DOULEURS + " ("
             + COL_DOULEUR_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "
-            + COL_DOULEUR_NOMREF + "TEXT NOT NULL, "
-            + COL_ID_MEDICAMENT + " TEXT, "
+            + COL_ID_MEDICAMENT + " INTEGER, "
             + COL_INTENSITE + " INTEGER, "
             + COL_DOULEUR_DUREE + " TEXT, "
             + COL_DOULEUR_DATE + " TEXT, "
             + COL_DOULEUR_HEURE + " TEXT);";
+
+    /* Nom de la table CROISEE et creation */
+    /*  déclarations des variables dans Constantes.java*/
+
+    private static final String CREATE_TABLE_CROISEE = "CREATE TABLE " + TABLE_CROISEE + " ("
+            + COL_CROISEE_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "
+            + COL_CROISEE_DOULEUR + " INTEGER, "
+            + COL_CROISEE_MIGRAINE+ " INTEGER);";
     /* Fin des déclarations des tables */
 
 
@@ -158,6 +153,7 @@ class MabaseMigraine extends SQLiteOpenHelper {
         Log.d ("onCreate", "pas de bdd existante");
         sqLiteDatabase.execSQL (CREATE_TABLE_MIGRAINES);
         sqLiteDatabase.execSQL (CREATE_TABLE_DOULEURS);
+        sqLiteDatabase.execSQL (CREATE_TABLE_CROISEE);
     }
 
     @Override
@@ -166,6 +162,7 @@ class MabaseMigraine extends SQLiteOpenHelper {
         //comme ça lorsque je change la version les id repartent de 0
         sqLiteDatabase.execSQL ("DROP TABLE " + TABLE_MIGRAINES + ";");
         sqLiteDatabase.execSQL ("DROP TABLE " + TABLE_DOULEURS + ";");
+        sqLiteDatabase.execSQL ("DROP TABLE " + TABLE_CROISEE + ";");
         onCreate (sqLiteDatabase);
 
     }

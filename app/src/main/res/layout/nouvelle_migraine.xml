@@ -4,288 +4,328 @@
                 style="@style/titre"
                 tools:context=".Nouvelle_Migraine">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
+    <TableLayout
+        android:id="@+id/tableau"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@color/fond_general"
         android:orientation="vertical"
-        android:weightSum="1">
+        android:stretchColumns="1">
 
-
-        <LinearLayout
-            android:layout_width="fill_parent"
+        <TextView
+            android:id="@+id/Etat_Evenement"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/Etat_Evenement"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/Etat_evenement"/>
-
-        </LinearLayout>
-
-        <LinearLayout
+            android:layout_gravity="center_vertical"
+            android:text="@string/Etat_evenement_1"/>
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:gravity="bottom"
-            android:orientation="horizontal">
+            android:layout_height="2dip"
+            android:background="#FF909090"/>
+        <TableRow android:layout_width="match_parent"
+                  android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/nouveau_nom"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/nouveau_nom"
-                android:imeOptions="actionGo"
-                android:maxLines="1"
-                android:maxLength="20"/>
-
-        </LinearLayout>
-
-        <TableLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TableRow
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="0"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="10dp"
-                    android:text="@string/info_date"/>
-                <EditText
-                    android:id="@+id/Actuelle_Date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="1"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="10dp"
-                    android:clickable="false"
-                    android:enabled="true"
-                    android:hint="@string/dmy"
-                    android:inputType="date"
-                    android:maxLength="10"
-                    android:text="@string/actuelle_date"/>
+                android:layout_span="6"
+                android:hint="@string/nouveau_nom"
+                android:imeOptions="actionGo"
+                android:maxLength="20"
+                android:maxLines="1"/>
+        </TableRow>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dip"
+            android:background="#FF909090"/>
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:text="@string/info_date"/>
+            <EditText
+                android:id="@+id/Actuelle_Date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:clickable="false"
+                android:enabled="true"
+                android:hint="@string/dmy"
+                android:inputType="date"
+                android:maxLength="10"
+                android:text="@string/actuelle_date"/>
 
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="3"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="10dp"
-                    android:text="@string/info_heure"/>
-                <EditText
-                    android:id="@+id/Actuelle_Heure"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="4"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="10dp"
-                    android:inputType="time"
-                    android:text="@string/actuelle_heure"
-                    android:clickable="false"
-                    android:cursorVisible="false" />
-                <ImageButton
-                    android:contentDescription="@string/recycle"
-                    android:id="@+id/New_Date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginEnd="30dp"
-                    android:cropToPadding="true"
-                    android:src="@drawable/recycle"/>
-
-            </TableRow>
-        <TableRow>
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="3"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:text="@string/info_heure"/>
+            <EditText
+                android:id="@+id/Actuelle_Heure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="4"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:clickable="false"
+                android:editable="false"
+                android:cursorVisible="false"
+                android:inputType="time"
+                android:text="@string/actuelle_heure"/>
+            <ImageButton
+                android:id="@+id/New_Date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginEnd="30dp"
+                android:contentDescription="@string/recycle"
+                android:src="@drawable/recycle"
+                android:cropToPadding="true"/>
 
         </TableRow>
-        </TableLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dip"
+            android:background="#FF909090"/>
+        <TableRow android:layout_width="match_parent" android:layout_height="wrap_content">
+            <RadioGroup
+                android:id="@+id/Radio_Douleur"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="6"
+                android:clickable="false"
+                android:minHeight="0dp"
+                android:minWidth="0dp"
+                android:orientation="horizontal"
+                android:weightSum="0">
 
-        <Space
+                <RadioButton
+                    android:id="@+id/_0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_radio_button"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/_0"
+                />
+
+                <RadioButton
+                    android:id="@+id/_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_radio_button"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/_1"
+                />
+
+                <RadioButton
+                    android:id="@+id/_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_radio_button"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/_2"
+                />
+
+                <RadioButton
+                    android:id="@+id/_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_radio_button"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/_3"
+                />
+
+                <RadioButton
+                    android:id="@+id/_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_radio_button"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/_4"
+                />
+
+                <RadioButton
+                    android:id="@+id/_5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_radio_button"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/_5"
+                />
+
+                <RadioButton
+                    android:id="@+id/_6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_radio_button"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/_6"
+                />
+
+                <RadioButton
+                    android:id="@+id/_7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_radio_button"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/_7"
+                />
+
+                <RadioButton
+                    android:id="@+id/_8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_radio_button"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/_8"
+                />
+
+                <RadioButton
+                    android:id="@+id/_9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_radio_button"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/_9"
+                />
+
+                <RadioButton
+                    android:id="@+id/_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_radio_button"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/_10"
+                />
+            </RadioGroup>
+
+        </TableRow>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dip"
+            android:background="#FF909090"/>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <SeekBar
+                android:id="@+id/Seek_Douleur"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="6"
+                android:max="10"
+                android:paddingEnd="6dip"
+                android:paddingStart="6dip"
+                android:progress="0"
+                android:progressDrawable="@drawable/progress"
+                android:thumb="@drawable/curseur"
+                android:thumbOffset="10dp"/>
+        </TableRow>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dip"
+            android:background="#FF909090"/>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Spinner
+                android:id="@+id/Medicaments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="6"/>
+        </TableRow>
+    </TableLayout>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tableau"
+        android:layout_weight="0.08"
+        android:id="@+id/N_Space"/>
+
+    <RelativeLayout
+        android:id="@+id/layout_commentaire"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/N_Space"
+        android:layout_centerHorizontal="true">
+        <EditText
+            android:id="@+id/B_Commentaire"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.08"/>
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:gravity="top"
+            android:hint="@string/commentaire"
+            android:inputType="textMultiLine"
+            android:lines="10"
+            android:textSize="12sp"/>
+    </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/boutons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/fond_general"
+        android:layout_below="@id/layout_commentaire"
+        android:layout_centerHorizontal="true">
 
-        <RadioGroup
-            android:id="@+id/Radio_Douleur"
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="false"
-            android:minHeight="0dp"
-            android:minWidth="0dp"
-            android:orientation="horizontal"
-            android:weightSum="0">
-
-            <RadioButton
-                android:id="@+id/_0"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/custom_radio_button"
-                android:button="@null"
-                android:gravity="center"
-                android:text="@string/_0"
-            />
-
-            <RadioButton
-                android:id="@+id/_1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/custom_radio_button"
-                android:button="@null"
-                android:gravity="center"
-                android:text="@string/_1"
-            />
-
-            <RadioButton
-                android:id="@+id/_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/custom_radio_button"
-                android:button="@null"
-                android:gravity="center"
-                android:text="@string/_2"
-            />
-
-            <RadioButton
-                android:id="@+id/_3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/custom_radio_button"
-                android:button="@null"
-                android:gravity="center"
-                android:text="@string/_3"
-            />
-
-            <RadioButton
-                android:id="@+id/_4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/custom_radio_button"
-                android:button="@null"
-                android:gravity="center"
-                android:text="@string/_4"
-            />
-
-            <RadioButton
-                android:id="@+id/_5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/custom_radio_button"
-                android:button="@null"
-                android:gravity="center"
-                android:text="@string/_5"
-            />
-
-            <RadioButton
-                android:id="@+id/_6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/custom_radio_button"
-                android:button="@null"
-                android:gravity="center"
-                android:text="@string/_6"
-            />
-
-            <RadioButton
-                android:id="@+id/_7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/custom_radio_button"
-                android:button="@null"
-                android:gravity="center"
-                android:text="@string/_7"
-            />
-
-            <RadioButton
-                android:id="@+id/_8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/custom_radio_button"
-                android:button="@null"
-                android:gravity="center"
-                android:text="@string/_8"
-            />
-
-            <RadioButton
-                android:id="@+id/_9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/custom_radio_button"
-                android:button="@null"
-                android:gravity="center"
-                android:text="@string/_9"
-            />
-
-            <RadioButton
-                android:id="@+id/_10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/custom_radio_button"
-                android:button="@null"
-                android:gravity="center"
-                android:text="@string/_10"
-            />
-        </RadioGroup>
-
-
-        <SeekBar
-            android:id="@+id/Seek_Douleur"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:max="10"
-            android:paddingEnd="6dip"
-            android:paddingStart="6dip"
-            android:progress="0"
-            android:progressDrawable="@drawable/progress"
-            android:thumb="@drawable/curseur"
-            android:thumbOffset="10dp"/>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.08"/>
-
-        <Spinner
-            android:id="@+id/Medicaments"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="bottom"
-            android:orientation="vertical" android:layout_weight="0.80">
+            android:layout_alignParentBottom="true">
 
             <Button
                 android:id="@+id/B_Enregistrer"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
                 android:longClickable="false"
-                android:text="@string/enregistrer"/>
+                android:text="@string/enregistrer"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"/>
+            <Button
+                android:id="@+id/B_Fin_de_Migraine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:longClickable="false"
+                android:text="@string/fin_de_migraine"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"/>
 
-        </LinearLayout>
 
-    </LinearLayout>
+        </RelativeLayout>
+
+    </RelativeLayout>
 </RelativeLayout>

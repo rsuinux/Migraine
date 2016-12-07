@@ -11,44 +11,16 @@ import android.util.Log;
  * Méthodes pour toute ma gestion de la base de données Migraine
  */
 
-class GestionBaseMigraine {
+class GestionBaseMigraine implements Constantes.constantes {
 
-    private MabaseMigraine MABASEMIGRAINE;
     private SQLiteDatabase DBMIGRAINE;
+    private MabaseMigraine MABASEMIGRAINE;
 
     /* Définition de la table Migraine */
-    private static final String TABLE_MIGRAINES = "table_migraines";
-    private static final String COL_ID = "ID";
-    private static final int MIGRAINE_COL_ID = 0;
-    private static final String COL_NOM = "NOM";
-    private static final int MIGRAINE_COL_NOM = 1;
-    private static final String COL_ID_DOULEUR = "DOULEUR";
-    private static final int MIGRAINE_COL_IDDOULEUR = 2;
-    private static final String COL_DATE = "DATE";
-    private static final int MIGRAINE_COL_DATE = 3;
-    private static final String COL_HEURE = "HEURE";
-    private static final int MIGRAINE_COL_HEURE = 4;
-    private static final String COL_DUREE = "DUREE";
-    private static final int MIGRAINE_COL_DUREE = 5;
-    private static final String COL_COMMENTAIRE = "COMMENTAIRE";
-    private static final int MIGRAINE_COL_COMMENTAIRE = 6;
+    /*  déclarations des variables dans Constantes.java*/
 
     /* Définition de la table Douleur */
-    private static final String TABLE_DOULEURS = "douleurs";
-    private static final String COL_DOULEUR_ID = "ID";
-    private static final int DOULEUR_COL_ID = 0;
-    private static final String COL_DOULEUR_NOMREF = "NOM_REF";
-    private static final int DOULEUR_COL_NOMREF = 1;
-    private static final String COL_ID_MEDICAMENT = "MEDICAMENT";
-    private static final int DOULEUR_COL_ID_MEDICAMENT = 2;
-    private static final String COL_INTENSITE = "INTENSITE";
-    private static final int DOULEUR_COL_INTENSITE = 3;
-    private static final String COL_DOULEUR_DUREE = "DUREE";
-    private static final int DOULEUR_COL_DUREE = 4;
-    private static final String COL_DOULEUR_DATE = "DATE";
-    private static final int DOULEUR_COL_DATE = 5;
-    private static final String COL_DOULEUR_HEURE = "HEURE";
-    private static final int DOULEUR_COL_HEURE = 6;
+    /*  déclarations des variables dans Constantes.java*/
 
 /*---------------------------------------------------------------------*/
 
@@ -86,14 +58,13 @@ class GestionBaseMigraine {
         ContentValues values = new ContentValues ();
         // on lui ajoute une valeur associée à une clé (qui est le nom de la colonne dans laquelle on veut mettre la valeur)
         values.put (COL_NOM, m.getnom_migraine ());
-        values.put (COL_ID_DOULEUR, m.getdouleur_migraine ());
         values.put (COL_DATE, m.getdate_migraine ());
         values.put (COL_HEURE, m.getheure_migraine ());
         values.put (COL_DUREE, m.getduree_migraine ());
         values.put (COL_COMMENTAIRE, m.getcommentaire ());
-
+        values.put (COL_ETAT, m.getetat ());
         i = DBMIGRAINE.insert (TABLE_MIGRAINES, null, values);
-        Log.d ("insertMigraine", "Retour de la base: " + i);
+Log.d ("insertMigraine", "Retour de la base: " + i);
         return i;
     }
 
@@ -108,7 +79,6 @@ class GestionBaseMigraine {
         // Création d'un ContentValues (fonctionne comme une HashMap)
         ContentValues values = new ContentValues ();
         // on lui ajoute une valeur associée à une clé (qui est le nom de la colonne dans laquelle on veut mettre la valeur)
-        values.put (COL_DOULEUR_NOMREF, m.getnomref ());
         values.put (COL_ID_MEDICAMENT, m.getmedic ());
         values.put (COL_INTENSITE, m.getintensite_douleur ());
         values.put (COL_DOULEUR_DUREE, m.getduree_douleur ());
@@ -120,6 +90,24 @@ class GestionBaseMigraine {
         return i;
     }
 
+    /**
+     * Insère une douleur en base de données
+     *
+     * @param id_Douleur l'id de la migraine
+     * @param id_Migraine l'id de la douleur associée
+     * @return l'identifiant de la ligne insérée
+     */
+    long insertCroisee(long id_Douleur, long id_Migraine) {
+        long i;
+        ContentValues values = new ContentValues ();
+        // on lui ajoute une valeur associée à une clé (qui est le nom de la colonne dans laquelle on veut mettre la valeur)
+        values.put (COL_CROISEE_DOULEUR, id_Douleur);
+        values.put (COL_CROISEE_MIGRAINE, id_Migraine);
+
+        i = DBMIGRAINE.insert (TABLE_CROISEE, null, values);
+        Log.d ("insert_croisee", "Retour de la base: " + i);
+        return i;
+    }
 /*-----------------------------------------------------------------------------------------------------------------*/
 
     /**
@@ -129,16 +117,16 @@ class GestionBaseMigraine {
      * @param m: la nouvelle migraine à associer à l'identifiant
      * @return le nombre de lignes modifiées
      */
-    long updateMigraine(int id, Migraine m) {
+    long updateMigraine(long id, Migraine m) {
 
         long i;
         ContentValues values = new ContentValues ();
         values.put (COL_NOM, m.getnom_migraine ());
-        values.put (COL_ID_DOULEUR, m.getdouleur_migraine ());
         values.put (COL_DATE, m.getdate_migraine ());
         values.put (COL_HEURE, m.getheure_migraine ());
         values.put (COL_DUREE, m.getduree_migraine ());
         values.put (COL_COMMENTAIRE, m.getcommentaire ());
+        values.put (COL_ETAT, m.getetat ());
         i = DBMIGRAINE.update (TABLE_MIGRAINES, values, COL_ID + " = " + id, null);
         return i;
     }
@@ -151,11 +139,10 @@ class GestionBaseMigraine {
      * @param m: la nouvelle douleur à associer à l'identifiant
      * @return le nombre de lignes modifiées
      */
-    long updateDouleur(int id, Douleur m) {
+    long updateDouleur(long id, Douleur m) {
 
         long i;
         ContentValues values = new ContentValues ();
-        values.put (COL_DOULEUR_NOMREF, m.getnomref ());
         values.put (COL_ID_MEDICAMENT, m.getmedic ());
         values.put (COL_INTENSITE, m.getintensite_douleur ());
         values.put (COL_DOULEUR_DUREE, m.getduree_douleur ());
@@ -259,28 +246,6 @@ class GestionBaseMigraine {
         return cursorToMigraine (c);
     }
 
-    /**
-     * Retourne la douleur dont le numéro correspond à
-     * celui en paramètre
-     *
-     * @param nom le nom de la migraine correspondnat à la douleur (nomref)
-     *
-     * @return la douleur récupérée depuis la base de données
-     */
-    Douleur getDouleurWithNom(String nom) {
-        //Récupère dans un Cursor les valeurs correspondants à un medicament contenu dans la BDD
-        // (ici on sélectionne le medicament grâce à son nom et sa dose)
-
-        String[] clauseSelect = new String[]{" * "};
-        String clauseOu = DOULEUR_COL_NOMREF + " = ? ";
-        String[] argsOu = new String[]{nom};
-        String orderBy = "";
-
-        Cursor c = DBMIGRAINE.query (TABLE_DOULEURS, clauseSelect, clauseOu, argsOu, null, null, orderBy);
-
-        return cursorToDouleur (c);
-    }
-
 /*-----------------------------------------------------------------------------------------------------------------*/
 
     /**
@@ -303,11 +268,11 @@ class GestionBaseMigraine {
         //on lui affecte toutes les infos grâce aux infos contenues dans le Cursor
         m.setId (c.getInt (MIGRAINE_COL_ID));
         m.setnom_migraine (c.getString (MIGRAINE_COL_NOM));
-        m.setdouleur_migraine (c.getInt (MIGRAINE_COL_IDDOULEUR));
         m.setdate_migraine (c.getString (MIGRAINE_COL_DATE));
         m.setheure_migraine (c.getString (MIGRAINE_COL_HEURE));
         m.setduree_migraine (c.getString (MIGRAINE_COL_DUREE));
         m.setcommentaire (c.getString (MIGRAINE_COL_COMMENTAIRE));
+        m.setetat (c.getInt (MIGRAINE_COL_ETAT));
         //On ferme le cursor
         c.close ();
 
@@ -334,7 +299,7 @@ class GestionBaseMigraine {
         Douleur m = new Douleur ();
         //on lui affecte toutes les infos grâce aux infos contenues dans le Cursor
         m.setId (c.getInt (DOULEUR_COL_ID));
-        m.setmedic (c.getString (DOULEUR_COL_ID_MEDICAMENT));
+        m.setmedic (c.getInt (DOULEUR_COL_ID_MEDICAMENT));
         m.setintensite_douleur (c.getInt (DOULEUR_COL_INTENSITE));
         m.setduree_douleur (c.getString (DOULEUR_COL_DUREE));
         m.setdate_douleur (c.getString (DOULEUR_COL_DATE));
@@ -366,11 +331,11 @@ class GestionBaseMigraine {
         //on lui affecte toutes les infos grâce aux infos contenues dans le Cursor
         m.setId (c.getInt (MIGRAINE_COL_ID));
         m.setnom_migraine (c.getString (MIGRAINE_COL_NOM));
-        m.setdouleur_migraine (c.getInt (MIGRAINE_COL_IDDOULEUR));
         m.setdate_migraine (c.getString (MIGRAINE_COL_DATE));
         m.setheure_migraine (c.getString (MIGRAINE_COL_HEURE));
         m.setduree_migraine (c.getString (MIGRAINE_COL_DUREE));
         m.setcommentaire (c.getString (MIGRAINE_COL_COMMENTAIRE));
+        m.setetat (c.getInt (MIGRAINE_COL_ETAT));
         //On ferme le cursor
         c.close ();
         //On retourne la migraine
@@ -394,7 +359,7 @@ class GestionBaseMigraine {
         Douleur m = new Douleur ();
         //on lui affecte toutes les infos grâce aux infos contenues dans le Cursor
         m.setId (c.getInt (DOULEUR_COL_ID));
-        m.setmedic (c.getString (DOULEUR_COL_ID_MEDICAMENT));
+        m.setmedic (c.getInt (DOULEUR_COL_ID_MEDICAMENT));
         m.setintensite_douleur (c.getInt (DOULEUR_COL_INTENSITE));
         m.setduree_douleur (c.getString (DOULEUR_COL_DUREE));
         m.setdate_douleur (c.getString (DOULEUR_COL_DATE));
@@ -423,7 +388,7 @@ class GestionBaseMigraine {
         Douleur m = new Douleur ();
         //on lui affecte toutes les infos grâce aux infos contenues dans le Cursor
         m.setId (c.getInt (DOULEUR_COL_ID));
-        m.setmedic (c.getString (DOULEUR_COL_ID_MEDICAMENT));
+        m.setmedic (c.getInt (DOULEUR_COL_ID_MEDICAMENT));
         m.setintensite_douleur (c.getInt (DOULEUR_COL_INTENSITE));
         m.setduree_douleur (c.getString (DOULEUR_COL_DUREE));
         m.setdate_douleur (c.getString (DOULEUR_COL_DATE));
@@ -434,6 +399,17 @@ class GestionBaseMigraine {
         return m.getId ();
     }
 
+
+    /**
+     * insert dans la table croisee les migraines et les douleurs associées
+     *
+     * @param migraine l'id de la migraine
+     * @param douleur l'id de la douleur associée
+     * @return l'id de l'insertion , sinon, -1
+     */
+    int croise_migraine_douleur(long migraine, long douleur) {
+        return 0;
+    }
 /*-----------------------------------------------------------------------------------------------------------------*/
 
 /*    //retourne tous les médicaments de la bdd dans un arraylist pour afficher le listview

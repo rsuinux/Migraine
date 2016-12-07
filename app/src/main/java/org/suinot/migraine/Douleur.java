@@ -1,6 +1,5 @@
 package org.suinot.migraine;
 
-import android.util.Log;
 
 /**
  * Created by remi on 17/11/16.
@@ -16,10 +15,9 @@ import android.util.Log;
   */
 
 class Douleur {
-    private int id;
-    private String do_nomref;
-    private String do_medic;
-    private Integer do_intensite;
+    private int id_douleur;
+    private long do_medic;
+    private int do_intensite;
     private String do_duree;
     private String do_date;
     private String do_heure;
@@ -27,9 +25,8 @@ class Douleur {
     Douleur() {
     }
 
-    Douleur (String nomref, String medic, Integer intensite, String duree, String date, String heure ) {
+    Douleur (long medic, int intensite, String duree, String date, String heure ) {
         super ();
-        this.do_nomref = nomref;
         this.do_medic = medic;
         this.do_intensite = intensite;
         this.do_duree = duree;
@@ -41,18 +38,14 @@ class Douleur {
     ---------- Demande de données ----------
      */
     public int getId() {
-        return id;
+        return id_douleur;
     }
 
-    String getnomref() {
-        return do_nomref;
-    }
-
-    String getmedic() {
+    long getmedic() {
         return do_medic;
     }
 
-    Integer getintensite_douleur() {
+    int getintensite_douleur() {
         return do_intensite;
     }
 
@@ -73,18 +66,14 @@ class Douleur {
  */
 
     public void setId(int id) {
-        this.id = id;
+        this.id_douleur = id;
     }
 
-    void setnomref(String nomref) {
-        this.do_nomref = nomref;
+    void setmedic(long medic) {
+        this.do_medic = medic;
     }
 
-    void setmedic(String medic) {
-        this.do_duree = medic;
-    }
-
-    void setintensite_douleur(Integer intensite) { this.do_intensite = intensite; }
+    void setintensite_douleur(int intensite) { this.do_intensite = intensite; }
 
     void setduree_douleur(String duree) {
         this.do_duree = duree;
@@ -103,8 +92,7 @@ class Douleur {
     */
     @Override
     public String toString() {
-        return "[Migraine] id: " + id
-                + "\nNomRef: " + do_nomref
+        return "[Migraine] id: " + id_douleur
                 + "\nMedic: " + do_medic
                 + "\nIntensite: " + do_intensite
                 + "\nDurée: " + do_duree

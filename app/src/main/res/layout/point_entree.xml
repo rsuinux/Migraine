@@ -43,9 +43,14 @@
             android:text="@string/Graphique"
         />
 
+        <Button
+            android:text="@string/reprise_evement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/B_en_cours"/>
         <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="335dp"
+            android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:background="#bffbe3"
@@ -66,7 +71,8 @@
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:inputType="none"
-                    android:text="@string/info_1"/>
+                    android:text="@string/info_1" android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
                 <EditText
                     android:id="@+id/T_nombre_evnt"
@@ -76,7 +82,8 @@
                     android:cursorVisible="false"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
-                    android:text="@string/info_3" android:layout_width="wrap_content"/>
+                    android:text="@string/info_3" android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
             </TableRow>
 
             <TableRow
@@ -93,7 +100,8 @@
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:gravity="bottom"
-                    android:text="@string/info_2"/>
+                    android:text="@string/info_2" android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
             </TableRow>
 
             <TableRow

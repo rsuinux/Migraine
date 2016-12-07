@@ -1,75 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/activity_main"
+    android:id="@+id/Configuration"
+    style="@style/titre"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
+    android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/zero"
+    <RelativeLayout
+        android:id="@+id/RL_zero"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:background="@color/fond_general"
-        android:orientation="vertical"
-        android:weightSum="0">
+        android:background="@color/fond_general">
 
-        <LinearLayout
+        <Button
+            android:id="@+id/C_export"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:text="@string/export"/>
 
-            <Button
-                android:id="@+id/Ajout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ajout"/>
+        <Space
+            android:id="@+id/C_space"
+            android:layout_height="5dp"
+            android:layout_below="@id/C_export"
+            android:layout_width="match_parent"
+            android:background="@drawable/progress"/>
 
-            <Button
-                android:id="@+id/button_caché_pour_gagner_de_l_esapce_entre_les_deux_autres"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/mdtp_material_button_background"
-                android:clickable="false"
-                android:focusable="false"
-                android:text=""
-                android:textColorHighlight="@color/fond_general"
-                android:textColorHint="@color/fond_general"
-                android:textColorLink="@color/fond_general"
-                android:textCursorDrawable="@color/fond_general"/>
-            <Button
-                android:id="@+id/Annuler"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/annuler"/>
+    </RelativeLayout>
 
-        </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/RL_boutons_conf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/RL_zero"
+        android:orientation="horizontal"
+        android:background="@color/fond_general"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true">
 
         <ListView
-            android:id="@+id/affiche_bdd"
+            android:id="@+id/C_affiche_bdd"
             android:layout_width="match_parent"
-            android:layout_height="389dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/C_ajout"
             android:scrollbars="vertical"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+        <Button
+            android:id="@+id/C_ajout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:text="@string/ajout"/>
 
-            <Button
-                android:id="@+id/SAuver"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/enregistrer"/>
+        <Button
+            android:id="@+id/C_sauver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/enregistrer"/>
 
-        </LinearLayout>
-    </LinearLayout>
+        <Button
+            android:id="@+id/C_annuler"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="@string/annuler"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>

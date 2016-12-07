@@ -19,21 +19,18 @@ import java.io.OutputStream;
  * Gestion de la bdd Medicament
  */
 
-class MabaseMedicament extends SQLiteOpenHelper {
+class MabaseMedicament extends SQLiteOpenHelper implements Constantes.constantes {
 
     private static final int VERSION_BDD = 1;
 
     private static final String NOM_BDD = "Antalgiques.db";
     private String DATABASE_PATH; // chemin défini dans le constructeur
 
-    private static final String TABLE_MEDIC = "table_medicaments";
-    private static final String COL_ID = "ID";
-    private static final String COL_NOM = "NOM";
-    private static final String COL_DOSE = "DOSE";
     private static final String CREATE_TABLE_MEDICAMENTS = "CREATE TABLE " + TABLE_MEDIC + " ("
-            + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + COL_NOM + " TEXT NOT NULL, "
-            + COL_DOSE + " TEXT NOT NULL);";
+            + COL_MEDIC_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COL_MEDIC_NOM + " TEXT, "
+            + COL_MEDIC_DOSE + " TEXT, "
+            + COL_MEDIC_INVALIDE + " INTEGER NOT NULL);";
 
 
     private static MabaseMedicament sInstance;

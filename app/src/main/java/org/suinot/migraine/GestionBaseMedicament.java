@@ -14,16 +14,7 @@ import java.util.List;
    Gestion de la base de données des médicaments géré par l'utilisateur
  */
 
-class GestionBaseMedicament {
-
-    private static final String TABLE_MEDIC = "table_medicaments";
-    private static final String COL_ID = "ID";
-    private static final int NUM_COL_ID = 0;
-    private static final String COL_NOM = "NOM";
-    private static final int NUM_COL_NOM = 1;
-    private static final String COL_DOSE = "DOSE";
-    private static final int NUM_COL_DOSE = 2;
-
+class GestionBaseMedicament implements Constantes.constantes {
 
     private MabaseMedicament MaBase;
     private SQLiteDatabase bdd;
@@ -65,9 +56,9 @@ class GestionBaseMedicament {
         // Création d'un ContentValues (fonctionne comme une HashMap)
         ContentValues values = new ContentValues ();
         // on lui ajoute une valeur associée à une clé (qui est le nom de la colonne dans laquelle on veut mettre la valeur)
-        values.put (COL_NOM, medic.getMedicament ());
-        values.put (COL_DOSE, medic.getDose ());
-
+        values.put (COL_MEDIC_NOM, medic.getMedicament ());
+        values.put (COL_MEDIC_DOSE, medic.getDose ());
+        values.put (COL_MEDIC_INVALIDE, medic.getInvalide ());
         i = bdd.insert (TABLE_MEDIC, null, values);
         Log.d ("insertMedic", "Retour de la base: " + i);
         return i;
@@ -81,12 +72,13 @@ class GestionBaseMedicament {
      * @return le nombre de lignes modifiées
      */
     public long updateMedicament(int id, Medicament medic) {
-        // à utiliser en cas d'appui court
+        // à utiliser en cas d'appui court?
         long i;
         ContentValues values = new ContentValues ();
-        values.put (COL_NOM, medic.getMedicament ());
-        values.put (COL_DOSE, medic.getDose ());
-        i = bdd.update (TABLE_MEDIC, values, COL_ID + " = " + id, null);
+        values.put (COL_MEDIC_NOM, medic.getMedicament ());
+        values.put (COL_MEDIC_DOSE, medic.getDose ());
+        values.put (COL_MEDIC_INVALIDE, medic.getInvalide ());
+        i = bdd.update (TABLE_MEDIC, values, COL_MEDIC_ID + " = " + id, null);
         return i;
     }
 
@@ -101,7 +93,7 @@ class GestionBaseMedicament {
     long removeMedicamentWithID(long id) {
         //Suppression d'un médicament de la BDD grâce à l'ID avec un appui long
         long i;
-        i = bdd.delete (TABLE_MEDIC, COL_ID + " = " + id, null);
+        i = bdd.delete (TABLE_MEDIC, COL_MEDIC_ID + " = " + id, null);
         return i;
     }
 
@@ -115,12 +107,12 @@ class GestionBaseMedicament {
         //Récupère dans un Cursor les valeurs correspondants à un medicament contenu dans la BDD
         // (ici on sélectionne le medicament grâce à son id)
         String[] clauseSelect = new String[]{" * "};
-        String clauseOu = COL_ID + " = ? ";
+        String clauseOu = COL_MEDIC_ID + " = ? ";
         String argsOu = Integer.toString (id);
         String orderBy = "";
 
         Cursor c = bdd.query (TABLE_MEDIC, clauseSelect, clauseOu, new String[]{argsOu}, null, null, orderBy);
-        // Cursor c=bdd.query(TABLE_MEDIC, new String[]{COL_ID, COL_NOM, COL_DOSE }, null, null, COL_ID + " = " + id, null, null);
+        // Cursor c=bdd.query(TABLE_MEDIC, new String[]{COL_MEDIC_ID, COL_MEDIC_NOM, COL_MEDIC_DOSE }, null, null, COL_MEDIC_ID + " = " + id, null, null);
         return cursorToMedicament (c);
     }
 
@@ -137,7 +129,7 @@ class GestionBaseMedicament {
         // (ici on sélectionne le medicament grâce à son nom et sa dose)
 
         String[] clauseSelect = new String[]{" * "};
-        String clauseOu = COL_NOM + " = ? AND " + COL_DOSE + " = ? ";
+        String clauseOu = COL_MEDIC_NOM + " = ? AND " + COL_MEDIC_DOSE + " = ? ";
         String[] argsOu = new String[]{nom, dose};
         String orderBy = "";
 
@@ -164,9 +156,10 @@ class GestionBaseMedicament {
         //On créé un medicament
         Medicament medic = new Medicament ();
         //on lui affecte toutes les infos grâce aux infos contenues dans le Cursor
-        medic.setId (c.getInt (NUM_COL_ID));
-        medic.setDose (c.getString (NUM_COL_DOSE));
-        medic.setMedicament (c.getString (NUM_COL_NOM));
+        medic.setId (c.getInt (NUM_COL_MEDIC_ID));
+        medic.setDose (c.getString (NUM_COL_MEDIC_DOSE));
+        medic.setMedicament (c.getString (NUM_COL_MEDIC_NOM));
+        medic.setInvalide (c.getInt (NUM_COL_MEDIC_NOM));
         //On ferme le cursor
         c.close ();
 
@@ -190,9 +183,10 @@ class GestionBaseMedicament {
         //On créé un medicament
         Medicament medic = new Medicament ();
         //on lui affecte toutes les infos grâce aux infos contenues dans le Cursor
-        medic.setId (c.getInt (NUM_COL_ID));
-        medic.setDose (c.getString (NUM_COL_DOSE));
-        medic.setMedicament (c.getString (NUM_COL_NOM));
+        medic.setId (c.getInt (NUM_COL_MEDIC_ID));
+        medic.setDose (c.getString (NUM_COL_MEDIC_DOSE));
+        medic.setMedicament (c.getString (NUM_COL_MEDIC_NOM));
+        medic.setInvalide (c.getInt (NUM_COL_MEDIC_INVALIDE));
         //On ferme le cursor
         c.close ();
         //On retourne le médicament
@@ -213,11 +207,13 @@ class GestionBaseMedicament {
         Cursor c = bdd.query (TABLE_MEDIC, clauseSelect, null, null, null, null, null);
         if (c.moveToFirst ()) {
             do {
-                Log.d ("1 - getallmedic", c.getString (1));
-                Log.d ("2 - getallmedic", c.getString (2));
-
-                Item_Medicament item1 = new Item_Medicament (c.getString (1), c.getString (2));
-                medicList.add (item1);
+                Log.d ("1 - getallmedic", c.getString (NUM_COL_MEDIC_NOM));
+                Log.d ("2 - getallmedic", c.getString (NUM_COL_MEDIC_DOSE));
+                Log.d ("3 - getallmedic", c.getString (NUM_COL_MEDIC_INVALIDE));
+                if ( c.getInt (NUM_COL_MEDIC_INVALIDE) == 0 ) {
+                    Item_Medicament item1 = new Item_Medicament (c.getString (NUM_COL_MEDIC_NOM), c.getString (NUM_COL_MEDIC_DOSE), c.getInt (NUM_COL_MEDIC_INVALIDE));
+                    medicList.add (item1);
+                }
             } while (c.moveToNext ());
         }
         c.close ();
@@ -237,7 +233,9 @@ class GestionBaseMedicament {
         Cursor c = bdd.query (TABLE_MEDIC, clauseSelect, null, null, null, null, null);
         if (c.moveToFirst ()) {
             do {
-                labels.add (c.getString (1) + " - " + c.getString (2));
+                if ( c.getString (NUM_COL_MEDIC_INVALIDE).equals ("0")) {
+                    labels.add (c.getString (1) + " - " + c.getString (2));
+                }
             } while (c.moveToNext ());
         }
         c.close ();

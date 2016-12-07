@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,14 +22,13 @@ import static org.suinot.migraine.R.layout.configuration;
 
 /**
  * Created by remi on 27/08/16.
-  Activity pour la configuration de la base de données du médicament (visu, ajout, suppression)
+ * Activity pour la configuration de la base de données du médicament (visu, ajout, suppression)
  */
 
 public class Configuration extends Activity {
 
     GestionBaseMedicament medicBdd;
     CustomAdapter_medic monAdapter = null;
-    private ListView listViewMedicaments;
     private ArrayList<Item_Medicament> data;
     private long derniere_donnees_initiale;
 
@@ -49,18 +48,17 @@ public class Configuration extends Activity {
         derniere_donnees_initiale = medicBdd.NombreMedicament ();
 
         // setup the data source
-        data = new ArrayList<Item_Medicament> ();
-
+        data = new ArrayList<> ();
         data = medicBdd.getAllMedicaments ();
 
-        listViewMedicaments = (ListView) findViewById (R.id.affiche_bdd);
+        ListView listViewMedicaments = (ListView) findViewById (R.id.C_affiche_bdd);
         monAdapter = new CustomAdapter_medic (this, R.layout.template_item, this.data);  //instantiation de l'adapter une seule fois
 
         listViewMedicaments.setAdapter (monAdapter);
         final LayoutInflater inflater = LayoutInflater.from (this);
-        final View dialogView = inflater.inflate (R.layout.nouveau_medic, null);
+        // final View dialogView = inflater.inflate (R.layout.nouveau_medic, null);
         // ajout d'un mémdicament
-        Button ajouter = (Button) findViewById (R.id.Ajout);
+        Button ajouter = (Button) findViewById (R.id.C_ajout);
         ajouter.setOnClickListener (new View.OnClickListener () { // Notre classe anonyme
             public void onClick(View view) { // et sa méthode !
                 // ici, on ouvre une boite avec deux champs: medicament et dose
@@ -74,13 +72,13 @@ public class Configuration extends Activity {
                         Medicament medic = new Medicament ();
                         EditText et1 = (EditText) ((AlertDialog) dialog).findViewById (R.id.Nouveau_Medic);
                         EditText et2 = (EditText) ((AlertDialog) dialog).findViewById (R.id.Nouveau_Dose);
-                        String s1 = et1.getText ().toString ();
-                        String s2 = et2.getText ().toString ();
+                        String s1 = et1 != null ? et1.getText ().toString () : null;
+                        String s2 = et2 != null ? et2.getText ().toString () : null;
                         medic.setMedicament (s1);
                         medic.setDose (s2);
                         if (medicBdd.insertMedicament (medic) >= 1) {
                             //Enregistrement réussi, ajouter le nouveau médicament dans la liste
-                            Item_Medicament item1 = new Item_Medicament (s1, s2);
+                            Item_Medicament item1 = new Item_Medicament (s1, s2, 0);
                             data.add (item1);
                             //Ensuite rafraîchir l'adaptateur
                             monAdapter.notifyDataSetChanged ();
@@ -123,18 +121,18 @@ public class Configuration extends Activity {
             }
         });
 
-        Button sauver = (Button) findViewById (R.id.SAuver);
+        Button sauver = (Button) findViewById (R.id.C_sauver);
         sauver.setOnClickListener (new View.OnClickListener () { // Notre classe anonyme
             public void onClick(View view) { // et sa méthode !
 
-                Toast.makeText (getApplicationContext (), "Sauvegarde de la base de donnée", Toast.LENGTH_SHORT).show ();
+                Toast.makeText (getApplicationContext (), "Sauvegarde de la base de données Médicaments ", Toast.LENGTH_SHORT).show ();
                 medicBdd.close ();
                 System.exit (0);
             }
         });
 
         // Annulation de nos ajouts de médicament
-        Button annuler = (Button) findViewById (R.id.Annuler);
+        Button annuler = (Button) findViewById (R.id.C_annuler);
         annuler.setOnClickListener (new View.OnClickListener () { // Notre classe anonyme
             public void onClick(View view) { // et sa méthode !
                 // on a dans derniere_donnees_initiale la dfin des données de la basse, on supprime toutes les autres
@@ -150,22 +148,61 @@ public class Configuration extends Activity {
                 System.exit (0);
             }
         });
+
+
+        Button exporter = (Button) findViewById (R.id.C_export);
+        exporter.setOnClickListener (new View.OnClickListener () { // Notre classe anonyme
+            public void onClick(View view) { // et sa méthode !
+
+                Toast.makeText (getApplicationContext (), "(A venir) Sauvergarde des données patients sur le téléphone",
+                        Toast.LENGTH_LONG).show ();
+                Export_de_la_base_patient();
+            }
+        });
+
+
     }
 
-    public void Suppression(final int listeitemId, final Item_Medicament liste, View view) {
+    private void Export_de_la_base_patient() {
+        finish ();
+    }
+
+    /* Checks if external storage is available for read and write */
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+    /* Checks if external storage is available to at least read */
+    public boolean isExternalStorageReadable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state) ||
+                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+
+    public void Suppression(final int listeitemId, Item_Medicament liste, View view) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder (this);
         Medicament medic = new Medicament ();
         medic = medicBdd.getMedicamentWithNom (liste.get ("medicament"), liste.get ("dosage"));
         final int id = medic.getId ();
         alertDialogBuilder.setMessage ("Voulez vous vraiment supprimer " + medic.getMedicament ());
 
+        final Medicament finalMedic = medic;
         alertDialogBuilder.setPositiveButton ("yes", new DialogInterface.OnClickListener () {
             @Override
             public void onClick(DialogInterface arg0, int arg1) {
                 // Ici suppression du médicament et demande de réaffichage
-                medicBdd.removeMedicamentWithID (id);
-                data.remove (listeitemId);
-                monAdapter.notifyDataSetChanged ();
+                finalMedic.setInvalide (1);
+                if (medicBdd.updateMedicament (id, finalMedic) != 0) {
+                    monAdapter.notifyDataSetChanged ();
+                } else {
+                    Toast.makeText (getApplicationContext (), "Erreur lors de l'invalidation du médicament. \nNe sera pas exécuté ! ", Toast.LENGTH_LONG).show ();
+                }
             }
         }).setNegativeButton ("No", new DialogInterface.OnClickListener () {
             @Override

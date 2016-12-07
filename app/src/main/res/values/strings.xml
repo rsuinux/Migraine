@@ -17,7 +17,8 @@
     <string name="info_heure">Heure:</string>
     <string name="actuelle_heure">00:00</string>
     <string name="enregistrer">Enregistrer</string>
-    <string name="Etat_evenement">Etat du nouvel evenement: Début</string>
+    <string name="Etat_evenement_1">Etat du nouvel evenement: Début</string>
+    <string name="Etat_evenement_2">Etat du nouvel evenement: En cours</string>
     <string name="quit">Quitter</string>
     <string name="empty">Liste vide</string>
     <string name="nouveau_medicament_dose">Medicament et dose</string>
@@ -27,6 +28,8 @@
     <string name="nop">------</string>
     <string name="annuler">Annuler</string>
     <string name="ajout">Ajouter</string>
+    <string name="commentaire">Commentaire</string>
+    <string name="fin_de_migraine">Fin de migraine</string>
     <string name="_0">0</string>
     <string name="_1">1</string>
     <string name="_2">2</string>
@@ -40,4 +43,7 @@
     <string name="_10">10</string>
     <string name="recycle">recycle</string>
     <string name="dmy">dd/mm/yyyy</string>
+    <string name="export">Export des données</string>
+    <string name="reprise_evement">Reprise dernier évenement</string>
+
 </resources>
