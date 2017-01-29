@@ -32,6 +32,7 @@ public class splashscreen extends Activity {
         img.setAnimation (anim1);
 
         mprogressBar = (ProgressBar) findViewById (R.id.progressBar);
+        mprogressBar.setPadding (10,0,10,0);
         ObjectAnimator anim = ObjectAnimator.ofInt (mprogressBar, "progress", 0, 100);
         anim.setDuration (4000);
         anim.setInterpolator (new DecelerateInterpolator ());

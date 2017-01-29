@@ -91,5 +91,4 @@ public class CustomAdapter_medic extends BaseAdapter{
         // return the final view object
         return view;
     }
-
 }

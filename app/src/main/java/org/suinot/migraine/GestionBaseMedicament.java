@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -21,20 +22,20 @@ class GestionBaseMedicament implements Constantes.constantes {
 
     GestionBaseMedicament(Context context) {
         //On crée la BDD et sa table
-        Log.d ("GestionBaseMedicament()", "création de la base");
         MaBase = MabaseMedicament.getInstance (context);
     }
 
-    public void open() {
+    void open() throws SQLiteException {
         //on ouvre la BDD en écriture
-        Log.d ("open()", "ouverture de la base");
-        bdd = MaBase.getWritableDatabase ();
+        try {
+            bdd = MaBase.getWritableDatabase ();
+        }    catch (SQLiteException ex) {
+            bdd = MaBase.getReadableDatabase ();
+        }
     }
-
 
     void close() {
         //on ferme l'accès à la BDD
-        Log.d ("GestionBaseMedicament()", "close base");
         bdd.close ();
     }
 
@@ -51,8 +52,6 @@ class GestionBaseMedicament implements Constantes.constantes {
      */
     long insertMedicament(Medicament medic) {
         long i;
-        Log.d ("insertMedic", "nom= " + medic.getMedicament ());
-        Log.d ("insertMedic", "dose= " + medic.getDose ());
         // Création d'un ContentValues (fonctionne comme une HashMap)
         ContentValues values = new ContentValues ();
         // on lui ajoute une valeur associée à une clé (qui est le nom de la colonne dans laquelle on veut mettre la valeur)
@@ -60,7 +59,6 @@ class GestionBaseMedicament implements Constantes.constantes {
         values.put (COL_MEDIC_DOSE, medic.getDose ());
         values.put (COL_MEDIC_INVALIDE, medic.getInvalide ());
         i = bdd.insert (TABLE_MEDIC, null, values);
-        Log.d ("insertMedic", "Retour de la base: " + i);
         return i;
     }
 
@@ -103,7 +101,7 @@ class GestionBaseMedicament implements Constantes.constantes {
      * @param id l'identifiant du médic
      * @return le medic récupéré depuis la base de données
      */
-    public Medicament getMedicamentWithId(int id) {
+    public String getMedicamentWithId(int id) {
         //Récupère dans un Cursor les valeurs correspondants à un medicament contenu dans la BDD
         // (ici on sélectionne le medicament grâce à son id)
         String[] clauseSelect = new String[]{" * "};
@@ -113,7 +111,10 @@ class GestionBaseMedicament implements Constantes.constantes {
 
         Cursor c = bdd.query (TABLE_MEDIC, clauseSelect, clauseOu, new String[]{argsOu}, null, null, orderBy);
         // Cursor c=bdd.query(TABLE_MEDIC, new String[]{COL_MEDIC_ID, COL_MEDIC_NOM, COL_MEDIC_DOSE }, null, null, COL_MEDIC_ID + " = " + id, null, null);
-        return cursorToMedicament (c);
+Log.d("getMedicwithID", "id= "+ id + " - c.getcount=" + c.getCount ());
+        if ( c.getCount () == 0 )
+            return "";
+        return c.getString (NUM_COL_MEDIC_NOM);
     }
 
     /**
@@ -196,7 +197,6 @@ class GestionBaseMedicament implements Constantes.constantes {
     //retourne tous les médicaments de la bdd dans un arraylist pour afficher le listview
     ArrayList<Item_Medicament> getAllMedicaments() {
         long i;
-        Log.d ("ici getAll", "lecture base de donnée");
         ArrayList<Item_Medicament> medicList = new ArrayList<> ();
         String[] clauseSelect = new String[]{" * "};
         //String clauseOu = null;
@@ -207,9 +207,6 @@ class GestionBaseMedicament implements Constantes.constantes {
         Cursor c = bdd.query (TABLE_MEDIC, clauseSelect, null, null, null, null, null);
         if (c.moveToFirst ()) {
             do {
-                Log.d ("1 - getallmedic", c.getString (NUM_COL_MEDIC_NOM));
-                Log.d ("2 - getallmedic", c.getString (NUM_COL_MEDIC_DOSE));
-                Log.d ("3 - getallmedic", c.getString (NUM_COL_MEDIC_INVALIDE));
                 if ( c.getInt (NUM_COL_MEDIC_INVALIDE) == 0 ) {
                     Item_Medicament item1 = new Item_Medicament (c.getString (NUM_COL_MEDIC_NOM), c.getString (NUM_COL_MEDIC_DOSE), c.getInt (NUM_COL_MEDIC_INVALIDE));
                     medicList.add (item1);

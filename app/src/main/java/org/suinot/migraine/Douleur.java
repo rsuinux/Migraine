@@ -16,22 +16,20 @@ package org.suinot.migraine;
 
 class Douleur {
     private int id_douleur;
-    private long do_medic;
-    private int do_intensite;
-    private String do_duree;
-    private String do_date;
-    private String do_heure;
+    private int intensite;
+    private String duree;
+    private String date;
+    private String heure;
 
     Douleur() {
     }
 
-    Douleur (long medic, int intensite, String duree, String date, String heure ) {
+    Douleur ( int intensite, String duree, String date, String heure ) {
         super ();
-        this.do_medic = medic;
-        this.do_intensite = intensite;
-        this.do_duree = duree;
-        this.do_date = date;
-        this.do_heure = heure;
+        this.intensite = intensite;
+        this.duree = duree;
+        this.date = date;
+        this.heure = heure;
     }
 
     /*
@@ -41,24 +39,20 @@ class Douleur {
         return id_douleur;
     }
 
-    long getmedic() {
-        return do_medic;
-    }
-
     int getintensite_douleur() {
-        return do_intensite;
+        return intensite;
     }
 
     String getduree_douleur() {
-        return do_duree;
+        return duree;
     }
 
     String getdate_douleur() {
-        return do_date;
+        return date;
     }
 
     String getheure_douleur() {
-        return do_heure;
+        return heure;
     }
 
 /*
@@ -69,22 +63,18 @@ class Douleur {
         this.id_douleur = id;
     }
 
-    void setmedic(long medic) {
-        this.do_medic = medic;
-    }
-
-    void setintensite_douleur(int intensite) { this.do_intensite = intensite; }
+    void setintensite_douleur(int intensite) { this.intensite = intensite; }
 
     void setduree_douleur(String duree) {
-        this.do_duree = duree;
+        this.duree = duree;
     }
 
     void setdate_douleur(String date) {
-        this.do_date = date;
+        this.date = date;
     }
 
     void setheure_douleur(String heure) {
-        this.do_heure = heure;
+        this.heure = heure;
     }
 
     /*
@@ -93,10 +83,9 @@ class Douleur {
     @Override
     public String toString() {
         return "[Migraine] id: " + id_douleur
-                + "\nMedic: " + do_medic
-                + "\nIntensite: " + do_intensite
-                + "\nDurée: " + do_duree
-                + "\nDate: " + do_date
-                + "\nHeure: " + do_heure;
+                + "\nIntensite: " + intensite
+                + "\nDurée: " + duree
+                + "\nDate: " + date
+                + "\nHeure: " + heure;
     }
 }

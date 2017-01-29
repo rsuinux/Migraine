@@ -1,11 +1,17 @@
 package org.suinot.migraine;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,7 +20,18 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FilePermission;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import static android.R.string.cancel;
 import static android.R.string.ok;
@@ -25,12 +42,14 @@ import static org.suinot.migraine.R.layout.configuration;
  * Activity pour la configuration de la base de données du médicament (visu, ajout, suppression)
  */
 
-public class Configuration extends Activity {
+public class Configuration extends Activity implements Constantes.constantes {
 
+    Activity parentActivity;
     GestionBaseMedicament medicBdd;
     CustomAdapter_medic monAdapter = null;
     private ArrayList<Item_Medicament> data;
     private long derniere_donnees_initiale;
+    private static final int REQUEST_WRITE_STORAGE = 112;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,10 +71,14 @@ public class Configuration extends Activity {
         data = medicBdd.getAllMedicaments ();
 
         ListView listViewMedicaments = (ListView) findViewById (R.id.C_affiche_bdd);
-        monAdapter = new CustomAdapter_medic (this, R.layout.template_item, this.data);  //instantiation de l'adapter une seule fois
+        monAdapter = new CustomAdapter_medic (
+                this,
+                R.layout.template_item,
+                this.data);  //instantiation de l'adapter une seule fois
 
         listViewMedicaments.setAdapter (monAdapter);
         final LayoutInflater inflater = LayoutInflater.from (this);
+
         // final View dialogView = inflater.inflate (R.layout.nouveau_medic, null);
         // ajout d'un mémdicament
         Button ajouter = (Button) findViewById (R.id.C_ajout);
@@ -65,7 +88,7 @@ public class Configuration extends Activity {
 
                 AlertDialog.Builder dialog = new AlertDialog.Builder (context);
                 dialog.setView (inflater.inflate (R.layout.nouveau_medic, null));
-                dialog.setTitle (R.string.nouveau_medicament);
+                dialog.setTitle (R.string.configuration_nouveau_medicament);
                 final AlertDialog alertDialog = dialog.create ();
                 final AlertDialog.Builder builder = dialog.setPositiveButton (ok, new DialogInterface.OnClickListener () {
                     public void onClick(DialogInterface dialog, int which) {
@@ -102,7 +125,10 @@ public class Configuration extends Activity {
                     pour l'instant, juste un toast
                     Todo: stat sur le nombre d'utilisation du médicament
                  */
-                Toast.makeText (getApplicationContext (), "Click court: " + parent.getItemAtPosition (position).toString () + "(" + position + ")",
+                Toast.makeText (getApplicationContext (),
+                        "Click court: "
+                        + parent.getItemAtPosition (position).toString ()
+                        + "(" + position + ")",
                         Toast.LENGTH_SHORT).show ();
             }
         });
@@ -125,7 +151,7 @@ public class Configuration extends Activity {
         sauver.setOnClickListener (new View.OnClickListener () { // Notre classe anonyme
             public void onClick(View view) { // et sa méthode !
 
-                Toast.makeText (getApplicationContext (), "Sauvegarde de la base de données Médicaments ", Toast.LENGTH_SHORT).show ();
+                Toast.makeText (getApplicationContext (), R.string.configuration_sauvegarde_medicaments, Toast.LENGTH_SHORT).show ();
                 medicBdd.close ();
                 System.exit (0);
             }
@@ -143,7 +169,7 @@ public class Configuration extends Activity {
                     last = medicBdd.NombreMedicament ();
                 }
 
-                Toast.makeText (getApplicationContext (), "Annulation des modifications", Toast.LENGTH_SHORT).show ();
+                Toast.makeText (getApplicationContext (), R.string.configuration_annulation, Toast.LENGTH_SHORT).show ();
                 medicBdd.close ();
                 System.exit (0);
             }
@@ -153,36 +179,13 @@ public class Configuration extends Activity {
         Button exporter = (Button) findViewById (R.id.C_export);
         exporter.setOnClickListener (new View.OnClickListener () { // Notre classe anonyme
             public void onClick(View view) { // et sa méthode !
-
-                Toast.makeText (getApplicationContext (), "(A venir) Sauvergarde des données patients sur le téléphone",
-                        Toast.LENGTH_LONG).show ();
-                Export_de_la_base_patient();
+                try {
+                    Export_db ();
+                } catch ( Exception e) {
+                    e.printStackTrace ();
+                }
             }
         });
-
-
-    }
-
-    private void Export_de_la_base_patient() {
-        finish ();
-    }
-
-    /* Checks if external storage is available for read and write */
-    public boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return true;
-        }
-        return false;
-    }
-    /* Checks if external storage is available to at least read */
-    public boolean isExternalStorageReadable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state) ||
-                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-            return true;
-        }
-        return false;
     }
 
     public void Suppression(final int listeitemId, Item_Medicament liste, View view) {
@@ -190,7 +193,7 @@ public class Configuration extends Activity {
         Medicament medic = new Medicament ();
         medic = medicBdd.getMedicamentWithNom (liste.get ("medicament"), liste.get ("dosage"));
         final int id = medic.getId ();
-        alertDialogBuilder.setMessage ("Voulez vous vraiment supprimer " + medic.getMedicament ());
+        alertDialogBuilder.setMessage (R.string.configuration_confirme_suppression_medicament + medic.getMedicament ());
 
         final Medicament finalMedic = medic;
         alertDialogBuilder.setPositiveButton ("yes", new DialogInterface.OnClickListener () {
@@ -201,7 +204,7 @@ public class Configuration extends Activity {
                 if (medicBdd.updateMedicament (id, finalMedic) != 0) {
                     monAdapter.notifyDataSetChanged ();
                 } else {
-                    Toast.makeText (getApplicationContext (), "Erreur lors de l'invalidation du médicament. \nNe sera pas exécuté ! ", Toast.LENGTH_LONG).show ();
+                    Toast.makeText (getApplicationContext (), R.string.configuration_erreur_sup_medicament, Toast.LENGTH_LONG).show ();
                 }
             }
         }).setNegativeButton ("No", new DialogInterface.OnClickListener () {
@@ -213,5 +216,133 @@ public class Configuration extends Activity {
 
         AlertDialog alertDialog = alertDialogBuilder.create ();
         alertDialog.show ();
+    }
+
+    void Export_db() throws IOException {
+        // Recherche si l'on a les autorisation (appel de méthode plus bas si besoin)
+        parentActivity = Point_Entree.activity;
+        boolean hasPermission = (ContextCompat.checkSelfPermission (this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
+        if (!hasPermission) {
+            ActivityCompat.requestPermissions (parentActivity,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    REQUEST_WRITE_STORAGE);
+        }
+        String etat = Environment.getExternalStorageState ();
+        if (Environment.MEDIA_MOUNTED.equals (etat)) {
+            Date date = new Date ( System.currentTimeMillis() );
+            SimpleDateFormat sdf = new SimpleDateFormat ( "dd/MM/yyyy hh:mm:ss", Locale.FRANCE );
+            String txt = sdf.format (date);
+
+            txt=txt.replace("/", "_");
+            txt=txt.replace(":", "_");
+            txt=txt.replace(" ", "_");
+            //creating a new folder for the database to be backuped to
+            File Root = Environment.getExternalStorageDirectory ();
+            File folder = new File (Root.getAbsolutePath () + File.separator + "migraine" + File.separator);
+            folder.mkdirs ();
+            if (!folder.exists ()) {
+                Log.d ("Export_db", "folder n'existe toujours pas");
+                folder.mkdirs ();
+            }
+            File medic = new File (folder, "medicaments-" + txt + ".db");
+            try {
+                medic.createNewFile ();
+            } catch ( Exception ex1) {
+                ex1.printStackTrace ();
+            }
+            File migraines = new File (folder, "migraine-" + txt + ".db");
+            try {
+                migraines.createNewFile();
+            } catch ( Exception ex1) {
+                ex1.printStackTrace ();
+            }
+            try {
+                exportDB (medic, migraines);
+            } catch (Exception e) {
+                e.printStackTrace ();
+            }
+        } else {
+            Toast.makeText (getApplicationContext (),
+                    R.string.configuration_erreur_media,
+                    Toast.LENGTH_LONG)
+                    .show ();
+        }
+
+    }
+
+    //Export de la base de données
+    private void exportDB(File medic, File migraines) throws FileNotFoundException {
+        // context, NOM_DB_MIGRAINES, null, VERSION_DB_MEDICAMENTS);
+        String filesDir = getApplicationContext ().getFilesDir ().getPath (); // /data/data/com.package.nom/files/
+        String DB_MEDIC = filesDir.substring (0, filesDir.lastIndexOf ("/")) + "/databases/" + NOM_BD_MEDICAMENTS; // /data/data/com.package.nom/databases/
+        String DB_MIGRAINES = filesDir.substring (0, filesDir.lastIndexOf ("/")) + "/databases/" + NOM_DB_MIGRAINES; // /data/data/com.package.nom/databases/
+        //BufferedInputStream(new FileInputStream  = null;
+        BufferedInputStream fis;
+        BufferedOutputStream fos;
+        byte[] buf = new byte[8];
+
+        try {
+            if (medic.canWrite ()) {
+                fis = new BufferedInputStream (new FileInputStream (DB_MEDIC));
+                fos = new BufferedOutputStream (new FileOutputStream (medic));
+                while (fis.read (buf) != -1) {
+                    fos.write (buf);
+                }
+                // Fermeture
+                fis.close ();
+                fos.close ();
+            } else {
+                Log.d("export_bd", "impossible de copier base medic");
+            }
+
+            if (migraines.canWrite ()) {
+                fis = new BufferedInputStream (new FileInputStream (DB_MIGRAINES));
+                fos = new BufferedOutputStream (new FileOutputStream (migraines));
+                while (fis.read (buf) != -1) {
+                    fos.write (buf);
+                }
+                // Fermeture
+                fis.close ();
+                fos.close ();
+            } else {
+                Toast.makeText (getApplicationContext (),
+                        R.string.configuration_sauvegarde_medicaments_erreur,
+                        Toast.LENGTH_LONG)
+                        .show ();
+                Log.d("export_bd", "impossible de copier base migraines");
+            }
+        } catch (Exception e) {
+            Toast.makeText (getApplicationContext (),
+                    e.toString (),
+                    Toast.LENGTH_LONG)
+                    .show ();
+        }
+        Toast.makeText (getApplicationContext (),
+                R.string.configuration_copie_termine,
+                Toast.LENGTH_LONG)
+                .show ();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult (requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_WRITE_STORAGE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //reload my activity with permission granted or use the features what required the permission
+
+                } else {
+                    Toast.makeText (
+                            parentActivity,
+                            "L'application n'est pas autorisée à écrire sur l'espace de stockage externe.\n" +
+                                    "Par conséquent, il se peut que l'export des données ne fonctionne pas correctement.\n" +
+                                    "Pourriez vous envisager l'octroi de cette permission? Merci.",
+                            Toast.LENGTH_LONG)
+                            .show ();
+                }
+            }
+        }
+
     }
 }

@@ -14,14 +14,15 @@ class Migraine {
     private String nom;
     private String date;
     private String heure;
-    private String duree;
+    private int duree;
     private String commentaire;
     private int etat;  // 0 = base/index vide. 1 = migraine en cours / 2 = migraine terminée
+    private String date_fin;
+    private String heure_fin;
 
-    Migraine() {
-    }
+    Migraine() {}
 
-    public Migraine (String nom, String date, String heure, String duree, String comm, int etat){
+    public Migraine (String nom, String date, String heure, int duree, String comm, int etat, String d_fin, String h_fin){
         super ();
         this.nom = nom;
         this.date = date;
@@ -29,6 +30,8 @@ class Migraine {
         this.duree = duree;
         this.commentaire = comm;
         this.etat = etat;
+        this.date_fin = d_fin;
+        this.heure_fin = h_fin;
     }
 
     /*
@@ -39,9 +42,7 @@ class Migraine {
         return id_migraine;
     }
 
-    String getnom_migraine() {
-        return nom;
-    }
+    String getnom_migraine() { return nom; }
 
     String getdate_migraine() {
         return date;
@@ -51,7 +52,7 @@ class Migraine {
         return heure;
     }
 
-    String getduree_migraine() {
+    int getduree_migraine() {
         return duree;
     }
 
@@ -60,6 +61,10 @@ class Migraine {
     }
 
     int getetat () { return etat; }
+
+    String getdate_fin_migraine() { return date_fin; }
+
+    String getheure_fin_migraine() { return heure_fin; }
 
     /*
       ---------- Mise à jour de données ----------
@@ -79,13 +84,20 @@ class Migraine {
         this.heure = heure;
     }
 
-    void setduree_migraine(String duree) { this.duree = duree; }
+    void setduree_migraine(int duree) { this.duree = duree; }
 
     void setcommentaire(String comm) {
         this.commentaire = comm;
     }
 
     void setetat (int etat) { this.etat=etat;}
+
+    void setdate_fin_migraine(String date_f) { this.date = date_f; }
+
+    void setheure_fin_migraine(String heure_f) {
+        this.heure = heure_f;
+    }
+
     /*
     ----------- Méthode globale ----------------
     */
@@ -97,6 +109,8 @@ class Migraine {
                 + "\nHeure: " + heure
                 + "\nDurée: " + duree
                 + "\nCommentaire" + commentaire
-                + "\nEtat: " + etat;
+                + "\nEtat: " + etat
+                + "\ndate fin" + date_fin
+                + "\nHeure fin" + heure_fin;
     }
 }

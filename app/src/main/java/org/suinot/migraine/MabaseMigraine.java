@@ -20,13 +20,10 @@ import java.io.OutputStream;
 
 class MabaseMigraine extends SQLiteOpenHelper implements Constantes.constantes {
 
-    private static final int VERSION_DB = 1;
     private static MabaseMigraine sInstance;
     private final Context context;
     private String DB_PATH; // chemin défini dans le constructeur
 
-    /* Nom de la base */
-    private static final String NOM_DB = "Migraines.db";
 
     /*  Nom de la table des migraines et creation */
     /*  déclarations des variables dans Constantes.java*/
@@ -36,16 +33,17 @@ class MabaseMigraine extends SQLiteOpenHelper implements Constantes.constantes {
             + COL_NOM + "TEXT NOT NUL"
             + COL_DATE + " TEXT, "
             + COL_HEURE + " TEXT, "
-            + COL_DUREE + " TEXT, "
+            + COL_DUREE + " INTEGER, "
             + COL_COMMENTAIRE + " TEXT"
-            + COL_ETAT + " INTEGER );";
+            + COL_ETAT + " INTEGER "
+            + COL_DATE_FIN + " TEXT "
+            + COL_HEURE_FIN + " TEXT );";
 
     /* Nom de la table des douleurs et creation */
     /*  déclarations des variables dans Constantes.java*/
 
     private static final String CREATE_TABLE_DOULEURS = "CREATE TABLE " + TABLE_DOULEURS + " ("
             + COL_DOULEUR_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "
-            + COL_ID_MEDICAMENT + " INTEGER, "
             + COL_INTENSITE + " INTEGER, "
             + COL_DOULEUR_DUREE + " TEXT, "
             + COL_DOULEUR_DATE + " TEXT, "
@@ -57,18 +55,16 @@ class MabaseMigraine extends SQLiteOpenHelper implements Constantes.constantes {
     private static final String CREATE_TABLE_CROISEE = "CREATE TABLE " + TABLE_CROISEE + " ("
             + COL_CROISEE_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "
             + COL_CROISEE_DOULEUR + " INTEGER, "
+            + COL_CROISEE_MEDICAMENT + " INTEGER, "
             + COL_CROISEE_MIGRAINE+ " INTEGER);";
     /* Fin des déclarations des tables */
 
-
     // Constructeur
-    private MabaseMigraine(Context context) {
-        super (context, NOM_DB, null, VERSION_DB);
+    public MabaseMigraine(Context context) {
+        super (context, NOM_DB_MIGRAINES, null, VERSION_DB_MEDICAMENTS);
         this.context = context;
         String filesDir = context.getFilesDir ().getPath (); // /data/data/com.package.nom/files/
         DB_PATH = filesDir.substring (0, filesDir.lastIndexOf ("/")) + "/databases/"; // /data/data/com.package.nom/databases/
-        Log.d ("ConstR DBMigraine", "création de la base");
-
         // Si la bdd n'existe pas dans le dossier de l'app
         if (!checkdbmigraine ()) {
             // copy db de 'assets' vers DATABASE_PATH
@@ -77,7 +73,6 @@ class MabaseMigraine extends SQLiteOpenHelper implements Constantes.constantes {
     }
 
     static synchronized MabaseMigraine getInstance(Context context) {
-        Log.d ("getInstance", "création de la base");
 
         if (sInstance == null) {
             sInstance = new MabaseMigraine (context);
@@ -87,9 +82,7 @@ class MabaseMigraine extends SQLiteOpenHelper implements Constantes.constantes {
 
     private boolean checkdbmigraine() {
         // retourne true/false si la bdd existe dans le dossier de l'app
-        File dbfile = new File (DB_PATH + NOM_DB);
-        Log.d ("checkdbmigraine", "verif si base existe");
-        Log.d ("checkdbmigraine", "chemin + fichier=" + DB_PATH + NOM_DB);
+        File dbfile = new File (DB_PATH + NOM_DB_MIGRAINES);
         return dbfile.exists ();
     }
 
@@ -97,13 +90,12 @@ class MabaseMigraine extends SQLiteOpenHelper implements Constantes.constantes {
     // ceci est fait au premier lancement de l'application
     private boolean copydbmigraine() {
 
-        final String outFileName = DB_PATH + NOM_DB;
-        Log.d ("copydbmigraine", "outFileName: " + outFileName);
+        final String outFileName = DB_PATH + NOM_DB_MIGRAINES;
 
         InputStream myInput;
         try {
             // Ouvre la bdd de 'assets' en lecture
-            myInput = context.getAssets ().open (NOM_DB);
+            myInput = context.getAssets ().open (NOM_DB_MIGRAINES);
 
             // dossier de destination
             File pathFile = new File (DB_PATH);
@@ -136,8 +128,8 @@ class MabaseMigraine extends SQLiteOpenHelper implements Constantes.constantes {
 
         // on greffe le numéro de version
         try {
-            SQLiteDatabase checkdb = SQLiteDatabase.openDatabase (DB_PATH + NOM_DB, null, SQLiteDatabase.OPEN_READWRITE);
-            checkdb.setVersion (VERSION_DB);
+            SQLiteDatabase checkdb = SQLiteDatabase.openDatabase (DB_PATH + NOM_DB_MIGRAINES, null, SQLiteDatabase.OPEN_READWRITE);
+            checkdb.setVersion (VERSION_DB_MEDICAMENTS);
         } catch (SQLiteException e) {
             // bdd n'existe pas
             return false;
@@ -150,7 +142,6 @@ class MabaseMigraine extends SQLiteOpenHelper implements Constantes.constantes {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         //on crée la table à partir de la requête écrite dans la variable CREATE_BDD
-        Log.d ("onCreate", "pas de bdd existante");
         sqLiteDatabase.execSQL (CREATE_TABLE_MIGRAINES);
         sqLiteDatabase.execSQL (CREATE_TABLE_DOULEURS);
         sqLiteDatabase.execSQL (CREATE_TABLE_CROISEE);

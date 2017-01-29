@@ -11,12 +11,12 @@ import java.util.Set;
  */
 
 class Item_Migraine {
-    public String NM_Nom;
-    public String NM_Date;
-    public String NM_Heure;
-    public String NM_Douleur;
-    public String NM_Medic;
-    public String NM_Dose;
+    String NM_Nom;
+    String NM_Date;
+    String NM_Heure;
+    String NM_Douleur;
+    String NM_Medic;
+    String NM_Dose;
 
     // main constructor
     public Item_Migraine(String NM_Nom, String NM_Date, String NM_Heure, String NM_Douleur, String NM_Medic, String NM_Dose) {
@@ -152,10 +152,10 @@ class Item_Migraine {
         if (key.equals ("medicament")) {
             this.NM_Medic = value;
         }
-         if (key.equals ("dose")) {
+        if (key.equals ("dose")) {
             this.NM_Dose = value;
         }
-       return value;
+        return value;
     }
 
     // remove a key (nullify)

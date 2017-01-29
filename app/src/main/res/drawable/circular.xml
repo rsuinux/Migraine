@@ -3,14 +3,14 @@
         android:fromDegrees="0"
         android:pivotX="50%"
         android:pivotY="50%"
-        android:toDegrees="360">
+        android:toDegrees="350">
     <shape
         android:innerRadiusRatio="3"
         android:shape="ring"
         android:thicknessRatio="10"
         android:useLevel="false">
         <gradient
-            android:angle="0"
+            android:angle="5"
             android:endColor="@color/max_douleur"
             android:startColor="@color/min_douleur"
             android:type="sweep"

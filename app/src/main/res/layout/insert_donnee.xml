@@ -23,7 +23,7 @@ android:orientation="vertical">
     android:layout_alignParentStart="true"
     android:layout_below="@+id/textView2"
     android:ems="10"
-    android:text="@string/nouveau_medicament"/>
+    android:text="@string/configuration_nouveau_medicament"/>
 
 <EditText
     android:id="@+id/Insert_Dose"

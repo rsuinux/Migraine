@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,33 +7,29 @@
     android:orientation="horizontal">
 
     <ImageView
-        android:contentDescription="@string/attribut_comprime"
         android:id="@+id/Template_Img"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center_vertical"
+        android:contentDescription="@string/attribut_comprime"
         android:padding="1dp"
         android:src="@mipmap/comprime"/>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+
+    <TextView
+        android:id="@+id/Template_Medic"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
+        android:layout_toRightOf="@id/Template_Img"
         android:clickable="false"
-        android:orientation="vertical">
+        android:textStyle="bold"/>
 
-        <TextView
-            android:id="@+id/Template_Medic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="false"
-            android:textStyle="bold"/>
+    <TextView
+        android:id="@+id/Template_Dose"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Template_Medic"
+        android:layout_toRightOf="@id/Template_Img"
+        android:clickable="false"/>
 
-        <TextView
-            android:id="@+id/Template_Dose"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="false"/>
-
-    </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

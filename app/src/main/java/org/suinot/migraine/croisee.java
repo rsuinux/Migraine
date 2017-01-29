@@ -7,16 +7,18 @@ package org.suinot.migraine;
 
 public class croisee {
     private int id_croisee;
-    private long do_croisee_douleur;
-    private long do_croisee_migraine;
+    private long croisee_douleur;
+    private long croisee_migraine;
+    private long croisee_medicament;
 
     croisee() {
     }
 
-    croisee (long douleur, int migraine) {
+    croisee (int douleur, int migraine, int medicament ) {
         super ();
-        this.do_croisee_douleur = douleur;
-        this.do_croisee_migraine = migraine;
+        this.croisee_douleur = douleur;
+        this.croisee_migraine = migraine;
+        this.croisee_medicament = medicament;
     }
 
     /*
@@ -27,11 +29,15 @@ public class croisee {
     }
 
     long get_douleur_croisee() {
-        return do_croisee_douleur;
+        return croisee_douleur;
     }
 
     long get_migraine_croisee() {
-        return do_croisee_migraine;
+        return croisee_migraine;
+    }
+
+    long get_medicament_croisee() {
+        return croisee_medicament;
     }
 
     /*
@@ -43,10 +49,12 @@ public class croisee {
     }
 
     void set_douleur_croisee(long douleur) {
-        this.do_croisee_douleur = douleur;
+        this.croisee_douleur = douleur;
     }
 
-    void set_migraine_croisee(long migraine) { this.do_croisee_migraine = migraine; }
+    void set_migraine_croisee(long migraine) { this.croisee_migraine = migraine; }
+
+    void set_medicament_croisee(long medicament) { this.croisee_medicament = medicament; }
 
     /*
     ----------- Méthode globale ----------------
@@ -54,8 +62,8 @@ public class croisee {
     @Override
     public String toString() {
         return "[Croisée] id: " + id_croisee
-                + "\nDouleur: " + do_croisee_douleur
-                + "\nMigraine: " + do_croisee_migraine;
+                + "\nDouleur: " + croisee_douleur
+                + "\nMigraine: " + croisee_migraine
+                + "\nMedicament: " + croisee_medicament;
     }
-
 }

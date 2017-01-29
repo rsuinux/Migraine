@@ -5,10 +5,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:context=".Point_Entree">
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/Nb_Evenements"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:background="@color/fond_general"
         android:orientation="vertical"
@@ -27,6 +27,7 @@
             android:id="@+id/B_Historique"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/B_new_event"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
@@ -37,106 +38,56 @@
             android:id="@+id/B_graphique"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/B_Historique"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:text="@string/Graphique"
-        />
+            android:text="@string/Graphique"/>
 
-        <Button
-            android:text="@string/reprise_evement"
+        <EditText
+            android:id="@+id/T_info_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/B_graphique"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:inputType="none"
+            android:text="@string/info_1"/>
+
+        <EditText
+            android:id="@+id/T_nombre_evnt"
+            android:layout_below="@id/B_graphique"
+            android:layout_toRightOf="@id/T_info_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/B_en_cours"/>
-        <TableLayout
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:text="@string/info_3"/>
+
+        <EditText
+            android:id="@+id/T_info_2"
+            android:layout_below="@id/T_info_1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:background="#bffbe3"
-            android:baselineAligned="false"
-            android:orientation="horizontal"
-            android:weightSum="2">
+            android:layout_height="wrap_content"
+            android:autoLink="none"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:gravity="center_horizontal"
+            android:text="@string/info_2"/>
+        <ListView
+            android:id="@+id/liste_evenement"
+            android:layout_below="@id/T_info_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"/>
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
 
-                <EditText
-                    android:id="@+id/t_Info_1"
-                    android:layout_column="0"
-                    android:layout_gravity="start|center_vertical"
-                    android:clickable="false"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:inputType="none"
-                    android:text="@string/info_1" android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-                <EditText
-                    android:id="@+id/T_nombre_evnt"
-                    android:layout_column="1"
-                    android:layout_gravity="center_vertical"
-                    android:clickable="false"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:text="@string/info_3" android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <EditText
-                    android:id="@+id/t_Info_2"
-                    android:layout_column="0"
-                    android:layout_gravity="start|center_vertical"
-                    android:autoLink="none"
-                    android:clickable="false"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:gravity="bottom"
-                    android:text="@string/info_2" android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/Last_Evenement"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <EditText
-                    android:id="@+id/t_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="0"
-                    android:clickable="false"
-                    android:cursorVisible="false"
-                    android:ems="10"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:inputType="date"
-                    android:text="@string/info_4"/>
-
-                <EditText
-                    android:id="@+id/t_heure"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="1"
-                    android:clickable="false"
-                    android:cursorVisible="false"
-                    android:ems="10"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:inputType="time"
-                    android:text="@string/info_5"/>
-            </TableRow>
-        </TableLayout>
-    </LinearLayout>
-
+    </RelativeLayout>
 
 </RelativeLayout>

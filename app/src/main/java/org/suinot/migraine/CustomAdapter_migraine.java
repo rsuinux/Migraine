@@ -36,7 +36,6 @@ class CustomAdapter_migraine extends BaseAdapter {
         this.data = data;
     }
 
-
     @Override
     public int getCount() {
         return this.data.size ();
@@ -109,5 +108,4 @@ class CustomAdapter_migraine extends BaseAdapter {
         // return the final view object
         return view;
     }
-
 }

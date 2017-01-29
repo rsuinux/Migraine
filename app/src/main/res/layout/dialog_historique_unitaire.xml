@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <!-- Nombre de médicament pris:
+         Nombre de douleurs inscrites:
+         liste des couples douleurs | médicaments
+         et les commentaires -> champs en plus dans le listview
+         [ Douleur: x - (medicament pris) ]
+         [ commentaire en dessous         ]
+    -->
+
+    <TextView
+        android:id="@+id/Hist_Unit_nom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:text="Nom"
+        android:layout_marginLeft="3dip" android:textStyle="normal|bold"/>
+
+    <View
+        android:id="@+id/view_1"
+        android:layout_width="match_parent"
+        android:layout_height="3dip"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/Hist_Unit_nom"
+        android:layout_marginTop="3dip"
+        android:background="@color/colorPrimary"/>
+
+    <TextView
+        android:id="@+id/text_nombre_douleurs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/view_1"
+        android:text="Nombre de douleurs: "
+        android:layout_marginLeft="3dip"/>
+    <TextView
+        android:id="@+id/Hist_Unit_nombre_douleurs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/text_nombre_douleurs"
+        android:layout_alignBottom="@id/text_nombre_douleurs"
+        android:layout_centerHorizontal="true"
+        android:text="00" android:textStyle="normal|bold"/>
+
+    <TextView
+        android:id="@+id/text_nombre_medicaments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/text_nombre_douleurs"
+        android:text="Nombre de médicaments: "
+        android:layout_marginLeft="3dip"/>
+    <TextView
+        android:id="@+id/Hist_Unit_nombre_medicaments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/text_nombre_medicaments"
+        android:layout_alignBottom="@id/text_nombre_medicaments"
+        android:layout_centerHorizontal="true"
+        android:text="00" android:textStyle="normal|bold"/>
+
+    <View
+        android:id="@+id/view_2"
+        android:layout_width="match_parent"
+        android:layout_height="3dip"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/Hist_Unit_nombre_medicaments"
+        android:layout_marginTop="3dip"
+        android:background="@color/colorPrimary"/>
+
+    <ListView
+        android:id="@+id/Hist_Unit_listview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view_2"
+        android:scrollbars="vertical" android:layout_marginLeft="3dip"
+        android:layout_marginRight="3dip"/>
+
+    <Button
+        android:id="@+id/bouton_fin_historique_unitaire"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/Hist_Unit_listview"
+        android:text="Ok" android:layout_marginLeft="5dip" android:layout_marginRight="5dip"/>
+
+</RelativeLayout>

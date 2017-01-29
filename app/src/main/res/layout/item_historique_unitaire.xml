@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+    <TextView
+        android:id="@+id/texte_item_historique_unitaire_douleur"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/texte_item_historique_unitaire_douleur"/>
+
+    <TextView
+        android:id="@+id/valeur_item_historique_unitaire_douleur"
+        android:text="00"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@id/texte_item_historique_unitaire_douleur"
+        android:textStyle="normal|bold"/>
+
+    <TextView
+        android:id="@+id/separateur_item_historique_unitaire_douleur"
+        android:text=" - "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@id/valeur_item_historique_unitaire_douleur"/>
+
+
+    <TextView
+        android:id="@+id/texte_item_historique_unitaire_medicament"
+        android:text="@string/texte_item_historique_unitaire_medicament"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/separateur_item_historique_unitaire_douleur"/>
+
+    <TextView
+        android:id="@+id/valeur_item_historique_unitaire_medicament"
+        android:text="azertyuiop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@id/texte_item_historique_unitaire_medicament"
+        android:textStyle="normal|bold"/>
+
+
+    <TextView
+        android:id="@+id/valeur_item_historique_unitaire_commentaire"
+        android:text="......../........ commentaire ......../........"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/texte_item_historique_unitaire_douleur"
+        android:textStyle="normal|bold"/>
+
+</RelativeLayout>

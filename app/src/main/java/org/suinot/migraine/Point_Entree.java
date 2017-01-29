@@ -1,34 +1,46 @@
 package org.suinot.migraine;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 /**
  * Created by remi on 18/08/16.
  * Activity principale de l'application
  */
-public class Point_Entree extends Activity {
+public class Point_Entree extends AppCompatActivity implements  Constantes.constantes, MydialogBoxHistoriqueUnitaire.onSubmitListener {
 
+    public static Activity activity;
     GestionBaseMigraine baseMigraine;
-    /* En attente
-        private Button graphique;
-    */
-    private Button historique;
-    private Button en_cours;
+
+    private Button b_historique;
+    private Button b_graphique;
     private Button nouveau;
     private static final int CODE_RETOUR = 1;
-    //    Douleur douleur;
-    TextView tdate;
-    TextView theure;
-    TextView tnombreevnt;
+    private TextView tnombreevnt;
+    CustomAdapter_evenement listevent_Adapter = null;
+
+    ListView listnombreevnt;
+    ArrayList<Item_liste_d_evenement> array_list_event;
+    Migraine donnees = new Migraine ();
 
     private int migraine_en_cours = 0;
     // A faire:
@@ -39,21 +51,14 @@ public class Point_Entree extends Activity {
     //   4: afficher sur la surface première les info:
     //       nombre de données ---> fait
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        activity = this;
+
         setContentView (R.layout.point_entree);
+        final Integer nb_de_migraines;
 
-        en_cours = (Button) findViewById (R.id.B_en_cours);
-
-        tdate = (TextView) findViewById (R.id.t_date);
-        theure = (TextView) findViewById (R.id.t_heure);
-
-        Migraine donnees = new Migraine ();
-        Integer nb_de_migraines;
         String valeur;
 
             /* --------------------------------------------------------------------------------
@@ -62,28 +67,42 @@ public class Point_Entree extends Activity {
 
         baseMigraine = new GestionBaseMigraine (this);
         baseMigraine.open ();
+
+        //      Création d'une listeview avec le nombre de mibraine (date heure de début + nombre de médicament )
+        // setup the data source
+        array_list_event = new ArrayList<> ();
+        array_list_event = baseMigraine.getAllMigraine ();
+        listevent_Adapter = new CustomAdapter_evenement
+                (this,
+                        R.layout.item_liste_d_evenement,
+                        this.array_list_event);  //instantiation de l'adapter 1 seule fois;
+        listnombreevnt = (ListView) findViewById (R.id.liste_evenement);
+        listnombreevnt.setAdapter (listevent_Adapter);
+
+        listnombreevnt.setOnItemClickListener (new AdapterView.OnItemClickListener () {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+Log.d ("setonclick", "click court");
+                // Click court
+                // l'ID reçu est le n° dans le listview et pas dnas la base de donnée!!! 'ordre inversé!!!)
+                click_cours_ou_long (id_base_migraine (position));
+            }
+        });
+
+        listnombreevnt.setOnItemLongClickListener (new AdapterView.OnItemLongClickListener () {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                // Click court
+Log.d ("setonclick", "click long");
+                // l'ID reçu est le n° dans le listview et pas dnas la base de donnée!!! 'ordre inversé!!!)
+                click_cours_ou_long (id_base_migraine (position));
+                return false;
+            }
+        });
+
         nb_de_migraines = baseMigraine.NombreMigraine ();
-        Log.d ("onCreate", "nb_de_migraines" + nb_de_migraines);
         tnombreevnt = (TextView) findViewById (R.id.T_nombre_evnt);
         tnombreevnt.setText (String.format ("%d", nb_de_migraines));
-        if (nb_de_migraines > 0) {
-            donnees = baseMigraine.getMigraineWithId (nb_de_migraines);
-            valeur = donnees.getdate_migraine ();
-            Log.d ("onCreate", "DATE last" + valeur);
-            tdate.setText (valeur);
-            valeur = donnees.getheure_migraine ();
-            Log.d ("onCreate", "TIME last" + valeur);
-            theure.setText (valeur);
-            Log.d ("donnees.getetat", "valeur: " + donnees.getetat ());
-            if (donnees.getetat () != 0) {
-                en_cours.setEnabled (true);
-                en_cours.setClickable (true);
-                migraine_en_cours = 1;
-            } else {
-                en_cours.setEnabled (false);
-                en_cours.setClickable (false);
-            }
-        }
+
         /* --------------------------------------------------------------------------------
             Gestion des boutons
         --------------------------------------------------------------------------------- */
@@ -93,14 +112,16 @@ public class Point_Entree extends Activity {
             public void onClick(View view) {
                 //On créé l'Intent qui va nous permettre d'afficher l'autre Activity
                 //Mettez le nom de l'Activity dans la quelle vous êtes actuellement
+                // en parametre: le numéro de la migraine en cours
+
                 Intent Nouvelle_migraine = new Intent (getApplicationContext (), Nouvelle_Migraine.class);
                 Nouvelle_migraine.putExtra ("last", migraine_en_cours);
                 startActivityForResult (Nouvelle_migraine, CODE_RETOUR);
             }
         });
 
-        historique = (Button) findViewById (R.id.B_Historique);
-        historique.setOnClickListener ((new OnClickListener () {
+        b_historique = (Button) findViewById (R.id.B_Historique);
+        b_historique.setOnClickListener ((new OnClickListener () {
             @Override
             public void onClick(View view) {
                 Intent Vue_Historique = new Intent (getApplicationContext (), Historique.class);
@@ -108,12 +129,54 @@ public class Point_Entree extends Activity {
             }
         }));
 
+        b_graphique = (Button) findViewById (R.id.B_graphique);
+        b_graphique.setOnClickListener (new OnClickListener () {
+            @Override
+            public void onClick(View v) {
+                Intent Vue_Graphique = new Intent (getApplicationContext (), Graphique.class);
+                startActivity (Vue_Graphique);
+            }
+        });
     }
 
+    int id_base_migraine(int ID) {
+        // Recherche de l'identifiant dans la base migraine, en fonction de l'ID du listview
+        // ID=0 => premier du listview mais dermier de la base
+        String nom = listevent_Adapter.getItemNomWithID (ID);
+        return baseMigraine.getMigraineWithNom (nom).getId ();
+    }
+
+    void click_cours_ou_long(int ID) {
+        //On créé l'Intent qui va nous permettre d'afficher l'autre Activity
+        //Mettre le nom de l'Activity dans la quelle vous êtes actuellement
+        donnees = baseMigraine.getMigraineWithId (ID);
+        if (donnees.getetat () == 1) {
+            reprise_migraine (ID);
+        } else if (donnees.getetat () == 2) {
+            historique_migraine (ID);
+        } else {
+            Toast.makeText (getApplicationContext (),
+                    R.string.erreur_get_etat,
+                    Toast.LENGTH_LONG);
+        }
+    }
+
+    void reprise_migraine(int ID) {
+        Intent Migraine_En_Cours = new Intent (getApplicationContext (), Migraine_en_cours.class);
+        Migraine_En_Cours.putExtra ("last", ID);
+        startActivityForResult (Migraine_En_Cours, CODE_RETOUR);
+        listnombreevnt.forceLayout ();
+    }
+
+    void historique_migraine(int ID) {
+        newInstanceDialog (DIALOG_HISTORIQUE_UNITAIRE, ID);
+    }
+
+    // Initiating Menu XML file (menu.xml)
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater ().inflate (R.menu.menu, menu);
+        MenuInflater menuInflater = getMenuInflater ();
+        menuInflater.inflate (R.menu.menu, menu);
         return true;
     }
 
@@ -123,6 +186,9 @@ public class Point_Entree extends Activity {
         switch (item.getItemId ()) {
             case R.id.M_Config:
                 startActivity (new Intent (getApplicationContext (), Configuration.class));
+                return true;
+            case R.id.M_Info:
+                newInstanceDialog (DIALOG_INFORMATION, 0);
                 return true;
             case R.id.M_Quit:
                 finish ();
@@ -137,23 +203,39 @@ public class Point_Entree extends Activity {
         //on regarde quelle Activity a répondu
         String valeur;
         int nb_de_migraines;
+        baseMigraine.open ();
+        nb_de_migraines = baseMigraine.NombreMigraine ();
+// Actualisation du Listview => cf méthode
         switch (requestCode) {
             case CODE_RETOUR:
 
                 //On regarde qu'elle est la réponse envoyée et en fonction de la réponse on affiche un message différent.
                 switch (resultCode) {
-                    case 1:
-                        baseMigraine.open ();
-                        nb_de_migraines = baseMigraine.NombreMigraine ();
-                        tnombreevnt.setText (Long.toString (nb_de_migraines));
+                    case RETOUR_NOUVELLE_MIGRAINE: // retour de L'Activity Nouvel Migraine
                         if (nb_de_migraines > 0) {
                             Migraine donnees = baseMigraine.getMigraineWithId (nb_de_migraines);
-                            valeur = donnees.getdate_migraine ();
-                            tdate.setText (valeur);
-                            valeur = donnees.getheure_migraine ();
-                            theure.setText (valeur);
+
+                            tnombreevnt.setText (String.format ("%d", nb_de_migraines));
+                            tnombreevnt.forceLayout ();
+
+//ici modification du listview nombre de migraine
+//                            listnombreevnt.setAdapter (listevent_Adapter);
                         }
-                        return;
+                        listnombreevnt.forceLayout ();
+                        // tno.notifyDataSetChanged();
+                        break;
+                    case RETOUR_MIGRAINE_EN_COURS: // retour de Migraine en cours
+//ici modification du listview nombre de migraine
+                        Migraine donnees = baseMigraine.getMigraineWithId (nb_de_migraines);
+
+                        break;
+                    case RETOUR_CONFIGURATION: // retour de Configuration
+
+
+                        break;
+                    case RETOUR_HISTORIQUE: // retour de Historique
+
+                        break;
                 }
         }
     }
@@ -162,5 +244,46 @@ public class Point_Entree extends Activity {
     public void onResume() {  // After a pause OR at startup
         super.onResume ();
         //Refresh your stuff here
+        Log.d ("onResume", " -- passage par onResume -- ");
+
+    }
+
+    public void newInstanceDialog(int identifiant, int ID) {
+        Dialog dialog;
+        //En fonction de l'identifiant de la boîte qu'on veut créer
+        switch (identifiant) {
+            case DIALOG_INFORMATION:
+                // On construit la première boîte de dialogue
+
+                Builder alert = new AlertDialog.Builder (this);
+                alert.setIcon (R.mipmap.encephale);
+                alert.setTitle (R.string.app_name);
+                alert.setCancelable (true);
+                alert.setMessage (getResources ().getString (R.string.copyleft));
+                alert.setPositiveButton (getResources ().getString (R.string.copyleft_ok), new OkOnClickListener ());
+                dialog = alert.create ();
+                dialog.show ();
+                break;
+            case DIALOG_HISTORIQUE_UNITAIRE:
+                // boite de dialog revisitée pour l'historique d'une migraine (click long)
+                MydialogBoxHistoriqueUnitaire dialogbox = new MydialogBoxHistoriqueUnitaire ();
+                dialogbox.mListener = this;
+                dialogbox.get_id_base_de_donnees (ID);
+                dialogbox.show(getFragmentManager(), "");
+
+                break;
+        }
+
+    }
+
+    @Override
+    public void setOnSubmitListener(String arg) {
+
+    }
+
+    private final class OkOnClickListener implements DialogInterface.OnClickListener {
+        public void onClick(DialogInterface dialog, int which) {
+
+        }
     }
 }

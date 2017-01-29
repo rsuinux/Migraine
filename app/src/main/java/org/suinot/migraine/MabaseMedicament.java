@@ -21,9 +21,6 @@ import java.io.OutputStream;
 
 class MabaseMedicament extends SQLiteOpenHelper implements Constantes.constantes {
 
-    private static final int VERSION_BDD = 1;
-
-    private static final String NOM_BDD = "Antalgiques.db";
     private String DATABASE_PATH; // chemin défini dans le constructeur
 
     private static final String CREATE_TABLE_MEDICAMENTS = "CREATE TABLE " + TABLE_MEDIC + " ("
@@ -38,11 +35,10 @@ class MabaseMedicament extends SQLiteOpenHelper implements Constantes.constantes
 
     // Constructeur
     private MabaseMedicament(Context context) {
-        super (context, NOM_BDD, null, VERSION_BDD);
+        super (context, NOM_BD_MEDICAMENTS, null, VERSION_DB_MEDICAMENTS);
         this.mycontext = context;
         String filesDir = context.getFilesDir ().getPath (); // /data/data/com.package.nom/files/
         DATABASE_PATH = filesDir.substring (0, filesDir.lastIndexOf ("/")) + "/databases/"; // /data/data/com.package.nom/databases/
-        Log.d ("ConstR MabaseMedicament", "création de la base");
 
         // Si la bdd n'existe pas dans le dossier de l'app
         if (!checkdatabase ()) {
@@ -52,8 +48,6 @@ class MabaseMedicament extends SQLiteOpenHelper implements Constantes.constantes
     }
 
     static synchronized MabaseMedicament getInstance(Context context) {
-        Log.d ("getInstance", "création de la base");
-
         if (sInstance == null) {
             sInstance = new MabaseMedicament (context);
         }
@@ -62,9 +56,7 @@ class MabaseMedicament extends SQLiteOpenHelper implements Constantes.constantes
 
     private boolean checkdatabase() {
         // retourne true/false si la bdd existe dans le dossier de l'app
-        File dbfile = new File (DATABASE_PATH + NOM_BDD);
-        Log.d ("checkdatabase", "verif si base existe");
-        Log.d ("checkdatabase", "chemin + fichier=" + DATABASE_PATH + NOM_BDD);
+        File dbfile = new File (DATABASE_PATH + NOM_BD_MEDICAMENTS);
         return dbfile.exists ();
     }
 
@@ -72,13 +64,12 @@ class MabaseMedicament extends SQLiteOpenHelper implements Constantes.constantes
     // ceci est fait au premier lancement de l'application
     private boolean copydatabase() {
 
-        final String outFileName = DATABASE_PATH + NOM_BDD;
-        Log.d ("copybase", "outFileName: " + outFileName);
+        final String outFileName = DATABASE_PATH + NOM_BD_MEDICAMENTS;
 
         InputStream myInput;
         try {
             // Ouvre la bdd de 'assets' en lecture
-            myInput = mycontext.getAssets ().open (NOM_BDD);
+            myInput = mycontext.getAssets ().open (NOM_BD_MEDICAMENTS);
 
             // dossier de destination
             File pathFile = new File (DATABASE_PATH);
@@ -111,8 +102,8 @@ class MabaseMedicament extends SQLiteOpenHelper implements Constantes.constantes
 
         // on greffe le numéro de version
         try {
-            SQLiteDatabase checkdb = SQLiteDatabase.openDatabase (DATABASE_PATH + NOM_BDD, null, SQLiteDatabase.OPEN_READWRITE);
-            checkdb.setVersion (VERSION_BDD);
+            SQLiteDatabase checkdb = SQLiteDatabase.openDatabase (DATABASE_PATH + NOM_BD_MEDICAMENTS, null, SQLiteDatabase.OPEN_READWRITE);
+            checkdb.setVersion (VERSION_DB_MEDICAMENTS);
         } catch (SQLiteException e) {
             // bdd n'existe pas
             return false;
@@ -124,7 +115,6 @@ class MabaseMedicament extends SQLiteOpenHelper implements Constantes.constantes
     @Override
     public void onCreate(SQLiteDatabase db) {
         //on crée la table à partir de la requête écrite dans la variable CREATE_BDD
-        Log.d ("onCreate", "pas de bdd existante");
         db.execSQL (CREATE_TABLE_MEDICAMENTS);
     }
 

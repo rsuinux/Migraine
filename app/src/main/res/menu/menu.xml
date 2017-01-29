@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/M_Config"
         android:orderInCategory="100"
-        android:title="@string/Config"/>
+        android:src="@drawable/configuration"
+        android:title="@string/Config"
+        android:icon="@drawable/configuration"/>
+    <item
+        android:id="@+id/M_Info"
+        android:src="@drawable/info"
+        android:orderInCategory="100"
+        android:title="@string/info"
+        android:icon="@drawable/info"/>
+
     <item
         android:id="@+id/M_Quit"
-        android:icon="@drawable/exit"
+        android:src="@drawable/exit"
         android:orderInCategory="100"
-        android:title="@string/quit"/>
+        android:title="@string/quit"
+        android:icon="@drawable/exit"/>
 
 </menu>

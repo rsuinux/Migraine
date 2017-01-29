@@ -10,12 +10,12 @@ import java.util.Set;
  */
 
 class Item_Medicament {
-    public String medicament;
-    public String dosage;
-    public int invalide;
+    String medicament;
+    String dosage;
+    int invalide;
 
     // main constructor
-    public Item_Medicament(String medicament, String dosage, int invalide) {
+    Item_Medicament(String medicament, String dosage, int invalide) {
         super ();
         this.medicament = medicament;
         this.dosage = dosage;

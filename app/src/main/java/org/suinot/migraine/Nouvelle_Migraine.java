@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
@@ -22,6 +21,7 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -45,17 +45,16 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
     private String heure_actuel;
     private String douleur_actuel;
     private int medicament_actuel;
-    private Button fin_de_Migraine;
-    private int etat_migraine_actuelle;
 
     Context context;
+    private EditText nouveau_nom;
     private EditText commentaire;
     private TextView dateTextView;
     private TextView timeTextView;
     private TextView etat_migraine;
     private int migraine_en_cours = 0;
-
     GestionBaseMigraine baseMigraine;
+    GestionBaseMedicament baseMedicament;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,29 +72,15 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
         Migraine migraine = new Migraine ();
         baseMigraine = new GestionBaseMigraine (this);
         baseMigraine.open ();
-        GestionBaseMedicament baseMedicament = new GestionBaseMedicament (this);
+        baseMedicament = new GestionBaseMedicament (this);
         baseMedicament.open ();
 
         setContentView (R.layout.nouvelle_migraine);
-        fin_de_Migraine = (Button) findViewById (R.id.B_Fin_de_Migraine);
-        etat_migraine = (TextView) findViewById (R.id.Etat_Evenement);
-        if (migraine_en_cours == 0) {
-            // c'est une nouvelle migraine demandée
-            fin_de_Migraine.setEnabled (false);
-            fin_de_Migraine.setClickable (false);
-            etat_migraine.setText (R.string.Etat_evenement_1);
-        } else {
-            // on demande la suite d'une migraine en cours -> la plus récente
-            fin_de_Migraine.setEnabled (true);
-            fin_de_Migraine.setClickable (true);
-            etat_migraine.setText (R.string.Etat_evenement_2);
-        }
 
         /* ------------------------------------------------------------------------------------------
         Gestion des boutons et des champs texte
         Récupération et gestion de l'event par onclick en fin de class
         ------------------------------------------------------------------------------------------ */
-        findViewById (R.id.B_Enregistrer).setOnClickListener (this);
 
         // Rechercher l'instance du radio Group, nous en aurons besoin pour poser un listener
         rg = (RadioGroup) findViewById (R.id.Radio_Douleur);
@@ -115,41 +100,22 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
              ligne 2: médicament dose
      ------------------------------------------------------------------------------------------------------ */
 
-    /* ------------------------------------------------------------------------------------------------------
-           // création du tableau dynamique et affichage de type spinner de la base des médicaments
-     ------------------------------------------------------------------------------------------------------ */
-        // Mise à jour de la liste des médicaments à partir de la base de données du médicament
-        // et gestion de la liste déroulante
-        List<String> list_medicaments = baseMedicament.getAllLabels ();
-        ArrayAdapter adapter_spinner = new ArrayAdapter (this, android.R.layout.simple_spinner_item, list_medicaments);
-        /* On definit une présentation du spinner quand il est déroulé (android.R.layout.simple_spinner_dropdown_item) */
-        adapter_spinner.setDropDownViewResource (android.R.layout.simple_spinner_dropdown_item);
-
-        liste_deroulante = (Spinner) findViewById (R.id.Medicaments);
-        liste_deroulante.setAdapter (adapter_spinner);
-        set_liste_deroulante ();
-        medicament_actuel = 0;
         /* ------------------------------------------------------------------------------------------
          on demande à modifier la date et/ou heure de la nouvelle migraine:
           ------------------------------------------------------------------------------------------- */
         //noinspection RedundantStringConstructorCall
-        String date;
         final Calendar c = Calendar.getInstance ();
-
         java.text.DateFormat formatter = java.text.DateFormat.getDateInstance (
-                java.text.DateFormat.SHORT); // one of SHORT, MEDIUM, LONG, FULL, or DEFAULT
+                DateFormat.SHORT); // type de format (court ou non: SHORT MEDIUM LONG) pour la date
         formatter.setTimeZone (c.getTimeZone ());
-        date = formatter.format (c.getTime ());
-        SimpleDateFormat mHeureFormat = new SimpleDateFormat ("HH:mm", Locale.FRANCE);
-
-        String heure = mHeureFormat.format (new Date ());
-
-        timeTextView = (TextView) findViewById (R.id.Actuelle_Heure);
-        timeTextView.setText (heure, TextView.BufferType.EDITABLE);
-
+        date_actuel = formatter.format (c.getTime ());
         dateTextView = (TextView) findViewById (R.id.Actuelle_Date);
-        dateTextView.setText (date, TextView.BufferType.EDITABLE);
+        dateTextView.setText (date_actuel);
 
+        SimpleDateFormat mHeureFormat = new SimpleDateFormat ("HH:mm", Locale.FRANCE);
+        heure_actuel = mHeureFormat.format (new Date ());
+        timeTextView = (TextView) findViewById (R.id.Actuelle_Heure);
+        timeTextView.setText (heure_actuel);
         ImageButton Nouvelle_date;
         Nouvelle_date = (ImageButton) findViewById (R.id.New_Date);
         Nouvelle_date.setOnClickListener (new View.OnClickListener () {
@@ -166,7 +132,26 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
             }
         });
 
+        nouveau_nom = (EditText) findViewById (R.id.Nouveau_Nom);
         commentaire = (EditText) findViewById (R.id.B_Commentaire);
+
+        /* ------------------------------------------------------------------------------------------------------
+           // création du tableau dynamique et affichage de type spinner de la base des médicaments
+        ------------------------------------------------------------------------------------------------------ */
+        // Mise à jour de la liste des médicaments à partir de la base de données du médicament
+        // et gestion de la liste déroulante
+        List<String> list_medicaments = baseMedicament.getAllLabels ();
+        ArrayAdapter adapter_spinner = new ArrayAdapter (this, android.R.layout.simple_spinner_item, list_medicaments);
+        /* On definit une présentation du spinner quand il est déroulé (android.R.layout.simple_spinner_dropdown_item) */
+        adapter_spinner.setDropDownViewResource (android.R.layout.simple_spinner_dropdown_item);
+
+        liste_deroulante = (Spinner) findViewById (R.id.Medicaments);
+        liste_deroulante.setAdapter (adapter_spinner);
+        set_liste_deroulante ();
+        medicament_actuel = 0;
+
+        findViewById (R.id.B_Enregistrer).setOnClickListener (this);
+
     }
 
     private void set_liste_deroulante() {
@@ -175,10 +160,8 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
             public void onItemSelected(AdapterView<?> a, View v, int position, long id) {
                 // String item= liste_deroulente.getItemAtPosition(position);
                 String item = liste_deroulante.getSelectedItem ().toString ();
-                Log.d ("Log: Spinner ", item + "a=" + a + "id=" + id);
                 /* ici, ajouter à la listview mListView litem sélectionnée */
 
-                Log.d ("ajout de medicament ", "item=" + item);
                 if (!item.isEmpty ()) {
                     medicament_actuel = (int) id;
                 }
@@ -201,9 +184,9 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
         // a partir d'ici, je doit gérer le retour des valeurs, puis lancer timepicker
         // Log.d ("DatePicker", "ok");
         monthOfYear += 1;
-        String date = dayOfMonth + "/" + monthOfYear + "/" + year;
-        dateTextView.setText (date);
-        date_actuel = date;
+        date_actuel = dayOfMonth + "/" + monthOfYear + "/" + year;
+        dateTextView.setText (date_actuel);
+
         Calendar now = Calendar.getInstance ();
         TimePickerDialog tpd = TimePickerDialog.newInstance (
                 Nouvelle_Migraine.this,
@@ -215,25 +198,26 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
         tpd.show (getFragmentManager (), "Timepickerdialog");
     }
 
-    // gestion de l'ecran de choix de l'heure
+    /* ------------------------------------------------------------------------------------------------------
+      Fin de  Fonction de geston du datepicker
+      timepicker ensuite pour le choix de l'heure
+     ------------------------------------------------------------------------------------------------------ */
     @Override
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
         // Log.d ("TimePicker", "ok");
         String hourString = hourOfDay < 10 ? "0" + hourOfDay : "" + hourOfDay;
         String minuteString = minute < 10 ? "0" + minute : "" + minute;
-        String time = hourString + "h" + minuteString;
-        timeTextView.setText (time);
-        heure_actuel = time;
+        heure_actuel = hourString + "h" + minuteString;
+        timeTextView.setText (heure_actuel);
     }
+
     /* ------------------------------------------------------------------------------------------------------
-      Fin de  Fonction de geston du datapicker et timepicker ensuite
+        Fin de  Fonction de geston du timepicker
+
+        // gestion de la seekbar
      ------------------------------------------------------------------------------------------------------ */
-
-
-    // gestion de la seekbar
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         // à partir de la on change l'état des radio bouton quand la seekbar change
-        Log.d ("seekbar", "id= " + progress);
         douleur_actuel = Integer.toString (progress);
         ((RadioButton) rg.getChildAt (progress)).setChecked (true);
 
@@ -263,56 +247,40 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
                 final RadioButton rb = (RadioButton) findViewById (checkedId);
                 String r1 = (String) rb.getText ();
 
-                Log.d ("radiobouton", "rb=" + r1 + ".");
                 douleur_actuel = r1;
-                Log.d ("radiobouton", "douleur_actuel=" + douleur_actuel + ".");
                 seekBar.setProgress (Integer.decode (r1));
 //                Toast.makeText (context, String.valueOf (selectedRadioButton[0].getText ().toString ()), Toast.LENGTH_SHORT).show ();
             }
         });
     }
 
-    // gestion des boutons
+    // gestion de tous les boutons
     public void onClick(View v) {
         // que déclanche ton quand on clique?
         long i = 0;
-        long j;
-        byte[] txt = new byte[9];
-//        String txt=new String ();
+        int j;
+        long k;
         Migraine migraine = new Migraine ();
         Douleur douleur = new Douleur ();
+        long date_time_non_formate = System.currentTimeMillis ();
         switch (v.getId ()) {
 
             case R.id.B_Enregistrer:
                 //Ce que tu veux faire lorsque tu cliques sur le bouton 2
+                nom_actuel = nouveau_nom.getText ().toString ();
                 if (nom_actuel.equals ("")) {
-                    j = random.nextLong (); // 64 bit -> 8 caractères
-                    do {
-                        txt[(int) i] = (byte) (0xFF & (j >> 8 * i));
-                        if (txt[(int) i] < 32) {
-                            txt[(int) i] += 32;
-                        }
-                        i += 1;
-                    } while (i < 9);
-                    nom_actuel = String.valueOf (txt);
+                    nom_actuel = nom_actuel.valueOf (date_time_non_formate);
                 }
-                Log.d ("onClick", "bouton enregistrer");
-                Log.d ("OnClick", " nom " + nom_actuel);
-                Log.d ("OnClick", "date " + date_actuel);
-                Log.d ("OnClick", "heure " + heure_actuel);
-                Log.d ("OnClick", "douleur " + douleur_actuel);
-                Log.d ("OnClick", "medicament " + medicament_actuel);
                 migraine.setnom_migraine (nom_actuel);
                 migraine.setdate_migraine (date_actuel);
                 migraine.setheure_migraine (heure_actuel);
-                migraine.setduree_migraine ("");
+                migraine.setduree_migraine (0);
                 migraine.setcommentaire (commentaire.getText ().toString ());
                 migraine.setetat (1);
 
                 // Ecriture dans la base de données -> table migraines
-                j = baseMigraine.insertMigraine (migraine);
-                if (j != -1) {
-                    douleur.setmedic (medicament_actuel);
+                k = baseMigraine.insertMigraine (migraine);
+                if (k != -1) {
                     i = Long.parseLong (douleur_actuel);
                     douleur.setintensite_douleur ((int) i);
                     douleur.setdate_douleur (date_actuel);
@@ -321,25 +289,45 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
                     i = baseMigraine.insertDouleur (douleur);
                     if (i != -1) {
                         // Tout c'est bien passé jusqu'ici.
-                        // récupération des numéros d'entrée dans les tables
-                        // pour les placer dans table_croisee
-                        i = baseMigraine.insertCroisee (i, j);
+                        // insertion dans la table_croisee de l'id douleur, l'id medicament et l'id migraine
+                        i = baseMigraine.insertCroisee (i, medicament_actuel, k);
                         if (i == -1) {
-                            Toast.makeText (getApplicationContext (), "Attention\nProblème d'insertion dans la base 'table de données croisées'\nNe sera pas fait.",
-                                    Toast.LENGTH_LONG).show ();
+                            Toast.makeText (getApplicationContext (),
+                                    R.string.nouvelle_migraine_pb_insertion_croisee,
+                                    Toast.LENGTH_LONG)
+                                    .show ();
                         }
                     } else {
-                        Toast.makeText (getApplicationContext (), "Attention\nProblème d'insertion dans la base 'table Douleur'\nNe sera pas fait.",
-                                Toast.LENGTH_LONG).show ();
+                        Toast.makeText (getApplicationContext (),
+                                R.string.nouvelle_migraine_pb_insertion_douleur,
+                                Toast.LENGTH_LONG)
+                                .show ();
                     }
                     baseMigraine.close ();
                 } else {
-                    Toast.makeText (getApplicationContext (), "Attention\nProblème d'insertion dans la base 'table Migraine'\nNe sera pas fait.",
-                            Toast.LENGTH_LONG).show ();
+                    Toast.makeText (getApplicationContext (),
+                            R.string.nouvelle_migraine_pb_insertion_migraine,
+                            Toast.LENGTH_LONG)
+                            .show ();
                 }
-                setResult (1);
+                setResult (RETOUR_NOUVELLE_MIGRAINE);
                 finish ();
                 break;
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume ();
+        baseMedicament.open ();
+        baseMigraine.open ();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause ();
+        baseMedicament.close ();
+        baseMigraine.close ();
+    }
+
 }
