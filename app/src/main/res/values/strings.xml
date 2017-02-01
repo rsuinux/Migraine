@@ -68,6 +68,6 @@
     <string name="erreur_get_etat">"Erreur d&#180;état de l&#180;événement",</string>
     <string name="texte_item_historique_unitaire_douleur">Douleur: </string>
     <string name="texte_item_historique_unitaire_medicament">Medicament: </string>
-    <string name="pas_de_medicament">Pas de médicament</string>
+    <string name="pas_de_medicament"> Pas de médicament</string>
 
 </resources>

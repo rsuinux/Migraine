@@ -29,8 +29,10 @@ class GestionBaseMedicament implements Constantes.constantes {
         //on ouvre la BDD en écriture
         try {
             bdd = MaBase.getWritableDatabase ();
+            Log.d("MabaseMedicament", "open readwrite");
         }    catch (SQLiteException ex) {
             bdd = MaBase.getReadableDatabase ();
+            Log.d("MabaseMedicament", "open readonly");
         }
     }
 
@@ -107,14 +109,12 @@ class GestionBaseMedicament implements Constantes.constantes {
         String[] clauseSelect = new String[]{" * "};
         String clauseOu = COL_MEDIC_ID + " = ? ";
         String argsOu = Integer.toString (id);
-        String orderBy = "";
 
-        Cursor c = bdd.query (TABLE_MEDIC, clauseSelect, clauseOu, new String[]{argsOu}, null, null, orderBy);
-        // Cursor c=bdd.query(TABLE_MEDIC, new String[]{COL_MEDIC_ID, COL_MEDIC_NOM, COL_MEDIC_DOSE }, null, null, COL_MEDIC_ID + " = " + id, null, null);
-Log.d("getMedicwithID", "id= "+ id + " - c.getcount=" + c.getCount ());
+        Cursor c = bdd.query (TABLE_MEDIC, clauseSelect, clauseOu, new String[]{argsOu}, null, null, null);
         if ( c.getCount () == 0 )
             return "";
-        return c.getString (NUM_COL_MEDIC_NOM);
+        Medicament m=cursorToMedicament(c);
+        return m.getMedicament ();
     }
 
     /**

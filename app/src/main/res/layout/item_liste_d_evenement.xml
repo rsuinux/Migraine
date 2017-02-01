@@ -25,12 +25,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="none"
-            android:text="["
+            android:text=" [ "
             android:id="@+id/editText"
             android:textSize="14sp"
-            android:layout_alignBaseline="@+id/item_event_date"
-            android:layout_alignBottom="@+id/item_event_date"
-            android:layout_toEndOf="@+id/item_event_nom"/>
+            android:layout_alignParentTop="true" android:layout_toStartOf="@+id/item_event_date"/>
         <TextView
             android:id="@+id/item_event_date"
             android:layout_width="wrap_content"
@@ -40,16 +38,14 @@
             android:paddingRight="2dp"
             android:text="item date"
             android:textStyle="bold"
-            android:layout_alignParentTop="true" android:layout_toEndOf="@+id/editText"/>
+            android:layout_alignParentTop="true" android:layout_toStartOf="@+id/editText2"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="none"
             android:text=" - "
             android:id="@+id/editText2" android:textSize="14sp"
-            android:layout_alignBaseline="@+id/item_event_date"
-            android:layout_alignBottom="@+id/item_event_date"
-            android:layout_toEndOf="@+id/item_event_date"/>
+            android:layout_alignParentTop="true" android:layout_toStartOf="@+id/item_event_heure"/>
         <TextView
             android:id="@+id/item_event_heure"
             android:layout_width="wrap_content"
@@ -59,16 +55,15 @@
             android:paddingRight="2dp"
             android:text="item heure"
             android:textStyle="bold"
-            android:layout_alignParentTop="true" android:layout_toEndOf="@+id/editText2"/>
+            android:layout_alignParentTop="true" android:layout_toStartOf="@+id/editText3"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="none"
-            android:text="]"
+            android:text=" ] "
             android:id="@+id/editText3" android:textSize="14sp"
-            android:layout_alignBaseline="@+id/item_event_heure"
-            android:layout_alignBottom="@+id/item_event_heure"
-            android:layout_toEndOf="@+id/item_event_heure"/>
+            android:layout_alignParentTop="true" android:layout_alignParentEnd="true"
+            android:layout_marginEnd="54dp"/>
         <TextView
             android:id="@+id/text_item_medicament_pris"
             android:layout_width="wrap_content"
@@ -76,7 +71,7 @@
             android:layout_below="@id/item_event_date"
             android:layout_weight="50"
             android:paddingLeft="2dp"
-            android:paddingRight="2dp"
+            android:paddingRight="4dp"
             android:text="Nombre de médicaments pris: "/>
         <TextView
             android:id="@+id/item__event_nombre_medicament"

@@ -25,7 +25,7 @@ public class CustomAdapter_historique_unitaire extends BaseAdapter {
     // store the resource (typically list_item.xml)
     private int resource;
     // store (a reference to) the data
-    private ArrayList<Item_historique_unitaire> list_historique_unitaire;
+    private ArrayList<Item_historique_unitaire> data;
 
     /**
      * Default constructor. Creates the new Adaptor object to
@@ -38,7 +38,7 @@ public class CustomAdapter_historique_unitaire extends BaseAdapter {
     CustomAdapter_historique_unitaire (Context context, int resource, ArrayList<Item_historique_unitaire> data) {
         this.inflater = (LayoutInflater) context.getSystemService (Context.LAYOUT_INFLATER_SERVICE);
         this.resource = resource;
-        this.list_historique_unitaire = data;
+        this.data = data;
     }
 
     public Context getActivity() {
@@ -54,18 +54,18 @@ public class CustomAdapter_historique_unitaire extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return this.list_historique_unitaire.size ();
+        return this.data.size ();
     }
 
     // retourne un élément de notre liste en fonction de sa position
     @Override
     public Object getItem(int position) {
-        return this.list_historique_unitaire.get (position);
+        return this.data.get (position);
     }
 
     // retourne le nom de l'élément (R.id.item_event_nom) en fonction de la position
     public String getItemCommentaireWithID(int ID) {
-        Item_historique_unitaire list = this.list_historique_unitaire.get (ID);
+        Item_historique_unitaire list = this.data.get (ID);
         return list.get_item_commentaire ();
     }
 
@@ -81,17 +81,17 @@ public class CustomAdapter_historique_unitaire extends BaseAdapter {
      */
     View bindData(View view, int position) {
         // make sure it's worth drawing the view
-        if (this.list_historique_unitaire.get (position) == null) {
+        if (this.data.get (position) == null) {
             return view;
         }
         // pull out the object
-        Item_historique_unitaire item = this.list_historique_unitaire.get (position);
+        Item_historique_unitaire item = this.data.get (position);
 
         // extract the view object
         View viewElement = view.findViewById (R.id.valeur_item_historique_unitaire_douleur);
         // cast to the correct type
         TextView tv = (TextView) viewElement;
-        tv.setText (item.valeur_douleur);
+        tv.setText (String.valueOf(item.valeur_douleur) );
 
         // set the value
         viewElement = view.findViewById (R.id.valeur_item_historique_unitaire_medicament);
@@ -108,47 +108,14 @@ public class CustomAdapter_historique_unitaire extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        MyViewHolder mViewHolder = null;
-
+        View view;
         // au premier appel ConvertView est null, on inflate notre layout
         if (convertView == null) {
-            LayoutInflater mInflater;
-            mInflater = (LayoutInflater)
-                    getActivity().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-
-            convertView = mInflater.inflate(R.layout.dialog_historique_unitaire, parent, false);
-
-            mViewHolder = new MyViewHolder();
-
-            // nous attribuons comme tag notre MyViewHolder à convertView
-            convertView.setTag(mViewHolder);
+            view = this.inflater.inflate(resource, parent, false);
         } else {
-            // convertView n'est pas null, nous récupérons notre objet MyViewHolder
-            // et évitons ainsi de devoir retrouver les vues à chaque appel de getView
-            mViewHolder = (MyViewHolder) convertView.getTag();
+            view = convertView;
         }
-        // nous plaçons dans notre MyViewHolder les vues de notre layout
-        /* Première ligne */
-        // nombre de douleur
-        mViewHolder.textViewdouleur = (TextView) .findViewById(R.id.valeur_item_historique_unitaire_douleur);
-        // nombre de medicament
-        mViewHolder.textViewmedicament = (TextView) convertView.findViewById(R.id.valeur_item_historique_unitaire_medicament);
-
-            /* Seconde ligne */
-        // commentaire(s) associé(s)
-        mViewHolder.textViewcommentaire = (TextView) convertView.findViewById(R.id.valeur_item_historique_unitaire_commentaire);
-
-        // nous récupérons l'item de la liste demandé par getView
-        Item_historique_unitaire listItem = (Item_historique_unitaire) getItem(position);
-Log.d("custom_adapteur", " valeur douleur: " + String.valueOf ( listItem.get_valeur_douleur () ));
-        // nous pouvons attribuer à nos vues les valeurs de l'élément de la liste
-        // attention: listItem.get_valeur_douleur () est un int
-        mViewHolder.textViewdouleur.setText( String.valueOf ( listItem.get_valeur_douleur () ) );
-        mViewHolder.textViewmedicament.setText(listItem.get_nom_medicament ());
-        mViewHolder.textViewcommentaire.setText(listItem.get_item_commentaire ());
-
-        // nous retournos la vue de l'item demandé
-        return convertView;
+       return this.bindData (view, position);
     }
 }
 

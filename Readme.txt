@@ -23,4 +23,14 @@ Ajout d'une activité "Historique"
 	-> listview à écrire pour elle.
 
 /*--------------------------------------- */
+01 fevrier 2017
+/*--------------------------------------- */
+Modification de la base de donnée
 
+visualisation rapide de tous les evenements 
+Ajout d'un historique par un clique sur un élément
+deux états possible d'un évenement: 
+  en cours-> pn peut dans ce cas ajouter une note de douleur, un médicament pris et un commentaire ou même terminer l'évenement
+  terminé: dans ce cas, un clique donne l'historique de toute les douleurs et médicaments notés avec leurs commentaire pour cet évenement.
+
+ 

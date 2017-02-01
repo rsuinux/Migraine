@@ -66,7 +66,6 @@ public class Migraine_en_cours extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate (savedInstanceState);
-        String txt_commentaire;
         Intent intent = getIntent ();
         if (intent != null) {
             numero_en_cours = this.getIntent ().getExtras ().getInt ("last");
@@ -79,7 +78,6 @@ public class Migraine_en_cours extends AppCompatActivity implements
 
             migraine=baseMigraine.getMigraineWithId (numero_en_cours);
             nom_actuel=migraine.getnom_migraine ();
-            txt_commentaire=migraine.getcommentaire ();
 
             GestionBaseMedicament baseMedicament = new GestionBaseMedicament (this);
             baseMedicament.open ();
@@ -167,7 +165,6 @@ public class Migraine_en_cours extends AppCompatActivity implements
             nouveau_nom.setText (nom_actuel);
 
             commentaire = (EditText) findViewById (R.id.B_Commentaire);
-            commentaire.setText (txt_commentaire);
 
         } else {
             // si on arrive ici c'est que l'intent n'a pas donné l'id de la migraine
@@ -309,6 +306,7 @@ Arrivé ici, il faudra calculer le delta entre la date de départ et la date de 
                 douleur.setintensite_douleur ((int) i);
                 douleur.setdate_douleur (date_actuel);
                 douleur.setheure_douleur (heure_actuel);
+                douleur.setcommentaire_douleur (commentaire.getText ().toString ());
 
                 // Ecriture dans la base de données -> table douleurs
                 i = baseMigraine.insertDouleur (douleur);
@@ -320,7 +318,6 @@ Arrivé ici, il faudra calculer le delta entre la date de départ et la date de 
                         //nom_actuel.
                         migraine.setnom_migraine (nom_actuel);
                         migraine.setduree_migraine (0);
-                        migraine.setcommentaire (commentaire.getText ().toString ());
                         migraine.setetat (etat);
                         if (etat == 2) {
                             migraine.setdate_fin_migraine (date_actuel);

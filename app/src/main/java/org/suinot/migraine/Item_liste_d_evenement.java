@@ -95,16 +95,14 @@ class Item_liste_d_evenement {
         this.date_debut = date;
     }
 
-    String get_item_heure_debut() {
-        return heure_debut;
-    }
+    String get_item_heure_debut() {return heure_debut; }
 
     void set_item_Heure_debut(String heure) {
         this.heure_debut = heure;
     }
 
     String get_item_medicament() {
-        return nom;
+        return nombre_medicaments;
     }
 
     void set_item_medicament(String nombre) {

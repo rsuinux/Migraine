@@ -20,16 +20,18 @@ class Douleur {
     private String duree;
     private String date;
     private String heure;
+    private String commentaire;
 
     Douleur() {
     }
 
-    Douleur ( int intensite, String duree, String date, String heure ) {
+    Douleur ( int intensite, String duree, String date, String heure, String comm ) {
         super ();
         this.intensite = intensite;
         this.duree = duree;
         this.date = date;
         this.heure = heure;
+        this.commentaire = comm;
     }
 
     /*
@@ -55,6 +57,10 @@ class Douleur {
         return heure;
     }
 
+    String getcommentaire_douleur() {
+        return commentaire;
+    }
+
 /*
 ---------- Mise à jour de données ----------
  */
@@ -77,6 +83,10 @@ class Douleur {
         this.heure = heure;
     }
 
+    void setcommentaire_douleur(String comm) {
+        this.commentaire = comm;
+    }
+
     /*
     ----------- Méthode globale ----------------
     */
@@ -86,6 +96,7 @@ class Douleur {
                 + "\nIntensite: " + intensite
                 + "\nDurée: " + duree
                 + "\nDate: " + date
-                + "\nHeure: " + heure;
+                + "\nHeure: " + heure
+                + "\nCommentaire: " + commentaire;
     }
 }

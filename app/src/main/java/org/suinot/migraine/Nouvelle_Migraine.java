@@ -275,7 +275,6 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
                 migraine.setdate_migraine (date_actuel);
                 migraine.setheure_migraine (heure_actuel);
                 migraine.setduree_migraine (0);
-                migraine.setcommentaire (commentaire.getText ().toString ());
                 migraine.setetat (1);
 
                 // Ecriture dans la base de données -> table migraines
@@ -285,6 +284,7 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
                     douleur.setintensite_douleur ((int) i);
                     douleur.setdate_douleur (date_actuel);
                     douleur.setheure_douleur (heure_actuel);
+                    douleur.setcommentaire_douleur (commentaire.getText ().toString ());
                     // Ecriture dans la base de données -> table douleurs
                     i = baseMigraine.insertDouleur (douleur);
                     if (i != -1) {

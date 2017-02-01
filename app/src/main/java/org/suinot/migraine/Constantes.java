@@ -27,14 +27,12 @@ public class Constantes {
         static final int MIGRAINE_COL_HEURE = 3;
         static final String COL_DUREE = "DUREE";
         static final int MIGRAINE_COL_DUREE = 4;
-        static final String COL_COMMENTAIRE = "COMMENTAIRE";
-        static final int MIGRAINE_COL_COMMENTAIRE = 5;
         static final String COL_ETAT = "ETAT";
-        static final int MIGRAINE_COL_ETAT = 6;
+        static final int MIGRAINE_COL_ETAT = 5;
         static final String COL_DATE_FIN="DATE_FIN";
-        static final int MIGRAINE_COL_DATE_FIN =7;
+        static final int MIGRAINE_COL_DATE_FIN =6;
         static final String COL_HEURE_FIN="HEURE_FIN";
-        static final int MIGRAINE_COL_HEURE_FIN =8;
+        static final int MIGRAINE_COL_HEURE_FIN =7;
 
         /* Définition de la table Douleur */
         static final String TABLE_DOULEURS = "douleurs";
@@ -49,6 +47,8 @@ public class Constantes {
         static final int DOULEUR_COL_DATE = 3;
         static final String COL_DOULEUR_HEURE = "HEURE";
         static final int DOULEUR_COL_HEURE = 4;
+        static final String COL_COMMENTAIRE = "COMMENTAIRE";
+        static final int DOULEUR_COL_COMMENTAIRE = 5;
 
         /* Définition de la table Médicaments */
         static final String TABLE_MEDIC = "medicaments";
