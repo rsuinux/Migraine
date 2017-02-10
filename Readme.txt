@@ -33,4 +33,8 @@ deux états possible d'un évenement:
   en cours-> pn peut dans ce cas ajouter une note de douleur, un médicament pris et un commentaire ou même terminer l'évenement
   terminé: dans ce cas, un clique donne l'historique de toute les douleurs et médicaments notés avec leurs commentaire pour cet évenement.
 
- 
+/*--------------------------------------- */
+09 fevrier 2017
+/*--------------------------------------- */
+1/ To Do: suppresion d'un évennement par clique long (evenement en cours ou pas) suite à un premier test utilisateur grandeur réel.
+2/ To Do: erreur lors de la rotation de l'ecran: pas de redessin du listview evenement..
