@@ -3,6 +3,7 @@ Première lignes: 18 Aout 2016
 Autheur: R. Suinot <remi [at] suinot [point] org>
 
 En cours d'écriture.
+<<<<<<< HEAD
 Veuillez vous rendre sur la branche v0.1 pour toutes  les modifications les plus récentes.
 Merci.
 /* ------------------------------------------------ */
