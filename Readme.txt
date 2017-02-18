@@ -12,5 +12,5 @@ First lines: 18 August 2016
 Author: R. Suinot <remi [at] suinot [dot] org>
 
 In writing.
-Please go to branch v0.1 for all the most recent changes.
+Please go to branch v0.2 for all the most recent changes.
 Thank you.
