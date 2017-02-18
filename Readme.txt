@@ -4,7 +4,7 @@ Autheur: R. Suinot <remi [at] suinot [point] org>
 
 En cours d'écriture.
 <<<<<<< HEAD
-Veuillez vous rendre sur la branche v0.1 pour toutes  les modifications les plus récentes.
+Veuillez vous rendre sur la branche v0.2 pour toutes  les modifications les plus récentes.
 Merci.
 /* ------------------------------------------------ */
 Android application for migraine patients.
