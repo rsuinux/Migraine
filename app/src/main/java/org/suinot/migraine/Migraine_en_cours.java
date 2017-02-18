@@ -64,8 +64,8 @@ public class Migraine_en_cours extends AppCompatActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate (savedInstanceState);
+
         Intent intent = getIntent ();
         if (intent != null) {
             numero_en_cours = this.getIntent ().getExtras ().getInt ("last");

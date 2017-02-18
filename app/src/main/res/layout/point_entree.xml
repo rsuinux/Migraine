@@ -85,7 +85,8 @@
             android:layout_below="@id/T_info_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scrollbars="vertical"/>
+            android:scrollbars="vertical" android:fadeScrollbars="true"
+            android:longClickable="true" android:visibility="visible"/>
 
 
     </RelativeLayout>

@@ -44,7 +44,7 @@ import static org.suinot.migraine.R.layout.configuration;
 
 public class Configuration extends Activity implements Constantes.constantes {
 
-    Activity parentActivity;
+    Activity parentActivity=this;
     GestionBaseMedicament medicBdd;
     CustomAdapter_medic monAdapter = null;
     private ArrayList<Item_Medicament> data;
@@ -108,7 +108,6 @@ public class Configuration extends Activity implements Constantes.constantes {
                         }
                     }
                 });
-
                 dialog.setNegativeButton (cancel, new DialogInterface.OnClickListener () {
                     public void onClick(DialogInterface dialog, int which) {
                         alertDialog.dismiss ();
@@ -153,7 +152,9 @@ public class Configuration extends Activity implements Constantes.constantes {
 
                 Toast.makeText (getApplicationContext (), R.string.configuration_sauvegarde_medicaments, Toast.LENGTH_SHORT).show ();
                 medicBdd.close ();
-                System.exit (0);
+
+                setResult (RETOUR_CONFIGURATION);
+                finish ();
             }
         });
 
@@ -171,7 +172,9 @@ public class Configuration extends Activity implements Constantes.constantes {
 
                 Toast.makeText (getApplicationContext (), R.string.configuration_annulation, Toast.LENGTH_SHORT).show ();
                 medicBdd.close ();
-                System.exit (0);
+
+                setResult (RETOUR_CONFIGURATION);
+                finish ();
             }
         });
 
@@ -220,48 +223,18 @@ public class Configuration extends Activity implements Constantes.constantes {
 
     void Export_db() throws IOException {
         // Recherche si l'on a les autorisation (appel de méthode plus bas si besoin)
-        parentActivity = Point_Entree.activity;
-        boolean hasPermission = (ContextCompat.checkSelfPermission (this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
-        if (!hasPermission) {
-            ActivityCompat.requestPermissions (parentActivity,
+
+        if (! (ContextCompat.checkSelfPermission (Configuration.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) ) {
+            // nous n'avons pas la permission d'écriture, il faut la demander
+            ActivityCompat.requestPermissions ( Configuration.this ,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     REQUEST_WRITE_STORAGE);
+            // apres ça, il faut mettre un écouteur sur ActivityCompat.requestPermissions
+
         }
         String etat = Environment.getExternalStorageState ();
         if (Environment.MEDIA_MOUNTED.equals (etat)) {
-            Date date = new Date ( System.currentTimeMillis() );
-            SimpleDateFormat sdf = new SimpleDateFormat ( "dd/MM/yyyy hh:mm:ss", Locale.FRANCE );
-            String txt = sdf.format (date);
-
-            txt=txt.replace("/", "_");
-            txt=txt.replace(":", "_");
-            txt=txt.replace(" ", "_");
-            //creating a new folder for the database to be backuped to
-            File Root = Environment.getExternalStorageDirectory ();
-            File folder = new File (Root.getAbsolutePath () + File.separator + "migraine" + File.separator);
-            folder.mkdirs ();
-            if (!folder.exists ()) {
-                Log.d ("Export_db", "folder n'existe toujours pas");
-                folder.mkdirs ();
-            }
-            File medic = new File (folder, "medicaments-" + txt + ".db");
-            try {
-                medic.createNewFile ();
-            } catch ( Exception ex1) {
-                ex1.printStackTrace ();
-            }
-            File migraines = new File (folder, "migraine-" + txt + ".db");
-            try {
-                migraines.createNewFile();
-            } catch ( Exception ex1) {
-                ex1.printStackTrace ();
-            }
-            try {
-                exportDB (medic, migraines);
-            } catch (Exception e) {
-                e.printStackTrace ();
-            }
+            copie_donnee();
         } else {
             Toast.makeText (getApplicationContext (),
                     R.string.configuration_erreur_media,
@@ -271,6 +244,40 @@ public class Configuration extends Activity implements Constantes.constantes {
 
     }
 
+    void copie_donnee(){
+        Date date = new Date ( System.currentTimeMillis() );
+        SimpleDateFormat sdf = new SimpleDateFormat ( "dd/MM/yyyy hh:mm:ss", Locale.FRANCE );
+        String txt = sdf.format (date);
+
+        txt=txt.replace("/", "_");
+        txt=txt.replace(":", "_");
+        txt=txt.replace(" ", "_");
+        //creating a new folder for the database to be backuped to
+        File Root = Environment.getExternalStorageDirectory ();
+        File folder = new File (Root.getAbsolutePath () + File.separator + "migraine" + File.separator);
+        folder.mkdirs ();
+        if (!folder.exists ()) {
+            Log.d ("Export_db", "folder n'existe toujours pas");
+            folder.mkdirs ();
+        }
+        File medic = new File (folder, "medicaments-" + txt + ".db");
+        try {
+            medic.createNewFile ();
+        } catch ( Exception ex1) {
+            ex1.printStackTrace ();
+        }
+        File migraines = new File (folder, "migraine-" + txt + ".db");
+        try {
+            migraines.createNewFile();
+        } catch ( Exception ex1) {
+            ex1.printStackTrace ();
+        }
+        try {
+            exportDB (medic, migraines);
+        } catch (Exception e) {
+            e.printStackTrace ();
+        }
+    }
     //Export de la base de données
     private void exportDB(File medic, File migraines) throws FileNotFoundException {
         // context, NOM_DB_MIGRAINES, null, VERSION_DB_MEDICAMENTS);
@@ -330,8 +337,8 @@ public class Configuration extends Activity implements Constantes.constantes {
         switch (requestCode) {
             case REQUEST_WRITE_STORAGE: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //reload my activity with permission granted or use the features what required the permission
-
+                    //nous avons reçu l'autorisation d'écriture, on fait la copie :)
+                    copie_donnee ();
                 } else {
                     Toast.makeText (
                             parentActivity,

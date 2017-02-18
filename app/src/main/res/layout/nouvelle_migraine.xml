@@ -11,11 +11,25 @@
         android:layout_alignParentTop="true"
         android:background="@color/fond_general">
 
-        <View
-            android:id="@+id/view_1"
-            android:layout_width="match_parent"
-            android:layout_height="3dip"
-            android:background="@color/colorPrimary"/>
+        <Button
+            android:id="@+id/B_Fin_de_Migraine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentLeft="true"
+            android:clickable="false"
+            android:enabled="false"
+            android:longClickable="false"
+            android:text="@string/fin_de_migraine"/>
+        <Button
+            android:id="@+id/B_Enregistrer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentEnd="true"
+            android:longClickable="false"
+            android:text="@string/enregistrer"/>
+
 
         <EditText
             android:id="@+id/Nouveau_Nom"
@@ -33,7 +47,8 @@
             android:layout_width="match_parent"
             android:layout_height="3dip"
             android:layout_below="@id/Nouveau_Nom"
-            android:background="@color/colorPrimary"/>
+            android:background="@color/colorPrimary" android:layout_marginBottom="3dip"
+            android:layout_marginTop="3dip"/>
 
         <TextView
             android:id="@+id/textView_1"
@@ -237,7 +252,8 @@
             android:layout_width="match_parent"
             android:layout_height="2dip"
             android:layout_below="@+id/Radio_Douleur"
-            android:background="@color/colorPrimary"/>
+            android:background="@color/colorPrimary" android:layout_marginBottom="3dip"
+            android:layout_marginTop="3dip"/>
 
         <SeekBar
             android:id="@+id/Seek_Douleur"
@@ -256,7 +272,8 @@
             android:layout_width="match_parent"
             android:layout_height="3dip"
             android:layout_below="@id/Seek_Douleur"
-            android:background="@color/colorPrimary"/>
+            android:background="@color/colorPrimary" android:layout_marginBottom="3dip"
+            android:layout_marginTop="3dip"/>
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
@@ -272,45 +289,44 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/textView3"
-        />
+            android:layout_below="@+id/view_6"
+            android:layout_marginBottom="3dip" android:layout_marginTop="3dip"/>
 
         <View
-            android:id="@+id/view_6"
+            android:id="@+id/view_7"
             android:layout_width="match_parent"
             android:layout_height="3dip"
             android:layout_below="@+id/Medicaments"
             android:layout_centerHorizontal="true"
-            android:background="@color/colorPrimary"/>
+            android:background="@color/colorPrimary"
+            android:layout_marginBottom="3dip"
+            android:layout_marginTop="3dip"/>
         <EditText
             android:id="@+id/B_Commentaire"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/view_6"
+            android:layout_below="@+id/view_7"
             android:gravity="top"
             android:hint="@string/commentaire"
             android:inputType="textMultiLine"
             android:lines="10"
         />
-        <Button
-            android:id="@+id/B_Fin_de_Migraine"
+        <View
+            android:id="@+id/view_1"
+            android:layout_width="match_parent"
+            android:layout_height="3dip"
+            android:background="@color/colorPrimary"
+            android:layout_alignBottom="@+id/B_Fin_de_Migraine"
+            android:layout_alignParentStart="true" android:layout_marginBottom="3dip"
+            android:layout_marginTop="3dip"/>
+        <View
+            android:id="@+id/view_6"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:clickable="false"
-            android:enabled="false"
-            android:longClickable="false"
-            android:text="@string/fin_de_migraine"/>
-        <Button
-            android:id="@+id/B_Enregistrer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:longClickable="false"
-            android:text="@string/enregistrer"/>
+            android:layout_height="3dip"
+            android:background="@color/blanc"
+            android:duplicateParentState="true" android:layout_alignBottom="@+id/textView3"
+            android:layout_alignParentStart="true"/>
     </RelativeLayout>
 
 </RelativeLayout>

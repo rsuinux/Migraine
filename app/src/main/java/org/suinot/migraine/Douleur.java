@@ -41,9 +41,7 @@ class Douleur {
         return id_douleur;
     }
 
-    int getintensite_douleur() {
-        return intensite;
-    }
+    int getintensite_douleur() { return intensite; }
 
     String getduree_douleur() {
         return duree;

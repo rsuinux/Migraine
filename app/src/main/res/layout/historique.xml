@@ -16,15 +16,46 @@
         android:orientation="vertical"
         android:weightSum="1">
 
-<!-- ici placer une liste avec ascenseur
-     et lui associer dans le code, le formatage "nouvelle_migraine.xml"
--->
-        <ListView
-            android:id="@+id/affiche_liste_migraines"
+        <TextView
+            android:text="nombre de médicament"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="13dp" android:id="@+id/textView"
+            android:layout_alignParentTop="true" android:layout_alignParentStart="true"/>
+        <TextView
+            android:text=" / "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" android:layout_marginTop="11dp"
+            android:id="@+id/textView5" android:textStyle="normal|bold"/>
+        <TextView
+            android:text=" / "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true" android:layout_marginStart="129dp"
+            android:id="@+id/textView6" android:layout_below="@+id/textView"
+            android:textStyle="normal|bold"/>
+        <TextView
+            android:text="nombre de migraine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView4"
+            android:layout_below="@+id/textView" android:layout_alignParentStart="true"/>
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" android:layout_toEndOf="@+id/textView5"
+            android:id="@+id/migraine_par_jour"/>
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/medicament_par_jour" android:layout_below="@+id/textView"
+            android:layout_alignParentEnd="true" android:layout_toEndOf="@+id/textView5"/>
+        <Button
+            android:text="Close"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical"/>
-
+            android:layout_height="wrap_content" android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" android:id="@+id/H_close"/>
     </RelativeLayout>
 
 </RelativeLayout>

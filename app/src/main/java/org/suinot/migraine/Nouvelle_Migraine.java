@@ -310,6 +310,7 @@ public class Nouvelle_Migraine extends AppCompatActivity implements
                             Toast.LENGTH_LONG)
                             .show ();
                 }
+
                 setResult (RETOUR_NOUVELLE_MIGRAINE);
                 finish ();
                 break;

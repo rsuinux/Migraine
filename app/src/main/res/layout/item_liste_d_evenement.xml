@@ -19,7 +19,7 @@
             android:paddingRight="2dp"
             android:text="item nom"
             android:textStyle="bold"
-            android:layout_alignParentTop="true"/>
+            android:layout_alignParentTop="true" android:textColor="@color/colorPrimaryDark"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -28,7 +28,8 @@
             android:text=" [ "
             android:id="@+id/editText"
             android:textSize="14sp"
-            android:layout_alignParentTop="true" android:layout_toStartOf="@+id/item_event_date"/>
+            android:layout_alignParentTop="true" android:layout_toStartOf="@+id/item_event_date"
+            android:textColor="@color/colorPrimaryDark"/>
         <TextView
             android:id="@+id/item_event_date"
             android:layout_width="wrap_content"
@@ -38,14 +39,16 @@
             android:paddingRight="2dp"
             android:text="item date"
             android:textStyle="bold"
-            android:layout_alignParentTop="true" android:layout_toStartOf="@+id/editText2"/>
+            android:layout_alignParentTop="true" android:layout_toStartOf="@+id/editText2"
+            android:textColor="@color/colorPrimaryDark"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="none"
             android:text=" - "
             android:id="@+id/editText2" android:textSize="14sp"
-            android:layout_alignParentTop="true" android:layout_toStartOf="@+id/item_event_heure"/>
+            android:layout_alignParentTop="true" android:layout_toStartOf="@+id/item_event_heure"
+            android:textColor="@color/colorPrimaryDark"/>
         <TextView
             android:id="@+id/item_event_heure"
             android:layout_width="wrap_content"
@@ -55,7 +58,8 @@
             android:paddingRight="2dp"
             android:text="item heure"
             android:textStyle="bold"
-            android:layout_alignParentTop="true" android:layout_toStartOf="@+id/editText3"/>
+            android:layout_alignParentTop="true" android:layout_toStartOf="@+id/editText3"
+            android:textColor="@color/colorPrimaryDark"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -63,7 +67,7 @@
             android:text=" ] "
             android:id="@+id/editText3" android:textSize="14sp"
             android:layout_alignParentTop="true" android:layout_alignParentEnd="true"
-            android:layout_marginEnd="54dp"/>
+            android:layout_marginEnd="54dp" android:textColor="@color/colorPrimaryDark"/>
         <TextView
             android:id="@+id/text_item_medicament_pris"
             android:layout_width="wrap_content"
@@ -72,7 +76,8 @@
             android:layout_weight="50"
             android:paddingLeft="2dp"
             android:paddingRight="4dp"
-            android:text="Nombre de médicaments pris: "/>
+            android:text="Nombre de médicaments pris: "
+            android:textColor="@color/colorPrimaryDark"/>
         <TextView
             android:id="@+id/item__event_nombre_medicament"
             android:layout_width="match_parent"
@@ -83,7 +88,7 @@
             android:paddingLeft="2dp"
             android:paddingRight="2dp"
             android:text="item nbr medic"
-            android:textStyle="bold"/>
+            android:textStyle="bold" android:textColor="@color/colorPrimaryDark"/>
     </RelativeLayout>
 
     <ImageView
@@ -91,7 +96,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        app:srcCompat="@mipmap/config"
+        app:srcCompat="@drawable/configuration"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignBottom="@+id/relativeLayout"/>

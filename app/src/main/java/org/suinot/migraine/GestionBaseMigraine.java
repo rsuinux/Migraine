@@ -80,6 +80,7 @@ class GestionBaseMigraine implements Constantes.constantes {
         values.put (COL_DOULEUR_DUREE, m.getduree_douleur ());
         values.put (COL_DOULEUR_DATE, m.getdate_douleur ());
         values.put (COL_DOULEUR_HEURE, m.getheure_douleur ());
+        values.put (COL_DOULEUR_COMMENTAIRE, m.getcommentaire_douleur ());
 
         i = DBMIGRAINE.insert (TABLE_DOULEURS, null, values);
         return i;
@@ -143,6 +144,7 @@ class GestionBaseMigraine implements Constantes.constantes {
         values.put (COL_DOULEUR_DUREE, m.getduree_douleur ());
         values.put (COL_DOULEUR_DATE, m.getdate_douleur ());
         values.put (COL_HEURE, m.getheure_douleur ());
+        values.put (COL_DOULEUR_COMMENTAIRE, m.getcommentaire_douleur ());
         i = DBMIGRAINE.update (TABLE_DOULEURS, values, COL_DOULEUR_ID + " = " + id, null);
         return i;
     }
@@ -297,6 +299,7 @@ class GestionBaseMigraine implements Constantes.constantes {
         m.setduree_douleur (c.getString (DOULEUR_COL_DUREE));
         m.setdate_douleur (c.getString (DOULEUR_COL_DATE));
         m.setheure_douleur (c.getString (DOULEUR_COL_HEURE));
+        m.setcommentaire_douleur (c.getString (DOULEUR_COL_COMMENTAIRE));
         //On ferme le cursor
         c.close ();
 
@@ -356,6 +359,7 @@ class GestionBaseMigraine implements Constantes.constantes {
         m.setduree_douleur (c.getString (DOULEUR_COL_DUREE));
         m.setdate_douleur (c.getString (DOULEUR_COL_DATE));
         m.setheure_douleur (c.getString (DOULEUR_COL_HEURE));
+        m.setcommentaire_douleur (c.getString (DOULEUR_COL_COMMENTAIRE));
         //On ferme le cursor
         c.close ();
         //On retourne le médicament
@@ -405,42 +409,113 @@ class GestionBaseMigraine implements Constantes.constantes {
     /*-----------------------------------------------------------------------------------------------------------------*/
     //retourne les éléments de la bdd dans un arraylist pour afficher le listview
     ArrayList<Item_liste_d_evenement> getAllMigraine() {
+        ArrayList<Item_liste_d_evenement> listevent = new ArrayList<Item_liste_d_evenement> ();
         int i = 0;
         String txt = new String ();
-        ArrayList<Item_liste_d_evenement> listevent = new ArrayList<Item_liste_d_evenement> ();
         String[] clauseSelect = new String[]{" * "};
         int item_image_no_action = R.mipmap.no_action;
         int item_image_config = R.mipmap.config;
         int item_image = 0;
-        // String clauseOu = null;
-        // String[] argsOu = null;
-        // String orderBy = " DESC ";
 
         Cursor c = DBMIGRAINE.query (TABLE_MIGRAINES, clauseSelect, null, null, null, null, null);
-        if (c.moveToLast ()) {
-            do {
-                txt = c.getString (MIGRAINE_COL_NOM);
-                if (c.getInt (MIGRAINE_COL_ETAT) == 1) {
-                    item_image = item_image_config;
-                } else {
-                    item_image = item_image_no_action;
-                }
-                Item_liste_d_evenement item = new Item_liste_d_evenement (
-                        txt,
-                        c.getString (MIGRAINE_COL_DATE),
-                        c.getString (MIGRAINE_COL_HEURE),
-                        getnombre_medicament (c.getInt (MIGRAINE_COL_ID)),
-                        item_image
-                );
-                Log.d ("creation lisview", " date: " + c.getString (MIGRAINE_COL_DATE));
-                Log.d ("creation lisview", " heure: " + c.getString (MIGRAINE_COL_HEURE));
-                Log.d ("creation lisview", " nom: " + txt);
 
-                listevent.add (item);
-            } while (c.moveToPrevious ());
+        if (c.getCount () != 0) {
+            if (c.moveToLast ()) {
+                do {
+                    Log.d ("creation listviewsimple", "ID= " + c.getInt (MIGRAINE_COL_ID) + "etat: " + c.getInt (MIGRAINE_COL_ETAT));
+                    txt = c.getString (MIGRAINE_COL_NOM);
+                    if (c.getInt (MIGRAINE_COL_ETAT) == 1) {
+                        item_image = item_image_config;
+                        Log.d ("creation listviewsimple", "item configuration");
+                    } else {
+                        Log.d ("creation listviewsimple", "item no action");
+                        item_image = item_image_no_action;
+                    }
+                    Item_liste_d_evenement item = new Item_liste_d_evenement (
+                            txt,
+                            c.getString (MIGRAINE_COL_DATE),
+                            c.getString (MIGRAINE_COL_HEURE),
+                            getnombre_medicament (c.getInt (MIGRAINE_COL_ID)),
+                            item_image
+                    );
+                    Log.d ("creation lisview", " date: " + c.getString (MIGRAINE_COL_DATE));
+                    Log.d ("creation lisview", " heure: " + c.getString (MIGRAINE_COL_HEURE));
+                    Log.d ("creation lisview", " nom: " + txt);
+
+                    listevent.add (item);
+                } while (c.moveToPrevious ());
+            }
+            c.close ();
         }
-        c.close ();
         return listevent;
+    }
+
+    /*
+Ajoute ou modifie les données dans l'arraylist de l'activité principale
+si exist=false => la migraine existe deja, c'est juste une modification
+   exist=true =>  la migraine est nouvelle on l'ajoute dan la liste
+*/
+    void modifie_list_unitaite(Context ctx, ArrayList<Item_liste_d_evenement> listen, Migraine donnees, boolean exist) {
+        String nom = donnees.getnom_migraine ();
+        int i = 0;
+        String txt = new String ();
+        Item_liste_d_evenement item = null;
+
+        if (exist) {
+            // nouvelle migraine
+            ajoute_item_list_eveenement( listen,  donnees );
+        } else {
+            // migraine déjà existante . Il faut trouver le numéro dans le listview le supprimer et le remettre au dessus
+            txt = donnees.getnom_migraine ();
+            boolean sortie = false;
+            int max = (listen.size () -1);
+Log.d("modif item list evement", "debut de test sortie: " + String.valueOf (sortie) + " + max= " + max);
+sortie = true;
+Log.d("modif item list evement", "debut de test sortie: " + String.valueOf (sortie) + " + max= " + max);
+sortie=false;
+            do {
+                item = listen.get (max);
+Log.d("boucle sur listen", " max=" + max );
+                if (item.get_item_Nom ().equals (txt)) {
+                    sortie = true;
+                } else {
+                    max -= 1;
+                }
+            } while (max < 0 || sortie);
+Log.d("modif item list evement", "sortie: " + String.valueOf (sortie) + " max = " + max);
+            if ( sortie ) {
+Log.d("modif item list event", " sortie = true nous ajoutons le même item mais au début de la liste");
+                listen.remove (max);
+                ajoute_item_list_eveenement( listen,  donnees );
+            }
+        }
+    }
+
+    void ajoute_item_list_eveenement( ArrayList<Item_liste_d_evenement> listen, Migraine donnees) {
+        Item_liste_d_evenement item = null;
+        String[] clauseSelect = new String[]{" * "};
+        int item_image_no_action = R.mipmap.no_action;
+        int item_image_config = R.mipmap.config;
+        int item_image = 0;
+
+        Cursor c = DBMIGRAINE.query (TABLE_MIGRAINES, clauseSelect, null, null, null, null, null);
+        if (c.getCount () != 0) {
+            c.moveToLast ();
+            if (c.getInt (MIGRAINE_COL_ETAT) == 1) {
+                item_image = item_image_config;
+            } else {
+                item_image = item_image_no_action;
+            }
+            item = new Item_liste_d_evenement (
+                    c.getString (MIGRAINE_COL_NOM),
+                    c.getString (MIGRAINE_COL_DATE),
+                    c.getString (MIGRAINE_COL_HEURE),
+                    getnombre_medicament (c.getInt (MIGRAINE_COL_ID)),
+                    item_image
+            );
+            listen.add (0, item);
+            c.close ();
+        }
     }
 
     /*
@@ -459,7 +534,7 @@ class GestionBaseMigraine implements Constantes.constantes {
         String[] clauseSelect = new String[]{" * "};
         String clauseOu = COL_CROISEE_MIGRAINE + " = ? ";
         String argsOu = String.valueOf (ID);
-
+        Log.d ("getnombremedicament", "ID = " + ID);
         Cursor c = DBMIGRAINE.query (TABLE_CROISEE, clauseSelect, clauseOu, new String[]{argsOu}, null, null, null);
 
         if (c.getCount () != 0) {
@@ -475,32 +550,6 @@ class GestionBaseMigraine implements Constantes.constantes {
         c.close ();
 
         return String.valueOf (total);
-    }
-
-    /*
-        Je demande si j'ai pris un médicament (oui/non) pour la douleur ID passé en parametre
-         ID fait référence à la table Douleur
-         pour savoœir si médicament associé ou non, on interroge la table Douleur, colonne Medicament
-    */
-    int medicament_ou_non(int ID) {
-        int result = 0;
-        /*
-        String[] clauseSelect = new String[]{" * "};
-
-        Cursor c = DBMIGRAINE.query (TABLE_DOULEURS, clauseSelect, null, null, null, null, null);
-
-        if (c.getCount () == 0)
-            return 0;
-        if (c.moveToFirst ()) {
-            do {
-                if ((c.getInt (DOULEUR_COL_ID) == ID) && (c.getInt (DOULEUR_COL_ID_MEDICAMENT) != 0)) {
-                    result = 1;
-                }
-            } while (c.moveToNext ());
-        }
-        c.close ();
-        */
-        return result;
     }
 
     /*
@@ -537,27 +586,21 @@ class GestionBaseMigraine implements Constantes.constantes {
         int ID = donnees.getId ();
         String[] clauseSelect = new String[]{" * "};
         String clauseOu = COL_CROISEE_MIGRAINE + " = ? ";
-        String argsOu = String.valueOf (ID);
-
-        Log.d ("table_croisee", "id= " + ID);
+        String argsOu = Integer.toString (ID);
         Item_historique_unitaire item1 = null;
         Cursor c = DBMIGRAINE.query (TABLE_CROISEE, clauseSelect, clauseOu, new String[]{argsOu}, null, null, null);
-        Log.d ("table_croisee", "cursor count " + c.getCount ());
 
         if (c.getCount () != 0) {
 
             if (c.moveToFirst ()) {
                 do {
-                    Log.d ("boucle c.move", "numero de colonne ID:  " + c.getInt (NUM_COL_CROISEE_ID));
-
-                    douleur = Recherche_douleur (c.getInt (NUM_COL_CROISEE_DOULEUR));
+                    douleur = Recherche_douleur (c.getInt (NUM_COL_CROISEE_ID));
+                    commentaire = Recherche_commentaire (c.getInt (NUM_COL_CROISEE_ID));
                     if (c.getInt (NUM_COL_CROISEE_MEDICAMENT) == 0) {
                         medicament = ctx.getString (R.string.pas_de_medicament);
                     } else {
                         medicament = Recherche_medicament (ctx, c.getInt (NUM_COL_CROISEE_MEDICAMENT));
                     }
-
-                    commentaire = Recherche_commentaire (c.getInt (NUM_COL_CROISEE_DOULEUR));
                     item1 = new Item_historique_unitaire (douleur, medicament, commentaire);
                     // assert listen != null;
                     listen.add (item1);
@@ -570,30 +613,35 @@ class GestionBaseMigraine implements Constantes.constantes {
 
     private String Recherche_commentaire(int ID) {
         String txt = "";
-        String[] clauseSelect = new String[]{" * "};
-        String clauseOu = DOULEUR_COL_ID + " = ? ";
-        String argsOu = String.valueOf (ID);
+        String[] columns = new String[]{"*"};
+        String selection = COL_DOULEUR_ID + " = ? ";
+        String[] selectionArgs = new String[]{String.valueOf (ID)};
+        Cursor d = DBMIGRAINE.query (TABLE_DOULEURS, columns, selection, selectionArgs, null, null, null);
 
-        Cursor d = DBMIGRAINE.query (TABLE_DOULEURS, clauseSelect, clauseOu, new String[]{argsOu}, null, null, null);
+        Log.d ("Recherche_commentaire", "ID= " + ID + " - count =  " + d.getCount ());
 
         if (d.getCount () != 0) {
-            txt = d.getString (DOULEUR_COL_COMMENTAIRE);
+            Log.d ("Recherche commentaire", "get colonne count = " + d.getColumnCount ());
+            Douleur n = cursorToDouleur (d);
+            txt = n.getcommentaire_douleur ();
         }
         d.close ();
+        Log.d ("Recherche_commentaire", "txt= " + txt);
+
         return txt;
 
     }
 
-
     private int Recherche_douleur(int ID) {
         int valeur = 0;
-        String[] clauseSelect = new String[]{" * "};
-        String clauseOu = DOULEUR_COL_ID + " = ? ";
-        String argsOu = String.valueOf (ID);
-        Cursor d = DBMIGRAINE.query (TABLE_DOULEURS, clauseSelect, clauseOu, new String[]{argsOu}, null, null, null);
+        String[] columns = new String[]{"*"};
+        String selection = COL_DOULEUR_ID + " = ? ";
+        String[] selectionArgs = new String[]{String.valueOf (ID)};
+        Cursor d = DBMIGRAINE.query (TABLE_DOULEURS, columns, selection, selectionArgs, null, null, null);
 
         if (d.getCount () != 0) {
-            valeur = d.getInt (DOULEUR_COL_INTENSITE);
+            Douleur n = cursorToDouleur (d);
+            valeur = n.getintensite_douleur ();
         }
         d.close ();
         return valeur;

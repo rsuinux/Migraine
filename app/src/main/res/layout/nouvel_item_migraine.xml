@@ -6,47 +6,49 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/NM_Date"
+        android:id="@+id/NM_Nom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:inputType="none" android:text="date"/>
-    <TextView
-        android:id="@+id/NM_Heure"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/NM_Douleur"
-        android:inputType="none" android:text="heure"/>
+        android:inputType="none" android:text="nom"
+        android:layout_alignParentTop="true" android:layout_alignParentStart="true"
+        android:paddingRight="5dip"
+        android:paddingLeft="5dip"/>
     <TextView
         android:id="@+id/NM_Douleur"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:inputType="none"
-        android:text="douleur"/>
-
+        android:text="douleur"
+        android:paddingLeft="5dip" android:paddingRight="5dip" android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/NM_Nom"/>
+    <TextView
+        android:id="@+id/NM_Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="none" android:text="date"
+        android:paddingLeft="5dip" android:paddingRight="5dip" android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/NM_Douleur"/>
+    <TextView
+        android:id="@+id/NM_Heure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="none" android:text="heure"
+        android:paddingLeft="5dip" android:paddingRight="5dip"
+        android:layout_alignParentTop="true" android:layout_toEndOf="@+id/NM_Date"/>
     <TextView
         android:id="@+id/NM_Medic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/NM_Heure"
-        android:layout_toEndOf="@+id/NM_Douleur" android:inputType="none"
-        android:text="medicament"/>
+        android:inputType="none"
+        android:text="medicament" android:layout_below="@+id/NM_Date"
+        android:layout_alignParentStart="true" android:paddingLeft="5dip"
+        android:paddingRight="5dip"/>
     <TextView
         android:id="@+id/NM_Dose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/NM_Nom"
         android:layout_toEndOf="@+id/NM_Medic" android:inputType="none"
-        android:text="dose"/>
-    <TextView
-        android:id="@+id/NM_Nom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toStartOf="@+id/NM_Dose"
-        android:inputType="none" android:text="nom"/>
+        android:text="dose" android:paddingLeft="5dip" android:paddingRight="5dip"/>
 
 </RelativeLayout>

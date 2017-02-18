@@ -4,7 +4,7 @@ package org.suinot.migraine;
  * Created by remi on 26/11/16.
  */
 
-public class Constantes {
+class Constantes {
 
     public interface constantes {
 
@@ -37,7 +37,7 @@ public class Constantes {
         /* Définition de la table Douleur */
         static final String TABLE_DOULEURS = "douleurs";
 
-        static final String COL_DOULEUR_ID = "ID";
+        static final String COL_DOULEUR_ID = "ID_DOULEUR";
         static final int DOULEUR_COL_ID = 0;
         static final String COL_INTENSITE = "INTENSITE";
         static final int DOULEUR_COL_INTENSITE = 1;
@@ -47,7 +47,7 @@ public class Constantes {
         static final int DOULEUR_COL_DATE = 3;
         static final String COL_DOULEUR_HEURE = "HEURE";
         static final int DOULEUR_COL_HEURE = 4;
-        static final String COL_COMMENTAIRE = "COMMENTAIRE";
+        static final String COL_DOULEUR_COMMENTAIRE = "COMMENTAIRE";
         static final int DOULEUR_COL_COMMENTAIRE = 5;
 
         /* Définition de la table Médicaments */
@@ -78,6 +78,7 @@ public class Constantes {
         static final int RETOUR_MIGRAINE_EN_COURS = 2;  // retour de l'activity Migraine en cours
         static final int RETOUR_CONFIGURATION = 3;  // retour de l'activity Configuration
         static final int RETOUR_HISTORIQUE = 4;  // retour de l'activity Historique
+        static final int RETOUR_GRAPHIQUE = 5;  // retour de l'activity Historique
 
         static final int DIALOG_INFORMATION = 1;
         static final int DIALOG_HISTORIQUE_UNITAIRE = 2;

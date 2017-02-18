@@ -26,10 +26,11 @@ import java.util.ArrayList;
  * Created by remi on 18/08/16.
  * Activity principale de l'application
  */
-public class Point_Entree extends AppCompatActivity implements  Constantes.constantes, MydialogBoxHistoriqueUnitaire.onSubmitListener {
+public class Point_Entree extends AppCompatActivity implements Constantes.constantes, MydialogBoxHistoriqueUnitaire.onSubmitListener {
 
     public static Activity activity;
     GestionBaseMigraine baseMigraine;
+    boolean executed = false;
 
     private Button b_historique;
     private Button b_graphique;
@@ -39,7 +40,7 @@ public class Point_Entree extends AppCompatActivity implements  Constantes.const
     CustomAdapter_evenement listevent_Adapter = null;
 
     ListView listnombreevnt;
-    ArrayList<Item_liste_d_evenement> array_list_event;
+    ArrayList<Item_liste_d_evenement> arrayList_Evenements;
     Migraine donnees = new Migraine ();
 
     private int migraine_en_cours = 0;
@@ -70,21 +71,22 @@ public class Point_Entree extends AppCompatActivity implements  Constantes.const
 
         //      Création d'une listeview avec le nombre de mibraine (date heure de début + nombre de médicament )
         // setup the data source
-        array_list_event = new ArrayList<> ();
-        array_list_event = baseMigraine.getAllMigraine ();
+        arrayList_Evenements = new ArrayList<> ();
+        arrayList_Evenements = baseMigraine.getAllMigraine ();
+
+        listnombreevnt = (ListView) findViewById (R.id.liste_evenement);
         listevent_Adapter = new CustomAdapter_evenement
                 (this,
-                        R.layout.item_liste_d_evenement,
-                        this.array_list_event);  //instantiation de l'adapter 1 seule fois;
-        listnombreevnt = (ListView) findViewById (R.id.liste_evenement);
+                 R.layout.item_liste_d_evenement,
+                 this.arrayList_Evenements);  //instantiation de l'adapter 1 seule fois;
         listnombreevnt.setAdapter (listevent_Adapter);
 
         listnombreevnt.setOnItemClickListener (new AdapterView.OnItemClickListener () {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-Log.d ("setonclick", "click court");
+                Log.d ("setonclick", "click court" + "executed= " + String.valueOf (executed));
                 // Click court
                 // l'ID reçu est le n° dans le listview et pas dnas la base de donnée!!! 'ordre inversé!!!)
-                click_cours_ou_long (id_base_migraine (position));
+                click_cours (id_base_migraine (position));
             }
         });
 
@@ -92,9 +94,9 @@ Log.d ("setonclick", "click court");
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 // Click court
-Log.d ("setonclick", "click long");
+                Log.d ("setonclick", "click long " + "executed= " + String.valueOf (executed));
                 // l'ID reçu est le n° dans le listview et pas dnas la base de donnée!!! 'ordre inversé!!!)
-                click_cours_ou_long (id_base_migraine (position));
+                click_long (id_base_migraine (position));
                 return false;
             }
         });
@@ -124,8 +126,12 @@ Log.d ("setonclick", "click long");
         b_historique.setOnClickListener ((new OnClickListener () {
             @Override
             public void onClick(View view) {
-                Intent Vue_Historique = new Intent (getApplicationContext (), Historique.class);
-                startActivity (Vue_Historique);
+                if (!executed) {
+                    executed = true;
+                    Intent Vue_Historique = new Intent (getApplicationContext (), Historique.class);
+                    Vue_Historique.putExtra("last", migraine_en_cours);
+                    startActivityForResult (Vue_Historique, CODE_RETOUR);
+                }
             }
         }));
 
@@ -133,8 +139,12 @@ Log.d ("setonclick", "click long");
         b_graphique.setOnClickListener (new OnClickListener () {
             @Override
             public void onClick(View v) {
-                Intent Vue_Graphique = new Intent (getApplicationContext (), Graphique.class);
-                startActivity (Vue_Graphique);
+                if (!executed) {
+                    executed = true;
+                    Intent Vue_Graphique = new Intent (getApplicationContext (), Graphique.class);
+                    Vue_Graphique.putExtra("last", migraine_en_cours);
+                    startActivityForResult (Vue_Graphique, CODE_RETOUR);
+                }
             }
         });
     }
@@ -146,7 +156,7 @@ Log.d ("setonclick", "click long");
         return baseMigraine.getMigraineWithNom (nom).getId ();
     }
 
-    void click_cours_ou_long(int ID) {
+    void click_cours(int ID) {
         //On créé l'Intent qui va nous permettre d'afficher l'autre Activity
         //Mettre le nom de l'Activity dans la quelle vous êtes actuellement
         donnees = baseMigraine.getMigraineWithId (ID);
@@ -156,16 +166,33 @@ Log.d ("setonclick", "click long");
             historique_migraine (ID);
         } else {
             Toast.makeText (getApplicationContext (),
-                    R.string.erreur_get_etat,
+                    R.string.erreur_get_etat_cours,
+                    Toast.LENGTH_LONG);
+        }
+    }
+
+    void click_long(int ID) {
+        //On créé l'Intent qui va nous permettre d'afficher l'autre Activity
+        //Mettre le nom de l'Activity dans la quelle vous êtes actuellement
+        donnees = baseMigraine.getMigraineWithId (ID);
+        if (donnees.getetat () == 1) {
+            reprise_migraine (ID);
+        } else if (donnees.getetat () == 2) {
+            historique_migraine (ID);
+        } else {
+            Toast.makeText (getApplicationContext (),
+                    R.string.erreur_get_etat_long,
                     Toast.LENGTH_LONG);
         }
     }
 
     void reprise_migraine(int ID) {
-        Intent Migraine_En_Cours = new Intent (getApplicationContext (), Migraine_en_cours.class);
-        Migraine_En_Cours.putExtra ("last", ID);
-        startActivityForResult (Migraine_En_Cours, CODE_RETOUR);
-        listnombreevnt.forceLayout ();
+        if (!executed) {
+            executed = true;
+            Intent Migraine_En_Cours = new Intent (getApplicationContext (), Migraine_en_cours.class);
+            Migraine_En_Cours.putExtra ("last", ID);
+            startActivityForResult (Migraine_En_Cours, CODE_RETOUR);
+        }
     }
 
     void historique_migraine(int ID) {
@@ -182,16 +209,21 @@ Log.d ("setonclick", "click long");
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
         super.onOptionsItemSelected (item);
         switch (item.getItemId ()) {
             case R.id.M_Config:
-                startActivity (new Intent (getApplicationContext (), Configuration.class));
+                if (!executed) {
+                    executed = true;
+                    intent = new Intent (this, Configuration.class);
+                    startActivity (intent);
+                }
                 return true;
             case R.id.M_Info:
                 newInstanceDialog (DIALOG_INFORMATION, 0);
                 return true;
             case R.id.M_Quit:
-                finish ();
+                // finish ();
                 return true;
             default:
                 return super.onOptionsItemSelected (item);
@@ -211,41 +243,46 @@ Log.d ("setonclick", "click long");
 
                 //On regarde qu'elle est la réponse envoyée et en fonction de la réponse on affiche un message différent.
                 switch (resultCode) {
+                    case 0:
+                        // on ne passe ici que si l'utilisateur annule son action!!!
+//                        Log.d("Retour des classe","request code= "+ requestCode + " / resultcode=0 mais on ne devrait pas arriver ici!");
+                        executed=false;
                     case RETOUR_NOUVELLE_MIGRAINE: // retour de L'Activity Nouvel Migraine
+                        executed = false;
                         if (nb_de_migraines > 0) {
                             Migraine donnees = baseMigraine.getMigraineWithId (nb_de_migraines);
 
                             tnombreevnt.setText (String.format ("%d", nb_de_migraines));
                             tnombreevnt.forceLayout ();
-
-//ici modification du listview nombre de migraine
-//                            listnombreevnt.setAdapter (listevent_Adapter);
+                            baseMigraine.modifie_list_unitaite (this, arrayList_Evenements, donnees, true);
                         }
-                        listnombreevnt.forceLayout ();
-                        // tno.notifyDataSetChanged();
+//                        listevent_Adapter.notifyDataSetChanged ();
+                        listevent_Adapter.updateReceiveList ();
+
                         break;
                     case RETOUR_MIGRAINE_EN_COURS: // retour de Migraine en cours
+                        executed = false;
 //ici modification du listview nombre de migraine
                         Migraine donnees = baseMigraine.getMigraineWithId (nb_de_migraines);
+                        baseMigraine.modifie_list_unitaite (this, arrayList_Evenements, donnees, false);
+                        listevent_Adapter.updateReceiveList ();
 
                         break;
                     case RETOUR_CONFIGURATION: // retour de Configuration
-
+                        executed = false;
 
                         break;
                     case RETOUR_HISTORIQUE: // retour de Historique
+                        executed = false;
+
+                        break;
+                    case RETOUR_GRAPHIQUE: // retour de Graphique
+                        executed = false;
 
                         break;
                 }
+                Log.d ("Code de retour", "requestCode= " + requestCode + " / resultcode= " + resultCode + " / executed= " + String.valueOf (executed));
         }
-    }
-
-    @Override
-    public void onResume() {  // After a pause OR at startup
-        super.onResume ();
-        //Refresh your stuff here
-        Log.d ("onResume", " -- passage par onResume -- ");
-
     }
 
     public void newInstanceDialog(int identifiant, int ID) {
@@ -269,7 +306,7 @@ Log.d ("setonclick", "click long");
                 MydialogBoxHistoriqueUnitaire dialogbox = new MydialogBoxHistoriqueUnitaire ();
                 dialogbox.mListener = this;
                 dialogbox.get_id_base_de_donnees (ID);
-                dialogbox.show(getFragmentManager(), "");
+                dialogbox.show (getFragmentManager (), "");
 
                 break;
         }

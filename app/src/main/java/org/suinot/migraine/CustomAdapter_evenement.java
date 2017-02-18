@@ -16,33 +16,22 @@ import java.util.ArrayList;
 
 import static org.suinot.migraine.Point_Entree.activity;
 
+// import org.suinot.migraine.Point_Entree.activity;
+
 /**
  * Created by remi on 26/12/16.
  * Customisation du listener sur le listview item_liste_d_evement
  */
 
 public class CustomAdapter_evenement extends BaseAdapter {
+    static private String TAG = "CustomAdapter_evenement";
     Context context;
     // store the context (as an inflated layout)
     private LayoutInflater inflater;
     // store the resource (typically list_item.xml)
     private int resource;
     // store (a reference to) the data
-    private ArrayList<Item_liste_d_evenement> data;
-
-    /**
-     * Default constructor. Creates the new Adaptor object to
-     * provide a ListView with data.
-     *
-     * @param context
-     * @param resource
-     * @param data
-     */
-    CustomAdapter_evenement(Context context, int resource, ArrayList<Item_liste_d_evenement> data) {
-        this.inflater = (LayoutInflater) context.getSystemService (Context.LAYOUT_INFLATER_SERVICE);
-        this.resource = resource;
-        this.data = data;
-    }
+    private ArrayList<Item_liste_d_evenement> list_event;
 
     public Context getActivity() {
         return activity;
@@ -55,21 +44,34 @@ public class CustomAdapter_evenement extends BaseAdapter {
         ImageView imageView;
     }
 
+    /**
+     * Default constructor. Creates the new Adaptor object to
+     * provide a ListView with data.
+     *
+     * @param context
+     * @param resource
+     * @param data
+     */
+    CustomAdapter_evenement(Context context, int resource, ArrayList<Item_liste_d_evenement> data) {
+        this.inflater = (LayoutInflater) context.getSystemService (Context.LAYOUT_INFLATER_SERVICE);
+        this.resource = resource;
+        this.list_event = data;
+    }
 
     @Override
     public int getCount() {
-        return this.data.size ();
+        return this.list_event.size ();
     }
 
     // retourne un élément de notre liste en fonction de sa position
     @Override
     public Object getItem(int position) {
-        return this.data.get (position);
+        return this.list_event.get (position);
     }
 
     // retourne le nom de l'élément (R.id.item_event_nom) en fonction de la position
     public String getItemNomWithID(int ID) {
-        Item_liste_d_evenement list = this.data.get (ID);
+        Item_liste_d_evenement list = this.list_event.get (ID);
         return list.get_item_Nom ();
     }
 
@@ -85,11 +87,11 @@ public class CustomAdapter_evenement extends BaseAdapter {
      */
     View bindData(View view, int position) {
         // make sure it's worth drawing the view
-        if (this.data.get (position) == null) {
+        if (this.list_event.get (position) == null) {
             return view;
         }
         // pull out the object
-        Item_liste_d_evenement item = this.data.get (position);
+        Item_liste_d_evenement item = this.list_event.get (position);
 
         // extract the view object
         View viewElement = view.findViewById (R.id.item_event_nom);
@@ -116,16 +118,61 @@ public class CustomAdapter_evenement extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view;
+        MyViewHolder mViewHolder = null;
+
+        final View result;
 
         // au premier appel ConvertView est null, on inflate notre layout
         if (convertView == null) {
-            view=this.inflater.inflate(resource, parent, false);
+Log.d(TAG, "convertview null");
+            LayoutInflater mInflater = LayoutInflater.from (getActivity().getApplicationContext ());
+
+            convertView = mInflater.inflate(R.layout.item_liste_d_evenement, parent, false);
+
+            // nous plaçons dans notre MyViewHolder les vues de notre layout
+            mViewHolder = new MyViewHolder();
+            /* Première ligne */
+            // nom
+            mViewHolder.textViewNom = (TextView) convertView.findViewById(R.id.item_event_nom);
+            // date
+            mViewHolder.textViewDate = (TextView) convertView.findViewById(R.id.item_event_date);
+            // heure
+            mViewHolder.textViewHeure = (TextView) convertView.findViewById(R.id.item_event_heure);
+
+            /* Seconde ligne */
+            // medicament
+            mViewHolder.textViewMedicament = (TextView) convertView.findViewById(R.id.item__event_nombre_medicament);
+
+            /* Au bout des deux lignes: */
+            mViewHolder.imageView = (ImageView) convertView.findViewById(R.id.item_event_reprise);
+
+            // nous attribuons comme tag notre MyViewHolder à convertView
+            convertView.setTag(mViewHolder);
+            result = convertView;
+
         } else {
-            view = convertView;
+            // convertView n'est pas null, nous récupérons notre objet MyViewHolder
+            // et évitons ainsi de devoir retrouver les vues à chaque appel de getView
+Log.d(TAG, "convertview non null");
+            mViewHolder = (MyViewHolder) convertView.getTag();
+            result = convertView;
         }
 
-        return this.bindData(view, position);
+        // nous récupérons l'item de la liste demandé par getView
+        Item_liste_d_evenement listItem = (Item_liste_d_evenement) getItem(position);
+
+        // nous pouvons attribuer à nos vues les valeurs de l'élément de la liste
+        mViewHolder.textViewNom.setText(listItem.get_item_Nom ());
+        mViewHolder.textViewDate.setText(listItem.get_item_date_debut ());
+        mViewHolder.textViewHeure.setText(listItem.get_item_heure_debut ());
+        mViewHolder.textViewMedicament.setText(listItem.get_item_medicament ());
+        mViewHolder.imageView.setImageResource(listItem.get_item_ImageId ());
+
+        // nous retournos la vue de l'item demandé
+        return result;
+    }
+
+    void updateReceiveList() {
+        this.notifyDataSetChanged();
     }
 }
-

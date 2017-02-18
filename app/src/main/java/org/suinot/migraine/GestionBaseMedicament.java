@@ -29,10 +29,8 @@ class GestionBaseMedicament implements Constantes.constantes {
         //on ouvre la BDD en écriture
         try {
             bdd = MaBase.getWritableDatabase ();
-            Log.d("MabaseMedicament", "open readwrite");
         }    catch (SQLiteException ex) {
             bdd = MaBase.getReadableDatabase ();
-            Log.d("MabaseMedicament", "open readonly");
         }
     }
 

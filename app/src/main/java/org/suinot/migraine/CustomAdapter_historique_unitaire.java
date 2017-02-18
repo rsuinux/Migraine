@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import static org.suinot.migraine.Point_Entree.activity;
+// import static org.suinot.migraine.Point_Entree.activity;
 
 /**
  * Created by remi on 21/01/17.
@@ -42,7 +42,7 @@ public class CustomAdapter_historique_unitaire extends BaseAdapter {
     }
 
     public Context getActivity() {
-        return activity;
+        return getActivity();
     }
 
     // MyViewHolder va nous permettre de ne pas devoir rechercher

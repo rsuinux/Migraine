@@ -65,7 +65,8 @@
     <string name="configuration_erreur_media">pas de media externe monté</string>
     <string name="configuration_copie_termine">"Copies terminées. Merci de votre patience"</string>
     <string name="configuration_confirme_suppression_medicament">Voulez vous vraiment supprimer</string>
-    <string name="erreur_get_etat">"Erreur d&#180;état de l&#180;événement",</string>
+    <string name="erreur_get_etat_cours">"Click cours : Erreur d&#180;état de l&#180;événement",</string>
+    <string name="erreur_get_etat_long">"Click long: Erreur d&#180;état de l&#180;événement",</string>
     <string name="texte_item_historique_unitaire_douleur">Douleur: </string>
     <string name="texte_item_historique_unitaire_medicament">Medicament: </string>
     <string name="pas_de_medicament"> Pas de médicament</string>

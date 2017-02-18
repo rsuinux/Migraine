@@ -47,7 +47,7 @@ class MabaseMigraine extends SQLiteOpenHelper implements Constantes.constantes {
             + COL_DOULEUR_DUREE + " TEXT, "
             + COL_DOULEUR_DATE + " TEXT, "
             + COL_DOULEUR_HEURE + " TEXT, "
-            + COL_COMMENTAIRE + " TEXT);";
+            + COL_DOULEUR_COMMENTAIRE + " TEXT);";
 
     /* Nom de la table CROISEE et creation */
     /*  déclarations des variables dans Constantes.java*/

@@ -85,6 +85,10 @@ class CustomAdapter_migraine extends BaseAdapter {
         // set the value
         tv.setText (item.NM_Nom);
 
+        viewElement = view.findViewById (R.id.NM_Douleur);
+        tv = (TextView) viewElement;
+        tv.setText (item.NM_Douleur);
+
         viewElement = view.findViewById (R.id.NM_Date);
         tv = (TextView) viewElement;
         tv.setText (item.NM_Date);
@@ -92,10 +96,6 @@ class CustomAdapter_migraine extends BaseAdapter {
         viewElement = view.findViewById (R.id.NM_Heure);
         tv = (TextView) viewElement;
         tv.setText (item.NM_Heure);
-
-        viewElement = view.findViewById (R.id.NM_Douleur);
-        tv = (TextView) viewElement;
-        tv.setText (item.NM_Douleur);
 
         viewElement = view.findViewById (R.id.NM_Medic);
         tv = (TextView) viewElement;
